@@ -1,5 +1,25 @@
 package model;
 
-public abstract class Bloc {
+import com.sun.javafx.geom.Vec2d;
 
+public abstract class Bloc {
+    Vec2d position;
+    private boolean isFriable;
+    private boolean isSubmittedToGravity;
+
+    public Vec2d getPosition() {
+        return position;
+    }
+
+    public boolean isFriable() {
+        return isFriable;
+    }
+
+    public void setPosition(Vec2d position) {
+        this.position = position;
+    }
+
+    public boolean isSubmittedToGravity() {
+        return isSubmittedToGravity;
+    }
 }
