@@ -20,7 +20,6 @@ public class Niveau {
     public final int MONSTRE_BLEU = 3;
     public final int MONSTRE_ROUGE = 4;
     public final int MINEUR = 5;
-    private int nbVie;
     private int nbDimandToWin;
     private List<Monstre> monstreList;
     private List<Bloc> blocList;
@@ -35,29 +34,34 @@ public class Niveau {
      */
     public Niveau(int niveau) {
         nbDimandToWin = 10;
-        nbVie = 3;
         currentLvl = niveaux[niveau];
         blocList = new ArrayList<>();
         monstreList = new ArrayList<>();
         for( int i = 0; i < currentLvl.length; i++ ) {
             for( int j = 0; j < currentLvl.length; j++ ) {
-                if( currentLvl[i][j] == MUR ) {
-                    blocList.add(new Mur(i, j));
-                } else if( currentLvl[i][j] == CLAY ) {
-                    blocList.add(new Clay(i, j));
-                } else if( currentLvl[i][j] == DIAMAND ) {
-                    blocList.add(new Diamand(i, j));
-                } else if( currentLvl[i][j] == MINEUR ) {
-                    mineur = new Mineur(i, j);
-                } else if( currentLvl[i][j] == MONSTRE_BLEU ) {
-                    monstreList.add(new MonstreBleu(i, j));
-                } else if( currentLvl[i][j] == MONSTRE_ROUGE ) {
-                    monstreList.add(new MonstreRouge(i, j));
+                switch( currentLvl[i][j] ) {
+                    case MUR:
+                        blocList.add(new Mur(i, j));
+                        break;
+                    case CLAY:
+                        blocList.add(new Clay(i, j));
+                        break;
+                    case DIAMAND:
+                        blocList.add(new Diamand(i, j));
+                        break;
+                    case MINEUR:
+                        mineur = new Mineur(i, j);
+                        break;
+                    case MONSTRE_BLEU:
+                        monstreList.add(new MonstreBleu(i, j));
+                        break;
+                    case MONSTRE_ROUGE:
+                        monstreList.add(new MonstreRouge(i, j));
+                        break;
                 }
             }
         }
     }
-
 
     /**
      * retrait d'un bloc par un joueur
