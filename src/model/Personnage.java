@@ -13,7 +13,7 @@ public abstract class Personnage {
         return position;
     }
 
-    public void setPosition(Vec2d position) {
+    public void deplacement(Vec2d position) {
         this.position = position;
     }
 }

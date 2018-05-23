@@ -116,19 +116,19 @@ public class Niveau {
         if( direction == 'g' ) {
             positionCible = new Vec2d(mineur.getPosition().x - 1, mineur.getPosition().y);
             if( isEmptyCase(positionCible) ) return;
-            mineur.setPosition(positionCible);
+            mineur.deplacement(positionCible);
         } else if( direction == 'd' ) {
             positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y);
             if( isEmptyCase(positionCible) ) return;
-            mineur.setPosition(positionCible);
+            mineur.deplacement(positionCible);
         } else if( direction == 'h' ) {
             positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y-1);
             if( isEmptyCase(positionCible) ) return;
-            mineur.setPosition(positionCible);
+            mineur.deplacement(positionCible);
         } else if( direction == 'b' ) {
             positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y+1);
             if( isEmptyCase(positionCible) ) return;
-            mineur.setPosition(positionCible);
+            mineur.deplacement(positionCible);
         }
     }
 

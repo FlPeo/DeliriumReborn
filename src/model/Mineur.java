@@ -10,4 +10,5 @@ public class Mineur extends Personnage {
         position = new Vec2d(i, j);
         nbVie = 3; // je pense qu'il faudra passer la vie d'un mineur d'un niveau à l'autre
     }
+
 }
