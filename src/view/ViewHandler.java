@@ -1,5 +1,6 @@
 package view;
 
+import controller.ControllerMenu;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -11,6 +12,7 @@ public class ViewHandler extends Application {
     private ViewMenu menu;
     private ViewGame game;
     private ViewLoadGame loadGame;
+    private ControllerMenu controller;
 
 
     @Override
@@ -23,8 +25,8 @@ public class ViewHandler extends Application {
         menu = new ViewMenu(root);
         game = new ViewGame();
         loadGame = new ViewLoadGame();
+        controller = new ControllerMenu(this);
 
-        // TODO créer méthode pour créer visuel menu principal
         primaryStage.setTitle("Délirium");
         primaryStage.setFullScreenExitHint("");
         primaryStage.setScene(scene);
@@ -33,4 +35,16 @@ public class ViewHandler extends Application {
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }
+
+    /**
+     * On attribut un détecteur d'événement pour chaque élément cliquable
+     *
+     * @param cm ()
+     */
+    public void setEventHandlerMenu(ControllerMenu cm) {
+        menu.setEvents(cm);
+    }
+
+    public ViewMenu getMenu() { return menu; }
+    public Stage getPrimaryStage() { return primaryStage; }
 }

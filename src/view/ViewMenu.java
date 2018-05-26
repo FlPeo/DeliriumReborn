@@ -1,12 +1,12 @@
 package view;
 
+import controller.ControllerMenu;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewMenu {
-    // TODO VUE A TROIS BOUTONS : NOUVELLE PARTIE // CHARGER NIVEAU // QUITTER
     // TODO Il faudra trouver une solution pour que dans nouvelle partie comme dans charger niveau on puisse choisir si
     // TODO le joueur est l'humain ou l'IA
 
@@ -73,9 +72,7 @@ public class ViewMenu {
         listesBoutons.forEach(button -> button.setBackground(null));
 
         VBox.setMargin(nouvellePartie, new Insets((imgBg.getFitHeight() / 15), 0, 0,0));
-        /*VBox.setMargin(chargerNiveau, new Insets(0, 0,0,imgBg.getFitWidth()/2.-imgBg.getFitWidth()/6.));
-        VBox.setMargin(quitter, new Insets(0, 0,0,imgBg.getFitWidth()/2.-imgBg.getFitWidth()/9.));
-    */}
+    }
 
     private void initMenu()
     {
@@ -92,9 +89,22 @@ public class ViewMenu {
         menu.setLayoutY(50);
     }
 
+    /**
+     * Rattachement d'un controleur aux boutons
+     *
+     * @param mc (Controleur correspondant au menu)
+     */
+    void setEvents(ControllerMenu mc) {
+        listesBoutons.forEach(button -> button.setOnMouseClicked(mc));
+    }
+
     private void vueMenuComplete()
     {
         root.getChildren().addAll(imgBg);
         root.getChildren().addAll(menu);
     }
+
+    public Button getNouvellePartie() { return nouvellePartie; }
+    public Button getChargerNiveau() { return chargerNiveau; }
+    public Button getQuitter() { return quitter; }
 }
