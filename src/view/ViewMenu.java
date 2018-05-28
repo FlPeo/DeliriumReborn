@@ -59,11 +59,18 @@ public class ViewMenu {
         titre.setFont(policeTitre);
     }
 
+    /**
+     * initialise la liste des boutons du menu :
+     *  nouvelle partie (charge une nouvelle partie)
+     *  charger niveau (permet au joueur de choisir le niveau
+     *  quitter (bah... ca quitte !)
+     */
     private void initBoutons() {
         listesBoutons = new ArrayList<>();
         listesBoutons.add(nouvellePartie = new Button("Nouvelle partie"));
         listesBoutons.add(chargerNiveau = new Button("Charger un niveau"));
         listesBoutons.add(quitter = new Button("Quitter"));
+        listesBoutons.forEach(button -> button.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.9), 2, 0.7, 0, 0);"));
 
         Font policeBoutons = Font.loadFont(getClass().getResourceAsStream(Path.fontRemachineScript), 60);
         listesBoutons.forEach(button -> button.setFont(policeBoutons));
@@ -74,6 +81,9 @@ public class ViewMenu {
         VBox.setMargin(nouvellePartie, new Insets((imgBg.getFitHeight() / 15), 0, 0,0));
     }
 
+    /**
+     * gère l'affichage du menu
+     */
     private void initMenu()
     {
         menu = new VBox(25);
