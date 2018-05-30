@@ -13,7 +13,7 @@ public class Niveau {
             LevelBuilder.niveau3,
             LevelBuilder.niveau4
     };
-    private static byte[][] currentLvl;
+    public static byte[][] currentLvl;
     public final int VIDE = 0;
     public final int MUR = 1;
     public final int CLAY = 2;
@@ -40,7 +40,7 @@ public class Niveau {
         blocList = new ArrayList<>();
         monstreList = new ArrayList<>();
         for( int i = 0; i < currentLvl.length; i++ ) {
-            for( int j = 0; j < currentLvl.length; j++ ) {
+            for( int j = 0; j < currentLvl[0].length; j++ ) {
                 switch( currentLvl[i][j] ) {
                     case MUR:
                         blocList.add(new Mur(i, j));

@@ -28,6 +28,10 @@ public class ViewMenu {
     private List<Button> listesBoutons;
     private Button nouvellePartie, chargerNiveau, quitter;
 
+    /**
+     * Constructeur de la vue du menu
+     * @param root : élément de base dans le seront ajouter tous les éléments de la vue
+     */
     ViewMenu(Group root)
     {
         this.root = root;

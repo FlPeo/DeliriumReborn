@@ -6,25 +6,33 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.stage.StageStyle;
+import model.LevelBuilder;
+import model.MenuGame;
+import model.Partie;
 
 public class ViewHandler extends Application {
     private Stage primaryStage;
     private ViewMenu menu;
     private ViewGame game;
     private ViewLoadGame loadGame;
+    private MenuGame menuGame;
+    private Partie partie;
     private ControllerMenu controller;
+    private Group root;
 
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
 
-        Group root = new Group();
+        root = new Group();
         Scene scene = new Scene(root);
 
+        menuGame = new MenuGame();
+
         menu = new ViewMenu(root);
-        game = new ViewGame();
         loadGame = new ViewLoadGame();
+
         controller = new ControllerMenu(this);
 
         primaryStage.setTitle("Délirium");
@@ -38,12 +46,20 @@ public class ViewHandler extends Application {
 
     /**
      * On attribut un détecteur d'événement pour chaque élément cliquable
-     *
      * @param cm ()
      */
     public void setEventHandlerMenu(ControllerMenu cm) {
         menu.setEvents(cm);
     }
+
+    public void demarrerPartie(int niveau, int typeJoueur)
+    {
+        this.partie = new Partie(niveau, typeJoueur);
+        game = new ViewGame(root, partie);
+        primaryStage.show();
+    }
+
+
 
     public ViewMenu getMenu() { return menu; }
     public Stage getPrimaryStage() { return primaryStage; }
