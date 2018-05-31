@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.stage.StageStyle;
-import model.LevelBuilder;
 import model.MenuGame;
 import model.Partie;
 
@@ -58,8 +57,6 @@ public class ViewHandler extends Application {
         game = new ViewGame(root, partie);
         primaryStage.show();
     }
-
-
 
     public ViewMenu getMenu() { return menu; }
     public Stage getPrimaryStage() { return primaryStage; }
