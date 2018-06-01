@@ -1,5 +1,6 @@
 package view;
 
+import controller.ControllerGame;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
@@ -96,9 +97,18 @@ public class ViewGame {
         }
     }
 
-    private void vueJeuComplet()
-    {
+    private void vueJeuComplet() {
         root.getChildren().clear();
         root.getChildren().addAll(images);
+    }
+
+    /**
+     * active l'écoute du clavier
+     * (TODO) penser à désactiver si on quitte la partie
+     * @param kc (Controlleur du clavier)
+     */
+    public void setEvents( ControllerGame kc) {
+        root.getScene().setOnKeyPressed(kc);
+        root.getScene().setOnKeyReleased(kc);
     }
 }

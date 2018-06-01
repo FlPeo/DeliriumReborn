@@ -1,5 +1,6 @@
 package view;
 
+import controller.ControllerGame;
 import controller.ControllerMenu;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,6 +17,7 @@ public class ViewHandler extends Application {
     private ViewLoadGame loadGame;
     private MenuGame menuGame;
     private Partie partie;
+    private ControllerGame controllerGame;
     private ControllerMenu controller;
     private Group root;
 
@@ -54,8 +56,9 @@ public class ViewHandler extends Application {
     public void demarrerPartie(int niveau, int typeJoueur)
     {
         this.partie = new Partie(niveau, typeJoueur);
+        controllerGame = new ControllerGame(this, partie);
         game = new ViewGame(root, partie);
-        primaryStage.show();
+        game.setEvents(controllerGame);
     }
 
     public ViewMenu getMenu() { return menu; }
