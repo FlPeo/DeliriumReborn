@@ -16,7 +16,7 @@ public class JeuTimeline extends AnimationTimer {
     @Override
     public void handle(long now) {
         if( now - lu150ms >= 150_000_000 ) {
-            controllerGame.majPositions();
+            controllerGame.computeAction();
             lu150ms = now;
         }
     }

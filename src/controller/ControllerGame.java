@@ -100,7 +100,16 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         }
     }
 
-    public synchronized void majPositions() {
+    /**
+     * IDEE DE L'ALGO
+     * TODO en gros si on appuie sur gauche droite haut bas il faut controler la case voisine est libre ou contient
+     * TODO un cristal. Si elle est vide on déplace le personnage, sinon on ne fait rien.
+     *
+     * TODO il faut également prendre en compte la barre d'espace. Si on regarde dans une direction et qu'on appuie sur
+     * TODO la barre d'espace, si la case vers "là ou on regarde" est un "clay" alors on détruit le bloc.
+     *
+     */
+    public synchronized void computeAction() {
         if (leftPressed) {
             System.out.println("left");
         } else if (rightPressed) {
@@ -110,6 +119,5 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         } else if (downPressed) {
             System.out.println("down");
         }
-
     }
 }
