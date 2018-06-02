@@ -63,4 +63,5 @@ public class ViewHandler extends Application {
 
     public ViewMenu getMenu() { return menu; }
     public Stage getPrimaryStage() { return primaryStage; }
+    public ViewGame getGame() { return game; }
 }

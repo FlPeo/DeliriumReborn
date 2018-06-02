@@ -51,6 +51,9 @@ public class Niveau {
                     case DIAMAND:
                         blocList.add(new Diamand(i, j));
                         break;
+                    case PIERRE:
+                        blocList.add(new Pierre(i, j));
+                        break;
                     case MINEUR:
                         mineur = new Mineur(i, j);
                         break;
@@ -124,11 +127,11 @@ public class Niveau {
             if( isEmptyCase(positionCible) ) return;
             mineur.deplacement(positionCible);
         } else if( direction == 'h' ) {
-            positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y-1);
+            positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y-1);
             if( isEmptyCase(positionCible) ) return;
             mineur.deplacement(positionCible);
         } else if( direction == 'b' ) {
-            positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y+1);
+            positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y+1);
             if( isEmptyCase(positionCible) ) return;
             mineur.deplacement(positionCible);
         }
@@ -164,4 +167,8 @@ public class Niveau {
         }
         return true;
     }
+
+    public List<Monstre> getMonstreList() { return monstreList; }
+    public List<Bloc> getBlocList() { return blocList; }
+    public Mineur getMineur() { return mineur; }
 }

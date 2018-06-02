@@ -15,4 +15,6 @@ public class Partie {
             this.joueur = new JoueurHuman();
         }
     }
+
+    public Niveau getNiveau() { return niveau; }
 }

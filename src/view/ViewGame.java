@@ -5,8 +5,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
-import model.Niveau;
-import model.Partie;
+import model.*;
 import tools.Path;
 
 import java.util.ArrayList;
@@ -31,16 +30,66 @@ public class ViewGame {
         vueJeuComplet();
     }
 
-    private void initPlateau(){
+    public void initPlateau(){
         //Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds(); // Récupération de la taille de l'écran
-
+/*
         int hauteurPlateau = Niveau.currentLvl.length;
-        int largeurPlateau = Niveau.currentLvl[0].length;
-        int tailleImages = 64;/*
+        int largeurPlateau = Niveau.currentLvl[0].length;*/
+        int tailleImages = 64;
+
+        List<Bloc> blocs = partie.getNiveau().getBlocList();
+        List<Monstre> monstres = partie.getNiveau().getMonstreList();
+        images = new ArrayList<>();
+
+        // On met le fond partout
+        for (int i = 0; i < Niveau.currentLvl.length; i++) {
+            for (int j = 0; j < Niveau.currentLvl[i].length; j++) {
+                images.add(new ImageView(Path.background));
+                images.get(images.size() - 1).setTranslateX(i * tailleImages);
+                images.get(images.size() - 1).setTranslateY(j * tailleImages);
+            }
+        }
+
+        // Les blocs de matière
+        for (Bloc bloc : blocs) {
+            // Ajout de l'image selon le type de bloc
+            if (bloc instanceof Clay)
+                images.add(new ImageView(Path.clay));
+            else if (bloc instanceof Diamand)
+                images.add(new ImageView(Path.diamond));
+            else if (bloc instanceof Mur)
+                images.add(new ImageView(Path.wall));
+            else if (bloc instanceof Pierre)
+                images.add(new ImageView(Path.stone));
+            // Modfification des coordonnées de l'image en fonction des coordonnées de l'objet
+            // On multiplie par la taille des images pour ne pas qu'elles se chevauches
+            images.get(images.size() - 1).setTranslateX(bloc.getPosition().x * tailleImages);
+            images.get(images.size() - 1).setTranslateY(bloc.getPosition().y * tailleImages);
+        }
+
+        // Les monstres
+        for(Monstre monstre : monstres)
+        {
+            if(monstre instanceof MonstreBleu)
+                images.add(new ImageView(Path.blueMonster));
+            else if(monstre instanceof MonstreRouge)
+                images.add(new ImageView(Path.redMonster));
+
+            images.get(images.size() - 1).setTranslateX(monstre.getPosition().x * tailleImages);
+            images.get(images.size() - 1).setTranslateY(monstre.getPosition().y * tailleImages);
+        }
+
+        // Le mineur
+        images.add(new ImageView(Path.minerDown));
+        images.get(images.size() - 1).setTranslateX(partie.getNiveau().getMineur().getPosition().x * tailleImages);
+        images.get(images.size() - 1).setTranslateY(partie.getNiveau().getMineur().getPosition().y * tailleImages);
+
+
+        /*
         root.setScaleX(2);
         root.setScaleY(2);*/
 
-        images = new ArrayList<>();
+        /*images = new ArrayList<>();
 
         for (int i = 0; i < hauteurPlateau; i++) {
             for (int j = 0; j < largeurPlateau; j++) {
@@ -51,10 +100,17 @@ public class ViewGame {
                 switch (Niveau.currentLvl[i][j])
                 {
                     case 1:
+                        // Création de l'image
                         ImageView mur = new ImageView(Path.wall);
+                        // Définition de l'endroit où dessiner l'image
                         mur.setTranslateX(i*tailleImages);
                         mur.setTranslateY(j*tailleImages);
+                        // Ajoute de l'image dans la liste contenant les images
                         images.add(mur);
+
+                        Mur murObj = new Mur(i*tailleImages,j*tailleImages);
+
+
                         break;
                     case 2:
                         ImageView terre = new ImageView(Path.clay);
@@ -94,10 +150,10 @@ public class ViewGame {
                         break;
                 }
             }
-        }
+        }*/
     }
 
-    private void vueJeuComplet() {
+    public void vueJeuComplet() {
         root.getChildren().clear();
         root.getChildren().addAll(images);
     }

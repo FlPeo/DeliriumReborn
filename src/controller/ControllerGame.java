@@ -108,16 +108,24 @@ public class ControllerGame implements EventHandler<KeyEvent> {
      * TODO il faut également prendre en compte la barre d'espace. Si on regarde dans une direction et qu'on appuie sur
      * TODO la barre d'espace, si la case vers "là ou on regarde" est un "clay" alors on détruit le bloc.
      *
+     * Mais est-ce qu'on détruirait pas le bloc quand on veux se déplacer tout simplement vers un truc de clay ?
+     *
      */
     public synchronized void computeAction() {
         if (leftPressed) {
+            partie.getNiveau().deplacerMineur('g');
             System.out.println("left");
         } else if (rightPressed) {
+            partie.getNiveau().deplacerMineur('d');
             System.out.println("right");
         }  else if (upPressed) {
+            partie.getNiveau().deplacerMineur('h');
             System.out.println("up");
         } else if (downPressed) {
+            partie.getNiveau().deplacerMineur('b');
             System.out.println("down");
         }
+        launcher.getGame().initPlateau();
+        launcher.getGame().vueJeuComplet();
     }
 }
