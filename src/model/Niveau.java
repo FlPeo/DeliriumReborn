@@ -127,8 +127,39 @@ public class Niveau {
         } else if( direction == 'b' ) {
             positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y+1);
         }
-        if( !isEmptyCase(positionCible) ) return;
+        if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == CLAY) {
+            currentLvl[(int)positionCible.x][(int)positionCible.y] = 0;
+            for( int i = 0; i < blocList.size(); i++ ) {
+                if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y){
+                    blocList.remove(blocList.get(i));
+                }
+            }
+        } else if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == DIAMAND) {
+            currentLvl[(int)positionCible.x][(int)positionCible.y] = 0;
+            for( int i = 0; i < blocList.size(); i++ ) {
+                if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y){
+                    blocList.remove(blocList.get(i));
+                }
+            }
+            nbDimandToWin--;
+            if (nbDimandToWin == 0) {
+                victory();
+            }
+        } else if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == MUR) {
+            return;
+        } else if (positionCible!= null && (currentLvl[(int)positionCible.x][(int)positionCible.y] == MONSTRE_ROUGE
+                || currentLvl[(int)positionCible.x][(int)positionCible.y] == MONSTRE_BLEU)) {
+            gameover();
+        }
         mineur.deplacement(positionCible);
+    }
+
+    private void victory() {
+
+    }
+
+    private void gameover() {
+
     }
 
     /**

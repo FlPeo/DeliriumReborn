@@ -40,8 +40,6 @@ public class ViewHandler extends Application {
         primaryStage.setFullScreenExitHint("");
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
-        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
