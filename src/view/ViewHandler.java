@@ -6,7 +6,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.application.Application;
-import javafx.stage.StageStyle;
 import model.MenuGame;
 import model.Partie;
 

@@ -33,31 +33,27 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
         if( keyEvent.getEventType().equals(KeyEvent.KEY_PRESSED) ) {
-            if( keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.Z ) {
+            if( upPressed = keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.Z ) {
                 upPressed = true;
                 rightPressed = false;
                 downPressed = false;
                 leftPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.KP_RIGHT || keyEvent.getCode() == KeyCode.D ) {
+            } else if( keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.KP_RIGHT || keyEvent.getCode() == KeyCode.D ) {
                 rightPressed = true;
                 upPressed = false;
                 downPressed = false;
                 leftPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.KP_DOWN || keyEvent.getCode() == KeyCode.S ) {
+            } else if( keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.KP_DOWN || keyEvent.getCode() == KeyCode.S ) {
                 downPressed = true;
                 upPressed = false;
                 rightPressed = false;
                 leftPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.KP_LEFT || keyEvent.getCode() == KeyCode.Q ) {
+            } else if( keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.KP_LEFT || keyEvent.getCode() == KeyCode.Q ) {
                 leftPressed = true;
                 upPressed = false;
                 rightPressed = false;
                 downPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.ESCAPE ) {
+            } else if( keyEvent.getCode() == KeyCode.ESCAPE ) {
                 escapePressed = true;
             }
         }
@@ -67,22 +63,21 @@ public class ControllerGame implements EventHandler<KeyEvent> {
      * IDEE DE L'ALGO
      * TODO en gros si on appuie sur gauche droite haut bas il faut controler la case voisine est libre ou contient
      * TODO un cristal. Si elle est vide on déplace le personnage, sinon on ne fait rien.
-     *
+     * <p>
      * TODO il faut également prendre en compte la barre d'espace. Si on regarde dans une direction et qu'on appuie sur
      * TODO la barre d'espace, si la case vers "là ou on regarde" est un "clay" alors on détruit le bloc.
-     *
+     * <p>
      * Mais est-ce qu'on détruirait pas le bloc quand on veux se déplacer tout simplement vers un truc de clay ?
-     *
      */
     public synchronized void computeAction() {
-        if (!leftPressed && !rightPressed && ! upPressed && !downPressed) return;
-        if (leftPressed) {
+        if( !leftPressed && !rightPressed && !upPressed && !downPressed ) return;
+        if( leftPressed ) {
             partie.getNiveau().deplacerMineur('g');
-        } else if (rightPressed) {
+        } else if( rightPressed ) {
             partie.getNiveau().deplacerMineur('d');
-        }  else if (upPressed) {
+        } else if( upPressed ) {
             partie.getNiveau().deplacerMineur('h');
-        } else if (downPressed) {
+        } else if( downPressed ) {
             partie.getNiveau().deplacerMineur('b');
         }
         upPressed = downPressed = leftPressed = rightPressed = false;
