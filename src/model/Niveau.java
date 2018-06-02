@@ -117,24 +117,18 @@ public class Niveau {
      * @param direction (direction ciblée : b = bas, g = gauche, d = droite, h = haut)
      */
     public void deplacerMineur(char direction) {
-        Vec2d positionCible;
+        Vec2d positionCible = null;
         if( direction == 'g' ) {
             positionCible = new Vec2d(mineur.getPosition().x - 1, mineur.getPosition().y);
-            if( isEmptyCase(positionCible) ) return;
-            mineur.deplacement(positionCible);
         } else if( direction == 'd' ) {
             positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y);
-            if( isEmptyCase(positionCible) ) return;
-            mineur.deplacement(positionCible);
         } else if( direction == 'h' ) {
             positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y-1);
-            if( isEmptyCase(positionCible) ) return;
-            mineur.deplacement(positionCible);
         } else if( direction == 'b' ) {
             positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y+1);
-            if( isEmptyCase(positionCible) ) return;
-            mineur.deplacement(positionCible);
         }
+        if( !isEmptyCase(positionCible) ) return;
+        mineur.deplacement(positionCible);
     }
 
     /**
@@ -155,11 +149,15 @@ public class Niveau {
      */
     private boolean isEmptyCase(Vec2d position) {
         for( Monstre monstreTemp : monstreList ) {
-            if( monstreTemp.getPosition().x == position.x && monstreTemp.getPosition().y == position.y ) {
+            if( monstreTemp.getPosition().x == position.x
+                    && monstreTemp.getPosition().y == position.y ) {
                 return false;
             }
         }
         for( Bloc blocTemp : blocList ) {
+            // Pour pouvoir tester on fais comme si clay on pouvait marcher dessus
+            if(blocTemp instanceof Clay)
+                return true;
             if( blocTemp.getPosition().x == position.x
                     && blocTemp.getPosition().y == position.y ) {
                 return false;
