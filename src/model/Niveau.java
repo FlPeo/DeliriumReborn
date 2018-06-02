@@ -147,6 +147,21 @@ public class Niveau {
             }
         } else if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == MUR) {
             return;
+        }  else if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == PIERRE) {
+            Vec2d caseDerrierePierre = new Vec2d(
+                    positionCible.x+(positionCible.x-mineur.getPosition().x),
+                    positionCible.y+(positionCible.y-mineur.getPosition().y));
+            if (currentLvl[(int)caseDerrierePierre.x][(int)caseDerrierePierre.y] == VIDE) {
+                currentLvl[(int)caseDerrierePierre.x][(int)caseDerrierePierre.y] = PIERRE;
+                for( int i = 0; i < blocList.size(); i++ ) {
+                    if (blocList.get(i).position.x == caseDerrierePierre.x && blocList.get(i).position.y == positionCible.y){
+                        blocList.get(i).position.x = caseDerrierePierre.x;
+                        blocList.get(i).position.y = caseDerrierePierre.y;
+                    }
+                }
+            } else {
+                return;
+            }
         } else if (positionCible!= null && (currentLvl[(int)positionCible.x][(int)positionCible.y] == MONSTRE_ROUGE
                 || currentLvl[(int)positionCible.x][(int)positionCible.y] == MONSTRE_BLEU)) {
             gameover();
