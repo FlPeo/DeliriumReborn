@@ -13,7 +13,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     private boolean rightPressed;
     private boolean downPressed;
     private boolean leftPressed;
-    private boolean spaceBarPressed;
     private boolean escapePressed;
     private ViewHandler launcher;
     private Partie partie;
@@ -24,7 +23,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         rightPressed = false;
         downPressed = false;
         leftPressed = false;
-        spaceBarPressed = false;
         escapePressed = false;
         this.launcher = launcher;
         this.partie = partie;
@@ -32,70 +30,35 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         jeuTimeLine.start();
     }
 
-
-    boolean isUpPressed() {
-        return upPressed;
-    }
-
-    boolean isRightPressed() {
-        return rightPressed;
-    }
-
-    boolean isDownPressed() {
-        return downPressed;
-    }
-
-    boolean isLeftPressed() {
-        return leftPressed;
-    }
-
-    public boolean isSpaceBarPressed() {
-        return spaceBarPressed;
-    }
-
-    public boolean isEscapePressed() {
-        return escapePressed;
-    }
-
     @Override
     public void handle(KeyEvent keyEvent) {
         if( keyEvent.getEventType().equals(KeyEvent.KEY_PRESSED) ) {
             if( keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.Z ) {
                 upPressed = true;
+                rightPressed = false;
+                downPressed = false;
+                leftPressed = false;
             }
             if( keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.KP_RIGHT || keyEvent.getCode() == KeyCode.D ) {
                 rightPressed = true;
+                upPressed = false;
+                downPressed = false;
+                leftPressed = false;
             }
             if( keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.KP_DOWN || keyEvent.getCode() == KeyCode.S ) {
                 downPressed = true;
+                upPressed = false;
+                rightPressed = false;
+                leftPressed = false;
             }
             if( keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.KP_LEFT || keyEvent.getCode() == KeyCode.Q ) {
                 leftPressed = true;
-            }
-            if( keyEvent.getCode() == KeyCode.SPACE ) {
-                leftPressed = true;
+                upPressed = false;
+                rightPressed = false;
+                downPressed = false;
             }
             if( keyEvent.getCode() == KeyCode.ESCAPE ) {
                 escapePressed = true;
-            }
-        } else if( keyEvent.getEventType().equals(KeyEvent.KEY_RELEASED) ) {
-            if( keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.Z ) {
-                upPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.KP_RIGHT || keyEvent.getCode() == KeyCode.D ) {
-                rightPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.KP_DOWN || keyEvent.getCode() == KeyCode.S ) {
-                downPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.KP_LEFT || keyEvent.getCode() == KeyCode.Q ) {
-                leftPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.SPACE ) {
-                leftPressed = false;
-            }
-            if( keyEvent.getCode() == KeyCode.ESCAPE ) {
-                escapePressed = false;
             }
         }
     }
@@ -112,19 +75,17 @@ public class ControllerGame implements EventHandler<KeyEvent> {
      *
      */
     public synchronized void computeAction() {
+        if (!leftPressed && !rightPressed && ! upPressed && !downPressed) return;
         if (leftPressed) {
             partie.getNiveau().deplacerMineur('g');
-            System.out.println("left");
         } else if (rightPressed) {
             partie.getNiveau().deplacerMineur('d');
-            System.out.println("right");
         }  else if (upPressed) {
             partie.getNiveau().deplacerMineur('h');
-            System.out.println("up");
         } else if (downPressed) {
             partie.getNiveau().deplacerMineur('b');
-            System.out.println("down");
         }
+        upPressed = downPressed = leftPressed = rightPressed = false;
         launcher.getGame().initPlateau();
         launcher.getGame().vueJeuComplet();
     }
