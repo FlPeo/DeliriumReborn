@@ -108,4 +108,12 @@ public class ViewGame {
         alert.setContentText("Félicitation, vous avez gagnez !");
         alert.show();
     }
+
+    public void affichageDefaite() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fin");
+        alert.setHeaderText("Défaite");
+        alert.setContentText("Dommage... Vous avez perdu");
+        alert.show();
+    }
 }

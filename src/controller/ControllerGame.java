@@ -67,16 +67,16 @@ public class ControllerGame implements EventHandler<KeyEvent> {
      * TODO en gros si on appuie sur gauche droite haut bas il faut controler la case voisine est libre ou contient
      * TODO un cristal. Si elle est vide on déplace le personnage, sinon on ne fait rien.
      * <p>
-     * TODO il faut également prendre en compte la barre d'espace. Si on regarde dans une direction et qu'on appuie sur
-     * TODO la barre d'espace, si la case vers "là ou on regarde" est un "clay" alors on détruit le bloc.
-     * <p>
-     * Mais est-ce qu'on détruirait pas le bloc quand on veux se déplacer tout simplement vers un truc de clay ?
      */
     public synchronized void computeAction() {
         if(partie.getNiveau().isVictoire()){
             jeuTimeLine.stop();
             finPartieVictoire();
             return;
+        }
+        if(partie.getNiveau().isDefaite()){
+            jeuTimeLine.stop();
+            finPartieDefaite();
         }
         if( !leftPressed && !rightPressed && !upPressed && !downPressed ) return;
         if( leftPressed ) {
@@ -91,6 +91,11 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         upPressed = downPressed = leftPressed = rightPressed = false;
         launcher.getGame().initPlateau();
         launcher.getGame().vueJeuComplet();
+    }
+
+    private void finPartieDefaite() {
+        launcher.getGame().affichageDefaite();
+        launcher.getMenu().vueMenuComplete();
     }
 
     public void finPartieVictoire()
