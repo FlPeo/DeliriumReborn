@@ -2,7 +2,15 @@ package ia;
 
 public class IAComputeAction {
 
-    public void defineAction() {
+    public void defineActionMineur() {
+
+    }
+
+    public void defineActionMonstreBleu(){
+
+    }
+
+    public void defineActionMonstreRouge(){
 
     }
 }
