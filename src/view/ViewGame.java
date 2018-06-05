@@ -3,6 +3,7 @@ package view;
 import controller.ControllerGame;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
 import javafx.stage.Screen;
 import model.*;
@@ -94,5 +95,17 @@ public class ViewGame {
     public void setEvents( ControllerGame kc) {
         root.getScene().setOnKeyPressed(kc);
         root.getScene().setOnKeyReleased(kc);
+    }
+
+    /**
+     * Affiche une popup informant le joueur qu'il à gagné
+     */
+    public void affichageVictoire()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fin");
+        alert.setHeaderText("Victoire !");
+        alert.setContentText("Félicitation, vous avez gagnez !");
+        alert.show();
     }
 }

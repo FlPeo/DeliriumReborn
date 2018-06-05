@@ -26,6 +26,7 @@ public class Niveau {
     private List<Monstre> monstreList;
     private List<Bloc> blocList;
     private Mineur mineur;
+    private boolean victoire;
 
     /**
      * Initialise un niveau
@@ -35,8 +36,11 @@ public class Niveau {
      * @param niveau (niveau à initialiser (/!\ on commence à 0)
      */
     public Niveau(int niveau) {
-        nbDimandToWin = 10;
-        currentLvl = niveaux[niveau];
+        nbDimandToWin = 2;
+        victoire = false;
+        currentLvl = new byte[niveaux[niveau].length][niveaux[niveau][0].length];
+        for (int i = 0; i < niveaux[niveau].length; i++)
+            System.arraycopy(niveaux[niveau][i], 0, currentLvl[i], 0, niveaux[niveau][i].length);
         blocList = new ArrayList<>();
         monstreList = new ArrayList<>();
         for( int i = 0; i < currentLvl.length; i++ ) {
@@ -136,14 +140,16 @@ public class Niveau {
             }
         } else if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == DIAMAND) {
             currentLvl[(int)positionCible.x][(int)positionCible.y] = 0;
+            nbDimandToWin--;
+            System.out.println(nbDimandToWin);
             for( int i = 0; i < blocList.size(); i++ ) {
                 if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y){
                     blocList.remove(blocList.get(i));
                 }
             }
             nbDimandToWin--;
-            if (nbDimandToWin == 0) {
-                victory();
+            if (victory()) {
+                victoire = true;
             }
         } else if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == MUR) {
             return;
@@ -173,12 +179,12 @@ public class Niveau {
         mineur.deplacement(positionCible);
     }
 
-    private void victory() {
-
+    private boolean victory() {
+        return nbDimandToWin == 0;
     }
 
-    private void gameover() {
-
+    private boolean gameover() {
+        return false;
     }
 
     /**
@@ -216,7 +222,9 @@ public class Niveau {
         return true;
     }
 
+    // GETTERS
     public List<Monstre> getMonstreList() { return monstreList; }
     public List<Bloc> getBlocList() { return blocList; }
     public Mineur getMineur() { return mineur; }
+    public boolean isVictoire() { return victoire; }
 }

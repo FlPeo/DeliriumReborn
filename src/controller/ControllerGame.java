@@ -70,6 +70,11 @@ public class ControllerGame implements EventHandler<KeyEvent> {
      * Mais est-ce qu'on détruirait pas le bloc quand on veux se déplacer tout simplement vers un truc de clay ?
      */
     public synchronized void computeAction() {
+        if(partie.getNiveau().isVictoire()){
+            jeuTimeLine.stop();
+            finPartieVictoire();
+            return;
+        }
         if( !leftPressed && !rightPressed && !upPressed && !downPressed ) return;
         if( leftPressed ) {
             partie.getNiveau().deplacerMineur('g');
@@ -83,5 +88,11 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         upPressed = downPressed = leftPressed = rightPressed = false;
         launcher.getGame().initPlateau();
         launcher.getGame().vueJeuComplet();
+    }
+
+    public void finPartieVictoire()
+    {
+        launcher.getGame().affichageVictoire();
+        launcher.getMenu().vueMenuComplete();
     }
 }

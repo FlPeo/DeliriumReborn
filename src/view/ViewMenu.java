@@ -159,8 +159,9 @@ public class ViewMenu {
         listesBoutons.forEach(button -> button.setOnMouseClicked(mc));
     }
 
-    private void vueMenuComplete()
+    public void vueMenuComplete()
     {
+        root.getChildren().clear();
         root.getChildren().addAll(imgBg);
         root.getChildren().addAll(menuComplet);
     }
