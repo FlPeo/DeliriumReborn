@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Niveau {
 
-    private static final byte[][][] niveaux = {
+    public static final byte[][][] niveaux = {
             LevelBuilder.niveau1,
             LevelBuilder.niveau2,
             LevelBuilder.niveau3,
@@ -40,7 +40,7 @@ public class Niveau {
         blocList = new ArrayList<>();
         monstreList = new ArrayList<>();
         for( int i = 0; i < currentLvl.length; i++ ) {
-            for( int j = 0; j < currentLvl[0].length; j++ ) {
+            for( int j = 0; j < currentLvl[i].length; j++ ) {
                 switch( currentLvl[i][j] ) {
                     case MUR:
                         blocList.add(new Mur(i, j));
@@ -118,13 +118,13 @@ public class Niveau {
      */
     public void deplacerMineur(char direction) {
         Vec2d positionCible = null;
-        if( direction == 'g' ) {
+        if( direction == 'h' ) {
             positionCible = new Vec2d(mineur.getPosition().x - 1, mineur.getPosition().y);
-        } else if( direction == 'd' ) {
-            positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y);
-        } else if( direction == 'h' ) {
-            positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y-1);
         } else if( direction == 'b' ) {
+            positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y);
+        } else if( direction == 'g' ) {
+            positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y-1);
+        } else if( direction == 'd' ) {
             positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y+1);
         }
         if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == CLAY) {

@@ -31,10 +31,6 @@ public class ViewGame {
     }
 
     public void initPlateau(){
-        //Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds(); // Récupération de la taille de l'écran
-/*
-        int hauteurPlateau = Niveau.currentLvl.length;
-        int largeurPlateau = Niveau.currentLvl[0].length;*/
         int tailleImages = 64;
 
         List<Bloc> blocs = partie.getNiveau().getBlocList();
@@ -45,8 +41,8 @@ public class ViewGame {
         for (int i = 0; i < Niveau.currentLvl.length; i++) {
             for (int j = 0; j < Niveau.currentLvl[i].length; j++) {
                 images.add(new ImageView(Path.background));
-                images.get(images.size() - 1).setTranslateX(i * tailleImages);
-                images.get(images.size() - 1).setTranslateY(j * tailleImages);
+                images.get(images.size() - 1).setTranslateY(i * tailleImages);
+                images.get(images.size() - 1).setTranslateX(j * tailleImages);
             }
         }
 
@@ -63,8 +59,8 @@ public class ViewGame {
                 images.add(new ImageView(Path.stone));
             // Modfification des coordonnées de l'image en fonction des coordonnées de l'objet
             // On multiplie par la taille des images pour ne pas qu'elles se chevauches
-            images.get(images.size() - 1).setTranslateX(bloc.getPosition().x * tailleImages);
-            images.get(images.size() - 1).setTranslateY(bloc.getPosition().y * tailleImages);
+            images.get(images.size() - 1).setTranslateY(bloc.getPosition().x * tailleImages);
+            images.get(images.size() - 1).setTranslateX(bloc.getPosition().y * tailleImages);
         }
 
         // Les monstres
@@ -75,82 +71,14 @@ public class ViewGame {
             else if(monstre instanceof MonstreRouge)
                 images.add(new ImageView(Path.redMonster));
 
-            images.get(images.size() - 1).setTranslateX(monstre.getPosition().x * tailleImages);
-            images.get(images.size() - 1).setTranslateY(monstre.getPosition().y * tailleImages);
+            images.get(images.size() - 1).setTranslateY(monstre.getPosition().x * tailleImages);
+            images.get(images.size() - 1).setTranslateX(monstre.getPosition().y * tailleImages);
         }
 
         // Le mineur
         images.add(new ImageView(Path.minerDown));
-        images.get(images.size() - 1).setTranslateX(partie.getNiveau().getMineur().getPosition().x * tailleImages);
-        images.get(images.size() - 1).setTranslateY(partie.getNiveau().getMineur().getPosition().y * tailleImages);
-
-
-        /*
-        root.setScaleX(2);
-        root.setScaleY(2);*/
-
-        /*images = new ArrayList<>();
-
-        for (int i = 0; i < hauteurPlateau; i++) {
-            for (int j = 0; j < largeurPlateau; j++) {
-                ImageView vide = new ImageView(Path.background);
-                vide.setTranslateX(i*tailleImages);
-                vide.setTranslateY(j*tailleImages);
-                images.add(vide);
-                switch (Niveau.currentLvl[i][j])
-                {
-                    case 1:
-                        // Création de l'image
-                        ImageView mur = new ImageView(Path.wall);
-                        // Définition de l'endroit où dessiner l'image
-                        mur.setTranslateX(i*tailleImages);
-                        mur.setTranslateY(j*tailleImages);
-                        // Ajoute de l'image dans la liste contenant les images
-                        images.add(mur);
-
-                        Mur murObj = new Mur(i*tailleImages,j*tailleImages);
-
-
-                        break;
-                    case 2:
-                        ImageView terre = new ImageView(Path.clay);
-                        terre.setTranslateX(i*tailleImages);
-                        terre.setTranslateY(j*tailleImages);
-                        images.add(terre);
-                        break;
-                    case 3:
-                        ImageView diamond = new ImageView(Path.diamond);
-                        diamond.setTranslateX(i*tailleImages);
-                        diamond.setTranslateY(j*tailleImages);
-                        images.add(diamond);
-                        break;
-                    case 4:
-                        ImageView pierre = new ImageView(Path.stone);
-                        pierre.setTranslateX(i*tailleImages);
-                        pierre.setTranslateY(j*tailleImages);
-                        images.add(pierre);
-                        break;
-                    case 5:
-                        ImageView monstreBleu = new ImageView(Path.blueMonster);
-                        monstreBleu.setTranslateX(i*tailleImages);
-                        monstreBleu.setTranslateY(j*tailleImages);
-                        images.add(monstreBleu);
-                        break;
-                    case 6:
-                        ImageView monstreRouge = new ImageView(Path.redMonster);
-                        monstreRouge.setTranslateX(i*tailleImages);
-                        monstreRouge.setTranslateY(j*tailleImages);
-                        images.add(monstreRouge);
-                        break;
-                    case 7:
-                        ImageView mineur = new ImageView(Path.minerDown);
-                        mineur.setTranslateX(i*tailleImages);
-                        mineur.setTranslateY(j*tailleImages);
-                        images.add(mineur);
-                        break;
-                }
-            }
-        }*/
+        images.get(images.size() - 1).setTranslateY(partie.getNiveau().getMineur().getPosition().x * tailleImages);
+        images.get(images.size() - 1).setTranslateX(partie.getNiveau().getMineur().getPosition().y * tailleImages);
     }
 
     public void vueJeuComplet() {

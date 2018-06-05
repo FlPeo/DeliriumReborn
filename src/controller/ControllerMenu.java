@@ -15,13 +15,9 @@ public class ControllerMenu implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent event) {
-        if(event.getSource().equals(launcher.getMenu().getNouvellePartie())
+        if(event.getSource().equals(launcher.getMenu().getNouvellePartieJoueur())
                 && event.getEventType().equals(MouseEvent.MOUSE_CLICKED) ) {
-            // TODO : Pop up avec choix IA ou pas
-            launcher.demarrerPartie(1,2);
-        } else if(event.getSource().equals(launcher.getMenu().getChargerNiveau())
-                && event.getEventType().equals(MouseEvent.MOUSE_CLICKED)){
-            // Pop up ou formulaire pour choisir le niveau
+            launcher.demarrerPartie(Integer.parseInt(launcher.getMenu().getChoixNiveau().getSelectedToggle().getUserData().toString()),2);
         } else if(event.getSource().equals(launcher.getMenu().getQuitter())
                 && event.getEventType().equals(MouseEvent.MOUSE_CLICKED)){
             launcher.getPrimaryStage().close();

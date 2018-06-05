@@ -30,7 +30,7 @@ public class ViewHandler extends Application {
 
         menuGame = new MenuGame();
 
-        menu = new ViewMenu(root);
+        menu = new ViewMenu(root, menuGame);
         loadGame = new ViewLoadGame();
 
         controller = new ControllerMenu(this);
