@@ -10,10 +10,11 @@ public class Niveau {
     public static final byte[][][] niveaux = {
             LevelBuilder.niveau1,
             LevelBuilder.niveau2,
-            LevelBuilder.niveau3,
-            LevelBuilder.niveau4
+            /*LevelBuilder.niveau3,
+            LevelBuilder.niveau4*/
     };
     public static byte[][] currentLvl;
+    public int numLevel;
     public final int VIDE = 0;
     public final int MUR = 1;
     public final int CLAY = 2;
@@ -36,6 +37,7 @@ public class Niveau {
      * @param niveau (niveau à initialiser (/!\ on commence à 0)
      */
     public Niveau(int niveau) {
+        numLevel = niveau;
         nbDimandToWin = 2;
         victoire = false;
         currentLvl = new byte[niveaux[niveau].length][niveaux[niveau][0].length];
@@ -140,8 +142,6 @@ public class Niveau {
             }
         } else if (positionCible!= null && currentLvl[(int)positionCible.x][(int)positionCible.y] == DIAMAND) {
             currentLvl[(int)positionCible.x][(int)positionCible.y] = 0;
-            nbDimandToWin--;
-            System.out.println(nbDimandToWin);
             for( int i = 0; i < blocList.size(); i++ ) {
                 if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y){
                     blocList.remove(blocList.get(i));

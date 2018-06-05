@@ -3,6 +3,9 @@ package controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import model.JoueurHuman;
+import model.LevelBuilder;
+import model.Niveau;
 import model.Partie;
 import timeline.JeuTimeline;
 import view.ViewHandler;
@@ -93,6 +96,9 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     public void finPartieVictoire()
     {
         launcher.getGame().affichageVictoire();
-        launcher.getMenu().vueMenuComplete();
+        if(partie.getNiveau().numLevel+1 < Niveau.niveaux.length)
+            launcher.demarrerPartie(partie.getNiveau().numLevel+1,partie.getJoueur() instanceof JoueurHuman ? partie.JOUEUR_HUMAN:partie.JOUEUR_IA);
+        else
+            launcher.getMenu().vueMenuComplete();
     }
 }

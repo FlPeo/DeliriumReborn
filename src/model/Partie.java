@@ -17,4 +17,5 @@ public class Partie {
     }
 
     public Niveau getNiveau() { return niveau; }
+    public Joueur getJoueur() { return joueur; }
 }
