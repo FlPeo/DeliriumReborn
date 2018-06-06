@@ -14,14 +14,14 @@ public class Niveau {
             LevelBuilder.niveau4*/
     };
     public static byte[][] currentLvl;
-    public final int VIDE = 0;
-    public final int MUR = 1;
-    public final int CLAY = 2;
-    public final int DIAMAND = 3;
-    public final int PIERRE = 4;
-    public final int MONSTRE_BLEU = 5;
-    public final int MONSTRE_ROUGE = 6;
-    public final int MINEUR = 7;
+    public static final int VIDE = 0;
+    public static final int MUR = 1;
+    public static final int CLAY = 2;
+    public static final int DIAMAND = 3;
+    public static final int PIERRE = 4;
+    public static final int MONSTRE_BLEU = 5;
+    public static final int MONSTRE_ROUGE = 6;
+    public static final int MINEUR = 7;
     public int numLevel;
     private int nbDimandToWin;
     private List<Monstre> monstreList;
