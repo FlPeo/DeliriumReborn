@@ -135,15 +135,18 @@ public class Niveau {
         } else if (direction == 'd') {
             positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y + 1);
         }
-        if (positionCible != null && currentLvl[(int) positionCible.x][(int) positionCible.y] == CLAY) {
-            currentLvl[(int) positionCible.x][(int) positionCible.y] = 0;
+
+        if(positionCible==null) return;
+
+        if (currentLvl[(int) positionCible.x][(int) positionCible.y] == CLAY) {
+            currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
             for (int i = 0; i < blocList.size(); i++) {
                 if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
                     blocList.remove(blocList.get(i));
                 }
             }
-        } else if (positionCible != null && currentLvl[(int) positionCible.x][(int) positionCible.y] == DIAMAND) {
-            currentLvl[(int) positionCible.x][(int) positionCible.y] = 0;
+        } else if (currentLvl[(int) positionCible.x][(int) positionCible.y] == DIAMAND) {
+            currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
             for (int i = 0; i < blocList.size(); i++) {
                 if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
                     blocList.remove(blocList.get(i));
@@ -153,27 +156,25 @@ public class Niveau {
             if (victory()) {
                 victoire = true;
             }
-        } else if (positionCible != null && currentLvl[(int) positionCible.x][(int) positionCible.y] == MUR) {
+        } else if (currentLvl[(int) positionCible.x][(int) positionCible.y] == MUR) {
             return;
-        } else if (positionCible != null && currentLvl[(int) positionCible.x][(int) positionCible.y] == PIERRE) {
+        } else if (currentLvl[(int) positionCible.x][(int) positionCible.y] == PIERRE) {
             Vec2d caseDerrierePierre = new Vec2d(
                     positionCible.x + (positionCible.x - mineur.getPosition().x),
                     positionCible.y + (positionCible.y - mineur.getPosition().y));
-            if (currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] == VIDE) {
-                currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] = PIERRE;
-                currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
-                for (int i = 0; i < blocList.size(); i++) {
-                    if (blocList.get(i).position.x == positionCible.x
-                            && blocList.get(i).position.y == positionCible.y) {
-                        blocList.get(i).position.x = caseDerrierePierre.x;
-                        blocList.get(i).position.y = caseDerrierePierre.y;
-                    }
-                }
-            } else {
+            if (currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] != VIDE || direction == 'h')
                 return;
+            for (Bloc pierre : blocList) {
+                if (pierre.position.x == positionCible.x && pierre.position.y == positionCible.y) {
+                    pierre.position.x = caseDerrierePierre.x;
+                    pierre.position.y = caseDerrierePierre.y;
+                }
             }
+            currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
+            currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] = PIERRE;
         }
         mineur.deplacement(positionCible);
+        currentLvl[(int) mineur.position.x][(int) mineur.position.y] = VIDE;
         if (contactMonstre()) {
             defaite = true;
         }
@@ -223,5 +224,36 @@ public class Niveau {
 
     public boolean isDefaite() {
         return defaite;
+    }
+
+    public void appliquerGravite() {
+        for (Bloc bloc : blocList) if(bloc instanceof Fallable && bloc.position.y<currentLvl[0].length-1) {
+            int x = (int) bloc.position.x,
+                    y = (int) bloc.position.y;
+
+            if(((Fallable) bloc).isFalling() && mineur.position.x==x+1 && mineur.position.y==y)
+            {
+                defaite = true;
+                return;
+            }
+
+            if(currentLvl[x+1][y] == VIDE && (mineur.position.x!=x+1 || mineur.position.y!=y)) {
+                currentLvl[x+1][y] = currentLvl[x][y];
+                currentLvl[x][y] = VIDE;
+                ((Fallable) bloc).fallTo(x+1,y);
+            } else if(currentLvl[x+1][y] == DIAMAND || currentLvl[x+1][y] == PIERRE) {
+                if(y>0 && currentLvl[x+1][y-1] == VIDE && currentLvl[x][y-1] == VIDE &&
+                        (mineur.position.x!=x+1 || mineur.position.y!=y-1)) {
+                    ((Fallable) bloc).fallTo(x+1,y-1);
+                    currentLvl[x+1][y-1] = currentLvl[x][y];
+                    currentLvl[x][y] = VIDE;
+                } else if(y<currentLvl[0].length-1 && currentLvl[x+1][y+1] == VIDE && currentLvl[x][y+1] == VIDE &&
+                        (mineur.position.x!=x+1 || mineur.position.y!=y+1)) {
+                    ((Fallable) bloc).fallTo(x+1,y+1);
+                    currentLvl[x+1][y+1] = currentLvl[x][y];
+                    currentLvl[x][y] = VIDE;
+                }
+            } else ((Fallable) bloc).stopFalling();
+        }
     }
 }

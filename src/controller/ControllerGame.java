@@ -36,7 +36,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent keyEvent) {
         if( keyEvent.getEventType().equals(KeyEvent.KEY_PRESSED) ) {
-            if( upPressed = keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.Z ) {
+            if( keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.Z ) {
                 upPressed = true;
                 rightPressed = false;
                 downPressed = false;
@@ -88,6 +88,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         } else if( downPressed ) {
             partie.getNiveau().deplacerMineur('b');
         }
+        partie.getNiveau().appliquerGravite();
         upPressed = downPressed = leftPressed = rightPressed = false;
         launcher.getGame().initPlateau();
         launcher.getGame().vueJeuComplet();
