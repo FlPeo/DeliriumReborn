@@ -22,11 +22,13 @@ public class Niveau {
     public static final int MONSTRE_BLEU = 5;
     public static final int MONSTRE_ROUGE = 6;
     public static final int MINEUR = 7;
+    public static final int PORTE = 8;
     public int numLevel;
     private int nbDimandToWin;
     private List<Monstre> monstreList;
     private List<Bloc> blocList;
     private Mineur mineur;
+    private Porte porte;
     private boolean victoire, defaite;
 
     /**
@@ -60,6 +62,9 @@ public class Niveau {
                         break;
                     case PIERRE:
                         blocList.add(new Pierre(i, j));
+                        break;
+                    case PORTE:
+                        blocList.add(porte = new Porte(i, j));
                         break;
                     case MINEUR:
                         mineur = new Mineur(i, j);
@@ -138,40 +143,46 @@ public class Niveau {
 
         if(positionCible==null) return;
 
-        if (currentLvl[(int) positionCible.x][(int) positionCible.y] == CLAY) {
-            currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
-            for (int i = 0; i < blocList.size(); i++) {
-                if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
-                    blocList.remove(blocList.get(i));
+        switch (currentLvl[(int) positionCible.x][(int) positionCible.y]) {
+            case CLAY:
+                currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
+                for (int i = 0; i < blocList.size(); i++) {
+                    if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
+                        blocList.remove(blocList.get(i));
+                    }
                 }
-            }
-        } else if (currentLvl[(int) positionCible.x][(int) positionCible.y] == DIAMAND) {
-            currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
-            for (int i = 0; i < blocList.size(); i++) {
-                if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
-                    blocList.remove(blocList.get(i));
+                break;
+            case DIAMAND:
+                currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
+                for (int i = 0; i < blocList.size(); i++) {
+                    if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
+                        blocList.remove(blocList.get(i));
+                    }
                 }
-            }
-            nbDimandToWin--;
-            if (victory()) {
-                victoire = true;
-            }
-        } else if (currentLvl[(int) positionCible.x][(int) positionCible.y] == MUR) {
-            return;
-        } else if (currentLvl[(int) positionCible.x][(int) positionCible.y] == PIERRE) {
-            Vec2d caseDerrierePierre = new Vec2d(
-                    positionCible.x + (positionCible.x - mineur.getPosition().x),
-                    positionCible.y + (positionCible.y - mineur.getPosition().y));
-            if (currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] != VIDE || direction == 'h')
+                nbDimandToWin--;
+                if (nbDimandToWin <= 0) porte.unLock();
+                break;
+            case MUR:
                 return;
-            for (Bloc pierre : blocList) {
-                if (pierre.position.x == positionCible.x && pierre.position.y == positionCible.y) {
-                    pierre.position.x = caseDerrierePierre.x;
-                    pierre.position.y = caseDerrierePierre.y;
+            case PIERRE:
+                Vec2d caseDerrierePierre = new Vec2d(
+                        positionCible.x + (positionCible.x - mineur.getPosition().x),
+                        positionCible.y + (positionCible.y - mineur.getPosition().y));
+                if (currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] != VIDE || direction == 'h')
+                    return;
+                for (Bloc pierre : blocList) {
+                    if (pierre.position.x == positionCible.x && pierre.position.y == positionCible.y) {
+                        pierre.position.x = caseDerrierePierre.x;
+                        pierre.position.y = caseDerrierePierre.y;
+                    }
                 }
-            }
-            currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
-            currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] = PIERRE;
+                currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
+                currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] = PIERRE;
+                break;
+            case PORTE:
+                if(porte.isLocked()) return;
+                victoire = true;
+                break;
         }
         mineur.deplacement(positionCible);
         currentLvl[(int) mineur.position.x][(int) mineur.position.y] = VIDE;

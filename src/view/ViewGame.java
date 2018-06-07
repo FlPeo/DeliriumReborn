@@ -58,6 +58,8 @@ public class ViewGame {
                 images.add(new ImageView(Path.wall));
             else if (bloc instanceof Pierre)
                 images.add(new ImageView(Path.stone));
+            else if (bloc instanceof Porte)
+                images.add(new ImageView(((Porte) bloc).isLocked()?Path.lockedDoor:Path.unlockedDoor));
             // Modfification des coordonnées de l'image en fonction des coordonnées de l'objet
             // On multiplie par la taille des images pour ne pas qu'elles se chevauches
             images.get(images.size() - 1).setTranslateY(bloc.getPosition().x * tailleImages);

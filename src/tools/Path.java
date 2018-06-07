@@ -16,6 +16,8 @@ public class Path {
     public static final String redMonsterAttacking = "asset/images/red_monster_attacking.png";
     public static final String stone = "asset/images/stone.png";
     public static final String wall = "asset/images/wall.png";
+    public static final String lockedDoor = "asset/images/locked_door.png";
+    public static final String unlockedDoor = "asset/images/unlocked_door.png";
 
     public static final String fontHeadCase = "../asset/fonts/HeadCase.ttf";
     public static final String fontRemachineScript = "../asset/fonts/RemachineScript.ttf";
