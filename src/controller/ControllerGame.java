@@ -4,7 +4,6 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import model.JoueurHuman;
-import model.LevelBuilder;
 import model.Niveau;
 import model.Partie;
 import timeline.JeuTimeline;
@@ -90,8 +89,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         }
         partie.getNiveau().appliquerGravite();
         upPressed = downPressed = leftPressed = rightPressed = false;
-        launcher.getGame().initPlateau();
-        launcher.getGame().vueJeuComplet();
+        launcher.getGame().rafraichirVue();
     }
 
     private void finPartieDefaite() {

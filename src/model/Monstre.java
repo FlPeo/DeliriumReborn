@@ -1,5 +1,7 @@
 package model;
 
-public abstract class Monstre extends Personnage {
+import view.MonstreView;
 
+public abstract class Monstre extends Personnage {
+    public MonstreView vue;
 }

@@ -1,6 +1,8 @@
 package model;
 
 import com.sun.javafx.geom.Vec2d;
+import javafx.scene.Group;
+import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,9 +144,11 @@ public class Niveau {
         }
 
         if(positionCible==null) return;
+        mineur.vue.changerDirection(direction);
 
         switch (currentLvl[(int) positionCible.x][(int) positionCible.y]) {
             case CLAY:
+                removeBlocAt((int) positionCible.x, (int) positionCible.y);
                 currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
                 for (int i = 0; i < blocList.size(); i++) {
                     if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
@@ -153,6 +157,7 @@ public class Niveau {
                 }
                 break;
             case DIAMAND:
+                removeBlocAt((int) positionCible.x, (int) positionCible.y);
                 currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
                 for (int i = 0; i < blocList.size(); i++) {
                     if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
@@ -207,15 +212,6 @@ public class Niveau {
         return false;
     }
 
-    /**
-     * Retourne vrai si le nombre de diamand a obtenir pour gagner tombe à zéro
-     *
-     * @return
-     */
-    private boolean victory() {
-        return nbDimandToWin == 0;
-    }
-
     // GETTERS
     public List<Monstre> getMonstreList() {
         return monstreList;
@@ -265,6 +261,14 @@ public class Niveau {
                     currentLvl[x][y] = VIDE;
                 }
             } else ((Fallable) bloc).stopFalling();
+        }
+    }
+
+
+    public void removeBlocAt(int x, int y) {
+        for (Bloc bloc : blocList) if(bloc.position.x==x && bloc.position.y==y) {
+            Group root = (Group) bloc.getView().getParent();
+            root.getChildren().remove(bloc.getView());
         }
     }
 }

@@ -1,11 +1,9 @@
 package view;
 
 import controller.ControllerGame;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
-import javafx.stage.Screen;
 import model.*;
 import tools.Path;
 
@@ -19,6 +17,7 @@ public class ViewGame {
     private Partie partie;
 
     private List<ImageView> images;
+    private final int tailleImages = 64;
 
     /**
      * Constructeur de la vue du jeu
@@ -28,14 +27,11 @@ public class ViewGame {
         this.root = root;
         this.partie = partie;
         initPlateau();
-        vueJeuComplet();
+        rafraichirVue();
     }
 
-    public void initPlateau(){
-        int tailleImages = 64;
-
-        List<Bloc> blocs = partie.getNiveau().getBlocList();
-        List<Monstre> monstres = partie.getNiveau().getMonstreList();
+    public void initPlateau() {
+        root.getChildren().clear();
         images = new ArrayList<>();
 
         // On met le fond partout
@@ -48,45 +44,35 @@ public class ViewGame {
         }
 
         // Les blocs de matière
-        for (Bloc bloc : blocs) {
-            // Ajout de l'image selon le type de bloc
-            if (bloc instanceof Clay)
-                images.add(new ImageView(Path.clay));
-            else if (bloc instanceof Diamand)
-                images.add(new ImageView(Path.diamond));
-            else if (bloc instanceof Mur)
-                images.add(new ImageView(Path.wall));
-            else if (bloc instanceof Pierre)
-                images.add(new ImageView(Path.stone));
-            else if (bloc instanceof Porte)
-                images.add(new ImageView(((Porte) bloc).isLocked()?Path.lockedDoor:Path.unlockedDoor));
-            // Modfification des coordonnées de l'image en fonction des coordonnées de l'objet
-            // On multiplie par la taille des images pour ne pas qu'elles se chevauches
-            images.get(images.size() - 1).setTranslateY(bloc.getPosition().x * tailleImages);
-            images.get(images.size() - 1).setTranslateX(bloc.getPosition().y * tailleImages);
-        }
+        for (Bloc bloc : partie.getNiveau().getBlocList())
+                images.add(bloc.getView());
+
 
         // Les monstres
-        for(Monstre monstre : monstres)
-        {
-            if(monstre instanceof MonstreBleu)
-                images.add(new ImageView(Path.blueMonster));
-            else if(monstre instanceof MonstreRouge)
-                images.add(new ImageView(Path.redMonster));
+        for (Monstre monstre : partie.getNiveau().getMonstreList())
+            images.add(monstre.vue);
 
-            images.get(images.size() - 1).setTranslateY(monstre.getPosition().x * tailleImages);
-            images.get(images.size() - 1).setTranslateX(monstre.getPosition().y * tailleImages);
-        }
 
         // Le mineur
-        images.add(new ImageView(Path.minerDown));
-        images.get(images.size() - 1).setTranslateY(partie.getNiveau().getMineur().getPosition().x * tailleImages);
-        images.get(images.size() - 1).setTranslateX(partie.getNiveau().getMineur().getPosition().y * tailleImages);
+        images.add(partie.getNiveau().getMineur().vue);
+
+        root.getChildren().addAll(images);
     }
 
-    public void vueJeuComplet() {
-        root.getChildren().clear();
-        root.getChildren().addAll(images);
+    public void rafraichirVue() {
+
+        // Modfification des coordonnées de l'image en fonction des coordonnées de l'objet
+        // On multiplie par la taille des images pour ne pas qu'elles se chevauches
+        for (Bloc bloc : partie.getNiveau().getBlocList()) {
+            bloc.getView().setTranslateY(bloc.getPosition().x * tailleImages);
+            bloc.getView().setTranslateX(bloc.getPosition().y * tailleImages);
+        }
+        for (Monstre monstre : partie.getNiveau().getMonstreList()) {
+            monstre.vue.setTranslateY(monstre.getPosition().x * tailleImages);
+            monstre.vue.setTranslateX(monstre.getPosition().y * tailleImages);
+        }
+        partie.getNiveau().getMineur().vue.setTranslateY(partie.getNiveau().getMineur().getPosition().x * tailleImages);
+        partie.getNiveau().getMineur().vue.setTranslateX(partie.getNiveau().getMineur().getPosition().y * tailleImages);
     }
 
     /**
