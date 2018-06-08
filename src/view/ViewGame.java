@@ -1,9 +1,13 @@
 package view;
 
+import com.sun.javafx.geom.Vec2d;
 import controller.ControllerGame;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import model.*;
 import tools.Path;
 
@@ -16,8 +20,8 @@ public class ViewGame {
     private Group root;
     private Partie partie;
 
-    private List<ImageView> images;
     private final int tailleImages = 64;
+    private StackPane plateau;
 
     /**
      * Constructeur de la vue du jeu
@@ -32,7 +36,9 @@ public class ViewGame {
 
     public void initPlateau() {
         root.getChildren().clear();
-        images = new ArrayList<>();
+        plateau = new StackPane();
+
+        ArrayList<ImageView> images = new ArrayList<>();
 
         // On met le fond partout
         for (int i = 0; i < Niveau.currentLvl.length; i++) {
@@ -56,7 +62,9 @@ public class ViewGame {
         // Le mineur
         images.add(partie.getNiveau().getMineur().vue);
 
-        root.getChildren().addAll(images);
+        plateau.getChildren().addAll(images);
+        root.getChildren().clear();
+        root.getChildren().add(plateau);
     }
 
     public void rafraichirVue() {
@@ -73,6 +81,30 @@ public class ViewGame {
         }
         partie.getNiveau().getMineur().vue.setTranslateY(partie.getNiveau().getMineur().getPosition().x * tailleImages);
         partie.getNiveau().getMineur().vue.setTranslateX(partie.getNiveau().getMineur().getPosition().y * tailleImages);
+
+        placerLaCamera();
+    }
+
+    private void placerLaCamera() {
+        Vec2d windowSize = new Vec2d(root.getScene().getWidth(), root.getScene().getHeight()),
+        plateauSize = new Vec2d(Niveau.currentLvl[0].length * tailleImages, Niveau.currentLvl.length * tailleImages);
+
+        double finalTranslateX = -partie.getNiveau().getMineur().getPosition().y * tailleImages + windowSize.x/2,
+                finalTranslateY = -partie.getNiveau().getMineur().getPosition().x * tailleImages + windowSize.y/2;
+
+        System.out.println(finalTranslateX);
+        System.out.println(finalTranslateY);
+
+        if(windowSize.x < plateauSize.x) {
+            // TODO restabiliser finalTranslateX si trop à gauche/droite
+        }
+
+        if(windowSize.y < plateauSize.y) {
+            // TODO restabiliser finalTranslateY si trop en haut en bas
+        }
+
+        plateau.setTranslateX(finalTranslateX);
+        plateau.setTranslateY(finalTranslateY);
     }
 
     /**

@@ -3,9 +3,11 @@ package model;
 import com.sun.javafx.geom.Vec2d;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Niveau {
 
@@ -267,8 +269,8 @@ public class Niveau {
 
     public void removeBlocAt(int x, int y) {
         for (Bloc bloc : blocList) if(bloc.position.x==x && bloc.position.y==y) {
-            Group root = (Group) bloc.getView().getParent();
-            root.getChildren().remove(bloc.getView());
+            StackPane st = (StackPane) bloc.getView().getParent();
+            st.getChildren().remove(bloc.getView());
         }
     }
 }
