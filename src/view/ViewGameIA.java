@@ -1,5 +1,6 @@
 package view;
 
+import com.sun.javafx.geom.Vec2d;
 import ia.Etat;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -33,12 +34,15 @@ public class ViewGameIA {
         imagePorte = new Image(Path.lockedDoor);
         canvas = new Canvas();
         root.getChildren().add(canvas);
-
-        canvas.setHeight(root.getScene().getHeight());
-        canvas.setWidth(root.getScene().getWidth());
     }
 
     public void updateView(byte[][] currentState){
+        int ligneMineur=0;
+        int colonneMineur=0;
+
+        canvas.setHeight(currentState.length*tailleImages);
+        canvas.setWidth(currentState[0].length*tailleImages);
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
         for(int i = 0 ; i<currentState.length; i++){
             for(int j = 0 ; j < currentState[0].length ; j++){
@@ -69,6 +73,8 @@ public class ViewGameIA {
                         gc.drawImage(imageMonstreRouge, j*tailleImages, i*tailleImages);
                         break;
                     case Etat.MINEUR:
+                        ligneMineur =i;
+                        colonneMineur=j;
                         gc.drawImage(imageVide, j*tailleImages, i*tailleImages);
                         gc.drawImage(imageMineur, j*tailleImages, i*tailleImages);
                         break;
@@ -79,5 +85,15 @@ public class ViewGameIA {
                 }
             }
         }
+        placerLaCamera(ligneMineur, colonneMineur);
+    }
+    private void placerLaCamera(int ligneMineur, int colonneMineur) {
+        Vec2d windowSize = new Vec2d(canvas.getScene().getWidth(), canvas.getScene().getHeight());
+
+        double finalTranslateX = -colonneMineur * tailleImages + windowSize.x/2,
+                finalTranslateY = -ligneMineur * tailleImages + windowSize.y/2;
+
+        canvas.setTranslateX(finalTranslateX);
+        canvas.setTranslateY(finalTranslateY);
     }
 }
