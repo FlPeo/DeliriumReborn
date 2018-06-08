@@ -11,7 +11,7 @@ public class IAComputeAction {
     //TODO : améliorer (prendre en compte le fait que le diamant objectif peut tomber)
     //Ne pas appeler cette fonction si tous les diamants ont été trouvés
     public List<Etat> defineActionMineur(Etat etatActuel) {
-        int[] coordonneesObjectif = getCoordonnesObjectif(etatActuel.getCurrentState());
+        int[] coordonneesObjectif = getCoordonnesObjectif(etatActuel);
         etatActuel.defineNewObjectif(coordonneesObjectif);
 
         List<Etat> openList = new ArrayList<>();
@@ -62,15 +62,29 @@ public class IAComputeAction {
     }
 
     //TODO : améliorer (ne pas viser le premier diamant donné)
-    private int[] getCoordonnesObjectif(byte[][] currentState){
+    private int[] getCoordonnesObjectif(Etat etatActuel){
         int[] coordonnees = new int[]{-1, -1};
+        byte[][] currentState = etatActuel.getCurrentState();
 
-        for(int ligne = 0 ; ligne < currentState.length; ligne++){
-            for(int colonne = 0 ; colonne < currentState[0].length ; colonne++){
-                if(currentState[ligne][colonne] == Niveau.DIAMAND){
-                    coordonnees[0] = ligne;
-                    coordonnees[1] = colonne;
-                    return coordonnees;
+        if(!etatActuel.finCollecteDiamants()) {
+            for (int ligne = 0; ligne < currentState.length; ligne++) {
+                for (int colonne = 0; colonne < currentState[0].length; colonne++) {
+                    if (currentState[ligne][colonne] == Niveau.DIAMAND) {
+                        coordonnees[0] = ligne;
+                        coordonnees[1] = colonne;
+                        return coordonnees;
+                    }
+                }
+            }
+        }
+        else{
+            for (int ligne = 0; ligne < currentState.length; ligne++) {
+                for (int colonne = 0; colonne < currentState[0].length; colonne++) {
+                    if (currentState[ligne][colonne] == Niveau.PORTE) {
+                        coordonnees[0] = ligne;
+                        coordonnees[1] = colonne;
+                        return coordonnees;
+                    }
                 }
             }
         }

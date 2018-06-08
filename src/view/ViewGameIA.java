@@ -5,6 +5,7 @@ import ia.Etat;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import tools.Path;
 
@@ -18,7 +19,8 @@ public class ViewGameIA {
     private Image imageMonstreBleu;
     private Image imageMonstreRouge;
     private Image imageMineur;
-    private Image imagePorte;
+    private Image imagePorteFermee;
+    private Image imagePorteOuverte;
     private static final int tailleImages = 64;
 
     public ViewGameIA(Group root){
@@ -31,12 +33,13 @@ public class ViewGameIA {
         imageMonstreBleu = new Image(Path.blueMonster);
         imageMonstreRouge = new Image(Path.redMonster);
         imageMineur = new Image(Path.minerDown);
-        imagePorte = new Image(Path.lockedDoor);
+        imagePorteFermee = new Image(Path.lockedDoor);
+        imagePorteOuverte = new Image(Path.unlockedDoor);
         canvas = new Canvas();
         root.getChildren().add(canvas);
     }
 
-    public void updateView(byte[][] currentState){
+    public void updateView(byte[][] currentState, boolean finCollecteDiamants){
         int ligneMineur=0;
         int colonneMineur=0;
 
@@ -79,8 +82,14 @@ public class ViewGameIA {
                         gc.drawImage(imageMineur, j*tailleImages, i*tailleImages);
                         break;
                     case Etat.PORTE:
-                        gc.drawImage(imageVide, j*tailleImages, i*tailleImages);
-                        gc.drawImage(imagePorte, j*tailleImages, i*tailleImages);
+                        if(!finCollecteDiamants) {
+                            gc.drawImage(imageVide, j * tailleImages, i * tailleImages);
+                            gc.drawImage(imagePorteFermee, j * tailleImages, i * tailleImages);
+                        }
+                        else {
+                            gc.drawImage(imageVide, j * tailleImages, i * tailleImages);
+                            gc.drawImage(imagePorteOuverte, j * tailleImages, i * tailleImages);
+                        }
                         break;
                 }
             }
@@ -95,5 +104,14 @@ public class ViewGameIA {
 
         canvas.setTranslateX(finalTranslateX);
         canvas.setTranslateY(finalTranslateY);
+    }
+
+    public void affichageVictoire()
+    {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fin");
+        alert.setHeaderText("Victoire !");
+        alert.setContentText("L'IA a gagné !");
+        alert.showAndWait();
     }
 }

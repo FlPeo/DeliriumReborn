@@ -66,8 +66,8 @@ public class ViewHandler extends Application {
     {
         NiveauIA niveauIA = new NiveauIA(niveau);
         ViewGameIA viewGameIA = new ViewGameIA(root);
-        viewGameIA.updateView(niveauIA.getCurrentState());
-        IATimeline timeline = new IATimeline(niveauIA, viewGameIA);
+        viewGameIA.updateView(niveauIA.getCurrentState(), niveauIA.finCollecteDiamants());
+        IATimeline timeline = new IATimeline(this, niveauIA, viewGameIA);
         timeline.start();
     }
 

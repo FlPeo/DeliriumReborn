@@ -58,14 +58,9 @@ public class NiveauIA {
     }
 
 
-
-    /**
-     * Retourne vrai si le nombre de diamand a obtenir pour gagner tombe à zéro
-     *
-     * @return
-     */
-    public boolean victory() {
-        return etatActuel.getNbDiamantsEncoreAAttraper() == 0;
+    public boolean finCollecteDiamants() {
+        return etatActuel.finCollecteDiamants();
     }
+    public boolean victory(){ return etatActuel.victory();}
     public byte[][] getCurrentState(){return etatActuel.getCurrentState();}
 }

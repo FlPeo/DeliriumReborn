@@ -93,7 +93,7 @@ public class Etat implements Comparable<Etat>{
 
         byte newNbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
         if(newState[ligneMineur-1][colonneMineur] == DIAMAND) newNbDiamantsEncoreAAttraper--;
-        newState[ligneMineur-1][colonneMineur] = MINEUR;
+        if(newState[ligneMineur-1][colonneMineur] != PORTE) newState[ligneMineur-1][colonneMineur] = MINEUR;
         newState[ligneMineur][colonneMineur] = VIDE;
         int newLigneMineur = ligneMineur-1;
 
@@ -134,7 +134,7 @@ public class Etat implements Comparable<Etat>{
 
         byte newNbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
         if(newState[ligneMineur][colonneMineur-1] == DIAMAND) newNbDiamantsEncoreAAttraper--;
-        newState[ligneMineur][colonneMineur-1] = MINEUR;
+        if(newState[ligneMineur][colonneMineur-1] != PORTE) newState[ligneMineur][colonneMineur-1] = MINEUR;
         newState[ligneMineur][colonneMineur] = VIDE;
         int newColonneMineur = colonneMineur-1;
 
@@ -175,7 +175,7 @@ public class Etat implements Comparable<Etat>{
 
         byte newNbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
         if(newState[ligneMineur][colonneMineur+1] == DIAMAND) newNbDiamantsEncoreAAttraper--;
-        newState[ligneMineur][colonneMineur+1] = MINEUR;
+        if(newState[ligneMineur][colonneMineur+1] != PORTE) newState[ligneMineur][colonneMineur+1] = MINEUR;
         newState[ligneMineur][colonneMineur] = VIDE;
         int newColonneMineur = colonneMineur+1;
 
@@ -207,7 +207,7 @@ public class Etat implements Comparable<Etat>{
 
         byte newNbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
         if(newState[ligneMineur+1][colonneMineur] == DIAMAND) newNbDiamantsEncoreAAttraper--;
-        newState[ligneMineur+1][colonneMineur] = MINEUR;
+        if(newState[ligneMineur+1][colonneMineur] != PORTE) newState[ligneMineur+1][colonneMineur] = MINEUR;
         newState[ligneMineur][colonneMineur] = VIDE;
         int newLigneMineur = ligneMineur+1;
 
@@ -342,7 +342,6 @@ public class Etat implements Comparable<Etat>{
     public byte[][] getCurrentState() {
         return currentState;
     }
-    public byte getNbDiamantsEncoreAAttraper(){return nbDiamantsEncoreAAttraper;}
 
     public void defineNewObjectif(int[] coordonneesObjectif){
         this.etatParent = null;
@@ -354,4 +353,9 @@ public class Etat implements Comparable<Etat>{
     double getGValue(){
         return g_value;
     }
+
+    public boolean finCollecteDiamants() {
+        return nbDiamantsEncoreAAttraper <= 0;
+    }
+    public boolean victory(){ return finCollecteDiamants() && currentState[ligneMineur][colonneMineur] == PORTE;}
 }
