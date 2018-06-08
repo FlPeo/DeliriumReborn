@@ -17,7 +17,6 @@ public class IATimeline extends AnimationTimer {
     }
 
     @Override
-    //TODO
     public void handle(long now) {
         if( now > lastUpdate ) {
             if( now - lastUpdate >= 500_000_000 ) {   //0.5s

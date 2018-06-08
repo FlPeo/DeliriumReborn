@@ -26,8 +26,6 @@ public class NiveauIA {
 
     /**
      * Initialise un niveau
-     * TODO pour l'instant le nombre de vie est à 3 pour tous les niveaux et le nombre de diamand à collecter = à 10
-     * TODO il faudra sans doute niveller celà
      *
      * @param niveau (niveau à initialiser (/!\ on commence à 0)
      */

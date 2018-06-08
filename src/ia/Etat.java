@@ -10,8 +10,8 @@ public class Etat implements Comparable<Etat>{
 
     public static final byte ENNEMI_VA_EN_HAUT = 0;
     public static final byte ENNEMI_VA_A_GAUCHE = 1;
-    public static final byte ENNEMI_VA_A_DROITE = 2;
-    public static final byte ENNEMI_VA_EN_BAS = 3;
+    public static final byte ENNEMI_VA_EN_BAS = 2;
+    public static final byte ENNEMI_VA_A_DROITE = 3;
 
     public static final byte VIDE = 0;
     public static final byte MUR = 1;
@@ -22,6 +22,9 @@ public class Etat implements Comparable<Etat>{
     public static final byte MONSTRE_ROUGE = 6;
     public static final byte MINEUR = 7;
     public static final byte PORTE = 8;
+
+    public static final byte MASQUE_NE_PAS_PARCOURIR = 16;
+    public static final byte MASQUE_PARCOURIR = MASQUE_NE_PAS_PARCOURIR-1;
 
 
     private byte[][] currentState;
@@ -45,20 +48,6 @@ public class Etat implements Comparable<Etat>{
         this.etatParent = null;
     }
 
-    public Etat(int ligneMineur, int colonneMineur, byte[][] currentState, byte[][] currentInfos, byte nbDiamantsEncoreAAttraper, int[] coordonneesObjectif){
-        this.currentState = currentState;
-        this.currentInfos = currentInfos;
-        this.nbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
-
-        this.ligneMineur = ligneMineur;
-        this.colonneMineur = colonneMineur;
-
-        this.etatParent = null;
-        this.coordonneesObjectif = coordonneesObjectif;
-
-        this.g_value = 0;
-        this.f_value = Math.sqrt(Math.pow(ligneMineur - coordonneesObjectif[0], 2) + Math.pow(colonneMineur - coordonneesObjectif[1], 2));
-    }
 
     private Etat(int ligneMineur, int colonneMineur, byte[][] currentState, byte[][] currentInfos, byte nbDiamantsEncoreAAttraper, int[] coordonneesObjectif, Etat parent){
         this.currentState = currentState;
@@ -113,8 +102,7 @@ public class Etat implements Comparable<Etat>{
         if((newLigneMineur != 0 && (newState[newLigneMineur-1][colonneMineur] == MONSTRE_ROUGE || newState[newLigneMineur-1][colonneMineur] == MONSTRE_BLEU)) ||
                 (newLigneMineur != newState.length-1 && (newState[newLigneMineur+1][colonneMineur] == MONSTRE_ROUGE || newState[newLigneMineur+1][colonneMineur] == MONSTRE_BLEU)) ||
                 (colonneMineur != 0 && (newState[newLigneMineur][colonneMineur-1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur-1] == MONSTRE_BLEU)) ||
-                (colonneMineur != newState[0].length-1 && (newState[newLigneMineur][colonneMineur+1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur+1] == MONSTRE_BLEU)) ||
-                (newLigneMineur !=0 && (newState[newLigneMineur-1][colonneMineur] == PIERRE || newState[newLigneMineur-1][colonneMineur] == DIAMAND) && newInfos[newLigneMineur-1][colonneMineur] == OBJET_TOMBE)){
+                (colonneMineur != newState[0].length-1 && (newState[newLigneMineur][colonneMineur+1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur+1] == MONSTRE_BLEU))){
             return null;    //Si un monstre finit dans une case à coté du mineur, cet état n'est pas bon
         }
 
@@ -122,9 +110,10 @@ public class Etat implements Comparable<Etat>{
     }
 
     private Etat getSuivantGauche(){
-        //Si on ne peut pas se déplacer à droite
+        //Si on ne peut pas se déplacer à gauche
         if(colonneMineur == 0 || currentState[ligneMineur][colonneMineur-1] == MUR ||
                 (currentState[ligneMineur][colonneMineur-1] == PIERRE && currentInfos[ligneMineur][colonneMineur-1] == OBJET_TOMBE) ||
+                (ligneMineur!=0 && currentState[ligneMineur-1][colonneMineur-1] == PIERRE && currentInfos[ligneMineur-1][colonneMineur-1] == OBJET_TOMBE) ||
                 (currentState[ligneMineur][colonneMineur-1] == PIERRE && colonneMineur-1 == 0) ||
                 (currentState[ligneMineur][colonneMineur-1] == PIERRE && currentState[ligneMineur][colonneMineur-2] != VIDE) ||
                 currentState[ligneMineur][colonneMineur-1] == MONSTRE_BLEU || currentState[ligneMineur][colonneMineur-1] == MONSTRE_ROUGE) {
@@ -154,8 +143,7 @@ public class Etat implements Comparable<Etat>{
         if((ligneMineur != 0 && (newState[ligneMineur-1][newColonneMineur] == MONSTRE_ROUGE || newState[ligneMineur-1][newColonneMineur] == MONSTRE_BLEU)) ||
                 (ligneMineur != newState.length-1 && (newState[ligneMineur+1][newColonneMineur] == MONSTRE_ROUGE || newState[ligneMineur+1][newColonneMineur] == MONSTRE_BLEU)) ||
                 (newColonneMineur != 0 && (newState[ligneMineur][newColonneMineur-1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur-1] == MONSTRE_BLEU)) ||
-                (newColonneMineur != newState[0].length-1 && (newState[ligneMineur][newColonneMineur+1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur+1] == MONSTRE_BLEU)) ||
-                (ligneMineur !=0 && (newState[ligneMineur-1][newColonneMineur] == PIERRE || newState[ligneMineur-1][newColonneMineur] == DIAMAND) && newInfos[ligneMineur-1][newColonneMineur] == OBJET_TOMBE)){
+                (newColonneMineur != newState[0].length-1 && (newState[ligneMineur][newColonneMineur+1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur+1] == MONSTRE_BLEU))){
             return null;    //Si un monstre finit dans une case à coté du mineur, ou qu'on ce prend quelque chose sur la tête, cet état n'est pas bon
         }
 
@@ -166,6 +154,7 @@ public class Etat implements Comparable<Etat>{
         //Si on ne peut pas se déplacer à droite
         if(colonneMineur == currentState[0].length-1 || currentState[ligneMineur][colonneMineur+1] == MUR ||
                 (currentState[ligneMineur][colonneMineur+1] == PIERRE && currentInfos[ligneMineur][colonneMineur+1] == OBJET_TOMBE) ||
+                (ligneMineur!=0 && currentState[ligneMineur-1][colonneMineur+1] == PIERRE && currentInfos[ligneMineur-1][colonneMineur+1] == OBJET_TOMBE) ||
                 (currentState[ligneMineur][colonneMineur+1] == PIERRE && colonneMineur+1 == currentState[0].length-1) ||
                 (currentState[ligneMineur][colonneMineur+1] == PIERRE && currentState[ligneMineur][colonneMineur+2] != VIDE) ||
                 currentState[ligneMineur][colonneMineur+1] == MONSTRE_BLEU || currentState[ligneMineur][colonneMineur+1] == MONSTRE_ROUGE) {
@@ -195,8 +184,7 @@ public class Etat implements Comparable<Etat>{
         if((ligneMineur != 0 && (newState[ligneMineur-1][newColonneMineur] == MONSTRE_ROUGE || newState[ligneMineur-1][newColonneMineur] == MONSTRE_BLEU)) ||
                 (ligneMineur != newState.length-1 && (newState[ligneMineur+1][newColonneMineur] == MONSTRE_ROUGE || newState[ligneMineur+1][newColonneMineur] == MONSTRE_BLEU)) ||
                 (newColonneMineur != 0 && (newState[ligneMineur][newColonneMineur-1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur-1] == MONSTRE_BLEU)) ||
-                (newColonneMineur != newState[0].length-1 && (newState[ligneMineur][newColonneMineur+1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur+1] == MONSTRE_BLEU)) ||
-                (ligneMineur !=0 && (newState[ligneMineur-1][newColonneMineur] == PIERRE || newState[ligneMineur-1][newColonneMineur] == DIAMAND) && newInfos[ligneMineur-1][newColonneMineur] == OBJET_TOMBE)){
+                (newColonneMineur != newState[0].length-1 && (newState[ligneMineur][newColonneMineur+1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur+1] == MONSTRE_BLEU))){
             return null;    //Si un monstre finit dans une case à coté du mineur, ou qu'on ce prend quelque chose sur la tête, cet état n'est pas bon
         }
 
@@ -228,8 +216,7 @@ public class Etat implements Comparable<Etat>{
         if((newLigneMineur != 0 && (newState[newLigneMineur-1][colonneMineur] == MONSTRE_ROUGE || newState[newLigneMineur-1][colonneMineur] == MONSTRE_BLEU)) ||
                 (newLigneMineur != newState.length-1 && (newState[newLigneMineur+1][colonneMineur] == MONSTRE_ROUGE || newState[newLigneMineur+1][colonneMineur] == MONSTRE_BLEU)) ||
                 (colonneMineur != 0 && (newState[newLigneMineur][colonneMineur-1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur-1] == MONSTRE_BLEU)) ||
-                (colonneMineur != newState[0].length-1 && (newState[newLigneMineur][colonneMineur+1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur+1] == MONSTRE_BLEU)) ||
-                (newLigneMineur !=0 && (newState[newLigneMineur-1][colonneMineur] == PIERRE || newState[newLigneMineur-1][colonneMineur] == DIAMAND) && newInfos[newLigneMineur-1][colonneMineur] == OBJET_TOMBE)){
+                (colonneMineur != newState[0].length-1 && (newState[newLigneMineur][colonneMineur+1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur+1] == MONSTRE_BLEU))){
             return null;    //Si un monstre finit dans une case à coté du mineur, ou qu'on ce prend quelque chose sur la tête, cet état n'est pas bon
         }
 
@@ -238,63 +225,65 @@ public class Etat implements Comparable<Etat>{
 
     private void gestionDeplacementsNonIA(byte[][] state, byte[][] infos, int ligneMineur, int colonneMineur){
         for(int ligne=0 ; ligne<state.length ; ligne++){
-            for(int colonne = 0 ; colonne<state[0].length ; colonne++){
-                if(state[ligne][colonne] == DIAMAND || state[ligne][colonne] == PIERRE) {
-
-                    if(state[ligne+1][colonne] == VIDE){
-                        state[ligne+1][colonne] = state[ligne][colonne];
-                        infos[ligne+1][colonne] = OBJET_TOMBE;
-                        state[ligne][colonne] = VIDE;
-                    }
-                    else if(state[ligne+1][colonne] == DIAMAND || state[ligne+1][colonne] == PIERRE) {
-                        if(colonne>0 && state[ligne+1][colonne-1] == VIDE && state[ligne][colonne-1] == VIDE &&
-                                (ligneMineur!=ligne+1 || colonneMineur!=colonne-1)) {
-
-                            state[ligne+1][colonne-1] = state[ligne][colonne];
-                            state[ligne][colonne] = VIDE;
-                            infos[ligne+1][colonne-1] = OBJET_TOMBE;
-                        } else if(colonne<state[0].length-1 && state[ligne+1][colonne+1] == VIDE && state[ligne][colonne+1] == VIDE &&
-                                (ligneMineur!=ligne+1 || colonneMineur!=colonne+1)) {
-                            state[ligne+1][colonne+1] = state[ligne][colonne];
-                            state[ligne][colonne] = VIDE;
-                            infos[ligne+1][colonne+1] = OBJET_TOMBE;
-                        }
-                    }
-                    else infos[ligne][colonne] = OBJET_TOMBE_PAS;
+            for(int colonne = 0 ; colonne<state[0].length ; colonne++) {
+                if ((infos[ligne][colonne]&MASQUE_NE_PAS_PARCOURIR) == MASQUE_NE_PAS_PARCOURIR) {
+                    infos[ligne][colonne]&=MASQUE_PARCOURIR;
                 }
+                else{
+                    if (state[ligne][colonne] == DIAMAND || state[ligne][colonne] == PIERRE) {
 
-                else if(state[ligne][colonne] == MONSTRE_BLEU || state[ligne][colonne] == MONSTRE_ROUGE) {
-                    byte directionAvant = infos[ligne][colonne];
-                    byte directionGauche = getGauche(directionAvant);
-                    byte directionArriere = getGauche(directionGauche);
-                    byte directionDroite = getGauche(directionArriere);
+                        if (state[ligne + 1][colonne] == VIDE) {
+                            state[ligne + 1][colonne] = state[ligne][colonne];
+                            infos[ligne + 1][colonne] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;
+                            state[ligne][colonne] = VIDE;
+                        } else if (state[ligne + 1][colonne] == DIAMAND || state[ligne + 1][colonne] == PIERRE) {
+                            if (colonne > 0 && state[ligne + 1][colonne - 1] == VIDE && state[ligne][colonne - 1] == VIDE &&
+                                    (ligneMineur != ligne + 1 || colonneMineur != colonne - 1)) {
 
-                    int[] deplacementAvant = getDeplacementFromDirection(directionAvant);
-                    int[] deplacementGauche = getDeplacementFromDirection(directionGauche);
-                    int[] deplacementArriere = getDeplacementFromDirection(directionArriere);
-                    int[] deplacementDroite = getDeplacementFromDirection(directionDroite);
+                                state[ligne + 1][colonne - 1] = state[ligne][colonne];
+                                state[ligne][colonne] = VIDE;
+                                infos[ligne + 1][colonne - 1] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;
+                            } else if (colonne < state[0].length - 1 && state[ligne + 1][colonne + 1] == VIDE && state[ligne][colonne + 1] == VIDE &&
+                                    (ligneMineur != ligne + 1 || colonneMineur != colonne + 1)) {
+                                state[ligne + 1][colonne + 1] = state[ligne][colonne];
+                                state[ligne][colonne] = VIDE;
+                                infos[ligne + 1][colonne + 1] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;
+                            }
+                        } else infos[ligne][colonne] = OBJET_TOMBE_PAS;
+                    } else if (state[ligne][colonne] == MONSTRE_BLEU || state[ligne][colonne] == MONSTRE_ROUGE) {
+                        byte directionAvant = infos[ligne][colonne];
+                        byte directionGauche = getGauche(directionAvant);
+                        byte directionArriere = getGauche(directionGauche);
+                        byte directionDroite = getGauche(directionArriere);
 
-                    if(state[ligne+deplacementGauche[0]][colonne+deplacementGauche[1]] == VIDE){
-                        state[ligne+deplacementGauche[0]][colonne+deplacementGauche[1]] = state[ligne][colonne];
-                        state[ligne][colonne] = VIDE;
-                        infos[ligne+deplacementGauche[0]][colonne+deplacementGauche[1]] = directionGauche;
+                        int[] deplacementAvant = getDeplacementFromDirection(directionAvant);
+                        int[] deplacementGauche = getDeplacementFromDirection(directionGauche);
+                        int[] deplacementArriere = getDeplacementFromDirection(directionArriere);
+                        int[] deplacementDroite = getDeplacementFromDirection(directionDroite);
+
+                        if (state[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] == VIDE) {
+                            state[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] = state[ligne][colonne];
+                            state[ligne][colonne] = VIDE;
+                            infos[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] = directionGauche;
+                            if(deplacementGauche[0]+deplacementGauche[1]==1) infos[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] |= MASQUE_NE_PAS_PARCOURIR;  //Si en bas ou à droite
+                        } else if (state[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] == VIDE) {
+                            state[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] = state[ligne][colonne];
+                            state[ligne][colonne] = VIDE;
+                            infos[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] = directionAvant;
+                            if(deplacementAvant[0]+deplacementAvant[1]==1) infos[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] |= MASQUE_NE_PAS_PARCOURIR;  //Si en bas ou à droite
+                        } else if (state[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] == VIDE) {
+                            state[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] = state[ligne][colonne];
+                            state[ligne][colonne] = VIDE;
+                            infos[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] = directionDroite;
+                            if(deplacementDroite[0]+deplacementDroite[1]==1) infos[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] |= MASQUE_NE_PAS_PARCOURIR;  //Si en bas ou à droite
+                        } else if (state[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] == VIDE) {
+                            state[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] = state[ligne][colonne];
+                            state[ligne][colonne] = VIDE;
+                            infos[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] = directionArriere;
+                            if(deplacementArriere[0]+deplacementArriere[1]==1) infos[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] |= MASQUE_NE_PAS_PARCOURIR;  //Si en bas ou à droite
+                        }
+                        //sinon il reste immobile
                     }
-                    else if(state[ligne+deplacementAvant[0]][colonne+deplacementAvant[1]] == VIDE){
-                        state[ligne+deplacementAvant[0]][colonne+deplacementAvant[1]] = state[ligne][colonne];
-                        state[ligne][colonne] = VIDE;
-                        infos[ligne+deplacementAvant[0]][colonne+deplacementAvant[1]] = directionAvant;
-                    }
-                    else if(state[ligne+deplacementDroite[0]][colonne+deplacementDroite[1]] == VIDE){
-                        state[ligne+deplacementDroite[0]][colonne+deplacementDroite[1]] = state[ligne][colonne];
-                        state[ligne][colonne] = VIDE;
-                        infos[ligne+deplacementDroite[0]][colonne+deplacementDroite[1]] = directionDroite;
-                    }
-                    else if(state[ligne+deplacementArriere[0]][colonne+deplacementArriere[1]] == VIDE){
-                        state[ligne+deplacementArriere[0]][colonne+deplacementArriere[1]] = state[ligne][colonne];
-                        state[ligne][colonne] = VIDE;
-                        infos[ligne+deplacementArriere[0]][colonne+deplacementArriere[1]] = directionArriere;
-                    }
-                    //sinon il reste immobile
                 }
             }
 
@@ -340,6 +329,13 @@ public class Etat implements Comparable<Etat>{
         else return -1;
     }
 
+    @Override
+    public boolean equals(Object o){
+        if(!(o instanceof Etat)) return false;
+        Etat e = (Etat)o;
+        return ligneMineur == e.ligneMineur && colonneMineur == e.colonneMineur;
+    }
+
     public Etat getEtatParent() {
         return etatParent;
     }
@@ -353,5 +349,9 @@ public class Etat implements Comparable<Etat>{
         this.coordonneesObjectif = coordonneesObjectif;
         this.g_value = 0;
         this.f_value = Math.sqrt(Math.pow(ligneMineur - coordonneesObjectif[0], 2) + Math.pow(colonneMineur - coordonneesObjectif[1], 2));
+    }
+
+    double getGValue(){
+        return g_value;
     }
 }

@@ -28,7 +28,10 @@ public class IAComputeAction {
                 objectifTrouve = true;
             }
             else{
-                openList.addAll(e.getSuivants());   //TODO : vérifier si besoin ou non du if
+                for(Etat etat : e.getSuivants()) {
+                    if(etatPeutAllerDansListeOpen(etat, openList, closedList)) openList.add(etat);
+                }
+
                 Collections.sort(openList);         //Tri selon la valeur f(etat)
             }
         }
@@ -42,6 +45,20 @@ public class IAComputeAction {
         }
 
         return pathList;  //le dernier état de la liste contient le currentInfos qui sera utile au prochain appel de defineActionMineur
+    }
+
+    private boolean etatPeutAllerDansListeOpen(Etat etat, List<Etat> openList, List<Etat> closedList){
+        for(Etat etat2 : openList){
+            if(etat.equals(etat2) && etat.getGValue() >= etat2.getGValue()) return false;
+        }
+
+        for(Etat etat2 : closedList){
+            if(etat.equals(etat2) && etat.getGValue() >= etat2.getGValue() ){
+               return false;
+            }
+        }
+
+        return true;
     }
 
     //TODO : améliorer (ne pas viser le premier diamant donné)
