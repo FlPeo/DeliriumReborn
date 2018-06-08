@@ -1,6 +1,5 @@
 package ia;
 
-import model.Mineur;
 import model.Niveau;
 
 import java.util.ArrayList;
@@ -11,12 +10,13 @@ public class IAComputeAction {
 
     //TODO : améliorer (prendre en compte le fait que le diamant objectif peut tomber)
     //Ne pas appeler cette fonction si tous les diamants ont été trouvés
-    public List<Etat> defineActionMineur(Mineur mineur, byte[][] currentState, byte[][] currentInfos) {
-        int[] coordonneesObjectif = getCoordonnesObjectif(currentState);
+    public List<Etat> defineActionMineur(Etat etatActuel) {
+        int[] coordonneesObjectif = getCoordonnesObjectif(etatActuel.getCurrentState());
+        etatActuel.defineNewObjectif(coordonneesObjectif);
 
         List<Etat> openList = new ArrayList<>();
         List<Etat> closedList = new ArrayList<>();
-        openList.add(new Etat((int)mineur.getPosition().x, (int)mineur.getPosition().y, currentState, currentInfos, coordonneesObjectif));
+        openList.add(etatActuel);
         boolean objectifTrouve = false;
 
         while(!openList.isEmpty() && !objectifTrouve){
@@ -28,7 +28,7 @@ public class IAComputeAction {
                 objectifTrouve = true;
             }
             else{
-                openList.addAll(e.getSuivants());   //TODO : vérifier si besoin ouu non du if
+                openList.addAll(e.getSuivants());   //TODO : vérifier si besoin ou non du if
                 Collections.sort(openList);         //Tri selon la valeur f(etat)
             }
         }
