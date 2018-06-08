@@ -3,12 +3,12 @@ package timeline;
 import ia.IAComputeAction;
 import javafx.animation.AnimationTimer;
 
-public class IAThread extends AnimationTimer {
+public class IATimeline extends AnimationTimer {
 
     private long lastUpdate;
     private IAComputeAction ia;
 
-    public IAThread(IAComputeAction ia) {
+    public IATimeline(IAComputeAction ia) {
         this.ia = ia;
     }
 
