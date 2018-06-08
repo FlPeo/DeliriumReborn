@@ -101,7 +101,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     {
         launcher.getGame().affichageVictoire();
         if(partie.getNiveau().numLevel+1 < Niveau.niveaux.length)
-            launcher.demarrerPartie(partie.getNiveau().numLevel+1,partie.getJoueur() instanceof JoueurHuman ? partie.JOUEUR_HUMAN:partie.JOUEUR_IA);
+            launcher.demarrerPartie(partie.getNiveau().numLevel+1);
         else
             launcher.getMenu().vueMenuComplete();
     }

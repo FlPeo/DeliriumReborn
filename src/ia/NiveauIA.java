@@ -69,4 +69,5 @@ public class NiveauIA {
     public boolean victory() {
         return etatActuel.getNbDiamantsEncoreAAttraper() == 0;
     }
+    public byte[][] getCurrentState(){return etatActuel.getCurrentState();}
 }

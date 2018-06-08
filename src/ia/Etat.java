@@ -36,7 +36,7 @@ public class Etat implements Comparable<Etat>{
 
     public Etat(int ligneMineur, int colonneMineur, byte[][] currentState, byte[][] currentInfos, byte nbDiamantsEncoreAAttraper){
         this.currentState = currentState;
-        this.currentState = currentInfos;
+        this.currentInfos = currentInfos;
         this.nbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
 
         this.ligneMineur = ligneMineur;
@@ -47,7 +47,7 @@ public class Etat implements Comparable<Etat>{
 
     public Etat(int ligneMineur, int colonneMineur, byte[][] currentState, byte[][] currentInfos, byte nbDiamantsEncoreAAttraper, int[] coordonneesObjectif){
         this.currentState = currentState;
-        this.currentState = currentInfos;
+        this.currentInfos = currentInfos;
         this.nbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
 
         this.ligneMineur = ligneMineur;
@@ -62,7 +62,7 @@ public class Etat implements Comparable<Etat>{
 
     private Etat(int ligneMineur, int colonneMineur, byte[][] currentState, byte[][] currentInfos, byte nbDiamantsEncoreAAttraper, int[] coordonneesObjectif, Etat parent){
         this.currentState = currentState;
-        this.currentState = currentInfos;
+        this.currentInfos = currentInfos;
         this.nbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
 
         this.ligneMineur = ligneMineur;

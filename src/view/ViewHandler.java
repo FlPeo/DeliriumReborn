@@ -2,6 +2,7 @@ package view;
 
 import controller.ControllerGame;
 import controller.ControllerMenu;
+import ia.NiveauIA;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -9,6 +10,7 @@ import javafx.application.Application;
 import javafx.stage.StageStyle;
 import model.MenuGame;
 import model.Partie;
+import timeline.IATimeline;
 
 public class ViewHandler extends Application {
     private Stage primaryStage;
@@ -53,12 +55,20 @@ public class ViewHandler extends Application {
         menu.setEvents(cm);
     }
 
-    public void demarrerPartie(int niveau, int typeJoueur)
+    public void demarrerPartie(int niveau)
     {
-        this.partie = new Partie(niveau, typeJoueur);
+        this.partie = new Partie(niveau);
         controllerGame = new ControllerGame(this, partie);
         game = new ViewGame(root, partie);
         game.setEvents(controllerGame);
+    }
+    public void demarrerPartieIA(int niveau)
+    {
+        NiveauIA niveauIA = new NiveauIA(niveau);
+        ViewGameIA viewGameIA = new ViewGameIA(root);
+        viewGameIA.updateView(niveauIA.getCurrentState());
+        IATimeline timeline = new IATimeline(niveauIA, viewGameIA);
+        timeline.start();
     }
 
     public ViewMenu getMenu() { return menu; }
