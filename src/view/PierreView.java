@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 public class PierreView extends ImageView {
     private Timeline rotateAnim;
-    private final float speed = 0.4f;
+    private final float speed = 0.8f;
 
     public PierreView() {
         super(new Image(Path.stone));
@@ -30,6 +30,6 @@ public class PierreView extends ImageView {
 
     public void setRotating(boolean rotating) {
         if(rotating) rotateAnim.play();
-        if(rotating) rotateAnim.pause();
+        else rotateAnim.pause();
     }
 }

@@ -259,7 +259,7 @@ public class Niveau {
                     ((Fallable) bloc).fallTo(x+1,y+1);
                     currentLvl[x+1][y+1] = currentLvl[x][y];
                     currentLvl[x][y] = VIDE;
-                }
+                } else ((Fallable) bloc).stopFalling();
             } else ((Fallable) bloc).stopFalling();
         }
     }
