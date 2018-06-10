@@ -7,6 +7,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import model.Niveau;
 import tools.Path;
 
 public class ViewGameIA {
@@ -94,13 +95,31 @@ public class ViewGameIA {
                 }
             }
         }
-        placerLaCamera(ligneMineur, colonneMineur);
+        placerLaCamera(ligneMineur, colonneMineur, currentState[0].length, currentState.length);
     }
-    private void placerLaCamera(int ligneMineur, int colonneMineur) {
-        Vec2d windowSize = new Vec2d(canvas.getScene().getWidth(), canvas.getScene().getHeight());
+    private void placerLaCamera(int ligneMineur, int colonneMineur, int widthPlateau, int heightPlateau) {
+        Vec2d windowSize = new Vec2d(canvas.getScene().getWidth(), canvas.getScene().getHeight()),
+                plateauSize = new Vec2d(widthPlateau * tailleImages, heightPlateau * tailleImages);
 
-        double finalTranslateX = -colonneMineur * tailleImages + windowSize.x/2,
-                finalTranslateY = -ligneMineur * tailleImages + windowSize.y/2;
+        double finalTranslateX,
+                finalTranslateY;
+
+        if(windowSize.x < plateauSize.x) {
+            finalTranslateX =  -colonneMineur * tailleImages + windowSize.x/2;
+            if(finalTranslateX>0) finalTranslateX = 0;
+            if(finalTranslateX<windowSize.x-plateauSize.x) finalTranslateX = windowSize.x-plateauSize.x;
+        } else {
+            finalTranslateX = (windowSize.x-plateauSize.x)/2;
+        }
+
+        if(windowSize.y < plateauSize.y) {
+            finalTranslateY = -ligneMineur * tailleImages + windowSize.y/2;
+            if(finalTranslateY>0) finalTranslateY = 0;
+            if(finalTranslateY<windowSize.y-plateauSize.y) finalTranslateY = windowSize.y-plateauSize.y;
+        } else {
+            finalTranslateY = (windowSize.y-plateauSize.y)/2;
+        }
+
 
         canvas.setTranslateX(finalTranslateX);
         canvas.setTranslateY(finalTranslateY);

@@ -5,6 +5,7 @@ import controller.ControllerMenu;
 import ia.NiveauIA;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.stage.StageStyle;
@@ -30,6 +31,7 @@ public class ViewHandler extends Application {
 
         root = new Group();
         Scene scene = new Scene(root);
+        scene.setFill(Color.BLACK);
 
         menuGame = new MenuGame();
 

@@ -89,18 +89,23 @@ public class ViewGame {
         Vec2d windowSize = new Vec2d(root.getScene().getWidth(), root.getScene().getHeight()),
         plateauSize = new Vec2d(Niveau.currentLvl[0].length * tailleImages, Niveau.currentLvl.length * tailleImages);
 
-        double finalTranslateX = -partie.getNiveau().getMineur().getPosition().y * tailleImages + windowSize.x/2,
-                finalTranslateY = -partie.getNiveau().getMineur().getPosition().x * tailleImages + windowSize.y/2;
+        double finalTranslateX,finalTranslateY;
 
-        System.out.println(finalTranslateX);
-        System.out.println(finalTranslateY);
 
         if(windowSize.x < plateauSize.x) {
-            // TODO restabiliser finalTranslateX si trop à gauche/droite
+            finalTranslateX = -partie.getNiveau().getMineur().getPosition().y * tailleImages + windowSize.x/2;
+            if(finalTranslateX>0) finalTranslateX = 0;
+            if(finalTranslateX<windowSize.x-plateauSize.x) finalTranslateX = windowSize.x-plateauSize.x;
+        } else {
+            finalTranslateX = (windowSize.x-plateauSize.x)/2;
         }
 
         if(windowSize.y < plateauSize.y) {
-            // TODO restabiliser finalTranslateY si trop en haut en bas
+            finalTranslateY = -partie.getNiveau().getMineur().getPosition().x * tailleImages + windowSize.y/2;
+            if(finalTranslateY>0) finalTranslateY = 0;
+            if(finalTranslateY<windowSize.y-plateauSize.y) finalTranslateY = windowSize.y-plateauSize.y;
+        } else {
+            finalTranslateY = (windowSize.y-plateauSize.y)/2;
         }
 
         plateau.setTranslateX(finalTranslateX);
