@@ -247,20 +247,23 @@ public class Niveau {
             }
 
             if(currentLvl[x+1][y] == VIDE && (mineur.position.x!=x+1 || mineur.position.y!=y)) {
-                currentLvl[x+1][y] = currentLvl[x][y];
-                currentLvl[x][y] = VIDE;
-                ((Fallable) bloc).fallTo(x+1,y);
+                if(((Fallable) bloc).fallTo(x+1,y)){
+                    currentLvl[x+1][y] = currentLvl[x][y];
+                    currentLvl[x][y] = VIDE;
+                }
             } else if(currentLvl[x+1][y] == DIAMAND || currentLvl[x+1][y] == PIERRE) {
                 if(y>0 && currentLvl[x+1][y-1] == VIDE && currentLvl[x][y-1] == VIDE &&
                         (mineur.position.x!=x+1 || mineur.position.y!=y-1)) {
-                    ((Fallable) bloc).fallTo(x+1,y-1);
-                    currentLvl[x+1][y-1] = currentLvl[x][y];
-                    currentLvl[x][y] = VIDE;
+                    if(((Fallable) bloc).fallTo(x+1,y-1)){
+                        currentLvl[x+1][y-1] = currentLvl[x][y];
+                        currentLvl[x][y] = VIDE;
+                    }
                 } else if(y<currentLvl[0].length-1 && currentLvl[x+1][y+1] == VIDE && currentLvl[x][y+1] == VIDE &&
                         (mineur.position.x!=x+1 || mineur.position.y!=y+1)) {
-                    ((Fallable) bloc).fallTo(x+1,y+1);
-                    currentLvl[x+1][y+1] = currentLvl[x][y];
-                    currentLvl[x][y] = VIDE;
+                    if(((Fallable) bloc).fallTo(x+1,y+1)){
+                        currentLvl[x+1][y+1] = currentLvl[x][y];
+                        currentLvl[x][y] = VIDE;
+                    }
                 } else ((Fallable) bloc).stopFalling();
             } else ((Fallable) bloc).stopFalling();
         }

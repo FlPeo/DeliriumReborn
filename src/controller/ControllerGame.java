@@ -16,8 +16,8 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     private boolean downPressed;
     private boolean leftPressed;
     private boolean escapePressed;
-    private ViewHandler launcher;
-    private Partie partie;
+    public ViewHandler launcher;
+    public Partie partie;
     private JeuTimeline jeuTimeLine;
 
     public ControllerGame(ViewHandler launcher, Partie partie) {
@@ -77,7 +77,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
             jeuTimeLine.stop();
             finPartieDefaite();
         }
-        if( !leftPressed && !rightPressed && !upPressed && !downPressed ) return;
         if( leftPressed ) {
             partie.getNiveau().deplacerMineur('g');
         } else if( rightPressed ) {
@@ -87,9 +86,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         } else if( downPressed ) {
             partie.getNiveau().deplacerMineur('b');
         }
-        partie.getNiveau().appliquerGravite();
         upPressed = downPressed = leftPressed = rightPressed = false;
-        launcher.getGame().rafraichirVue();
     }
 
     private void finPartieDefaite() {

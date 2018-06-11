@@ -1,9 +1,8 @@
 package model;
 
-import com.sun.javafx.geom.Vec2d;
-
 public interface Fallable {
+    int DELAY = 5;
     boolean isFalling();
     void stopFalling();
-    void fallTo(int x, int y);
+    boolean fallTo(int x, int y);
 }
