@@ -76,8 +76,8 @@ public class ControllerGame implements EventHandler<KeyEvent> {
 
     /**
      * IDEE DE L'ALGO
-     * TODO en gros si on appuie sur gauche droite haut bas il faut controler la case voisine est libre ou contient
-     * TODO un cristal. Si elle est vide on déplace le personnage, sinon on ne fait rien.
+     * Si on appuie sur gauche droite haut bas il faut controler la case voisine est libre ou contient
+     *   un cristal. Si elle est vide on déplace le personnage, sinon on ne fait rien.
      * <p>
      */
     public synchronized void computeAction() {

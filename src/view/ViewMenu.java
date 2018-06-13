@@ -22,8 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewMenu {
-    // TODO Il faudra trouver une solution pour que dans nouvelle partie comme dans charger niveau on puisse choisir si
-    // TODO le joueur est l'humain ou l'IA
 
     private Group root;
     private ImageView imgBg;
