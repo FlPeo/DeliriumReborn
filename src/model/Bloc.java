@@ -5,14 +5,9 @@ import javafx.scene.image.ImageView;
 
 public abstract class Bloc {
     Vec2d position;
-    private boolean isFriable;
 
     public Vec2d getPosition() {
         return position;
-    }
-
-    public boolean isFriable() {
-        return isFriable;
     }
 
     public void setPosition(Vec2d position) {

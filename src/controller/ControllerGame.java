@@ -3,7 +3,6 @@ package controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import model.JoueurHuman;
 import model.Niveau;
 import model.Partie;
 import timeline.JeuTimeline;
@@ -15,7 +14,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     private boolean rightPressed;
     private boolean downPressed;
     private boolean leftPressed;
-    private boolean escapePressed;
+    private boolean escapePressed;  //TODO récupérer le échap ?
     public ViewHandler launcher;
     public Partie partie;
     private JeuTimeline jeuTimeLine;
@@ -107,7 +106,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         launcher.getMenu().vueMenuComplete();
     }
 
-    public void finPartieVictoire()
+    private void finPartieVictoire()
     {
         launcher.getGame().affichageVictoire();
         if(partie.getNiveau().numLevel+1 < Niveau.niveaux.length)

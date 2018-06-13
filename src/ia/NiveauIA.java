@@ -7,11 +7,9 @@ import java.util.List;
 
 public class NiveauIA {
 
-    public static final byte[][][] niveaux = {
+    private static final byte[][][] niveaux = {
             LevelBuilder.niveau1,
-            LevelBuilder.niveau2,
-            /*LevelBuilder.niveau3,
-            LevelBuilder.niveau4*/
+            LevelBuilder.niveau2
     };
 
 
@@ -21,8 +19,7 @@ public class NiveauIA {
 
 
     public int numLevel;
-    private static byte nbDiamandToWin = 10;
-    //private Porte porte;
+    private static final byte NB_DIAMAND_TO_WIN = 10;
 
     /**
      * Initialise un niveau
@@ -46,7 +43,7 @@ public class NiveauIA {
         }
 
         iaAction = new IAComputeAction();
-        etatActuel = new Etat(iMineur, jMineur, currentLvl, currentInfos, nbDiamandToWin);
+        etatActuel = new Etat(iMineur, jMineur, currentLvl, currentInfos, NB_DIAMAND_TO_WIN);
         etatsCalcules = new ArrayList<>();
     }
 

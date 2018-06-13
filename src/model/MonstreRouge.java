@@ -3,8 +3,8 @@ package model;
 import com.sun.javafx.geom.Vec2d;
 import view.MonstreView;
 
-public class MonstreRouge extends Monstre {
-    public MonstreRouge(int i, int j) {
+class MonstreRouge extends Monstre {
+    MonstreRouge(int i, int j) {
         position = new Vec2d(i, j);
         vue = new MonstreView('r');
         dir = 'g';

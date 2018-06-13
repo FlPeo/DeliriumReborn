@@ -9,7 +9,7 @@ public class Pierre extends Bloc implements Fallable{
     private boolean falling;
     private int fallingCounter;
 
-    public Pierre(int i, int j) {
+    Pierre(int i, int j) {
         position = new Vec2d(i, j);
         falling = false;
         vue = new PierreView();

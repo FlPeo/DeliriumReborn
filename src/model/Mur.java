@@ -6,7 +6,7 @@ import view.MurView;
 
 public class Mur extends Bloc {
     public MurView vue;
-    public Mur(int i, int j) {
+    Mur(int i, int j) {
         position = new Vec2d(i, j);
         vue = new MurView();
     }

@@ -2,17 +2,14 @@ package view;
 
 import com.sun.javafx.geom.Vec2d;
 import controller.ControllerGame;
-import javafx.geometry.NodeOrientation;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import model.*;
 import tools.Path;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ViewGame {
     //GERE L'AFFICHAGE DU JEU
@@ -34,7 +31,7 @@ public class ViewGame {
         rafraichirVue();
     }
 
-    public void initPlateau() {
+    private void initPlateau() {
         root.getChildren().clear();
         plateau = new StackPane();
 
@@ -117,7 +114,7 @@ public class ViewGame {
      * (TODO) penser à désactiver si on quitte la partie
      * @param kc (Controlleur du clavier)
      */
-    public void setEvents( ControllerGame kc) {
+    void setEvents(ControllerGame kc) {
         root.getScene().setOnKeyPressed(kc);
         root.getScene().setOnKeyReleased(kc);
     }

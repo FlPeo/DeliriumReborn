@@ -26,8 +26,7 @@ public class ViewMenu {
     private Group root;
     private ImageView imgBg;
     private Text titre, titreNiveau;
-    private VBox menu, niveauxMenu, menuComplet;
-    private HBox boutonsEtNiveaux;
+    private VBox menuComplet;
     private List<Button> listesBoutons;
     private List<RadioButton> listeBoutonsRadio;
     private Button nouvellePartieJoueur, quitter, nouvellePartieIA;
@@ -119,13 +118,13 @@ public class ViewMenu {
      */
     private void initMenu()
     {
-        menu = new VBox(8);
+        VBox menu = new VBox(8);
         menu.setAlignment(Pos.CENTER); // Les boutons sont centrés les uns par rapport aux autres
 
-        niveauxMenu = new VBox(40);
+        VBox niveauxMenu = new VBox(40);
         niveauxMenu.setAlignment(Pos.CENTER);
 
-        boutonsEtNiveaux = new HBox(25);
+        HBox boutonsEtNiveaux = new HBox(25);
         boutonsEtNiveaux.setAlignment(Pos.CENTER);
 
         menuComplet = new VBox(12);

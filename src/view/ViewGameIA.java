@@ -7,7 +7,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
-import model.Niveau;
 import tools.Path;
 
 public class ViewGameIA {
@@ -24,7 +23,7 @@ public class ViewGameIA {
     private Image imagePorteOuverte;
     private static final int tailleImages = 64;
 
-    public ViewGameIA(Group root){
+    ViewGameIA(Group root){
         root.getChildren().clear();
         imageVide = new Image(Path.background);
         imageMur = new Image(Path.wall);

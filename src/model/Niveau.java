@@ -1,31 +1,26 @@
 package model;
 
 import com.sun.javafx.geom.Vec2d;
-import javafx.scene.Group;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 public class Niveau {
 
     public static final byte[][][] niveaux = {
             LevelBuilder.niveau1,
-            LevelBuilder.niveau2,
-            /*LevelBuilder.niveau3,
-            LevelBuilder.niveau4*/
+            LevelBuilder.niveau2
     };
     public static byte[][] currentLvl;
-    public static final int VIDE = 0;
-    public static final int MUR = 1;
-    public static final int CLAY = 2;
+    private static final int VIDE = 0;
+    private static final int MUR = 1;
+    private static final int CLAY = 2;
     public static final int DIAMAND = 3;
-    public static final int PIERRE = 4;
-    public static final int MONSTRE_BLEU = 5;
-    public static final int MONSTRE_ROUGE = 6;
-    public static final int MINEUR = 7;
+    private static final int PIERRE = 4;
+    private static final int MONSTRE_BLEU = 5;
+    private static final int MONSTRE_ROUGE = 6;
+    private static final int MINEUR = 7;
     public static final int PORTE = 8;
     public int numLevel;
     private int nbDimandToWin;
@@ -40,7 +35,7 @@ public class Niveau {
      *
      * @param niveau (niveau à initialiser (/!\ on commence à 0)
      */
-    public Niveau(int niveau) {
+    Niveau(int niveau) {
         numLevel = niveau;
         defaite = false;
         nbDimandToWin = 10;
@@ -82,45 +77,7 @@ public class Niveau {
         }
     }
 
-    /**
-     * retrait d'un bloc par un joueur
-     *
-     * @param position : position du bloc à retirer
-     * @return (true si la partie est finie ( c ' est à dire si le nombre de Diamand tombe à O), false sinon)
-     */
-    public boolean removeBloc(Vec2d position) {
-        for (int i = 0; i < blocList.size(); i++) {
-            Bloc blocTemp = blocList.get(i);
-            if (!(blocTemp.isFriable()) &&
-                    blocTemp.getPosition().x == position.x
-                    && blocTemp.getPosition().y == position.y) {
-                if (blocTemp instanceof Diamand) {
-                    nbDimandToWin--;
-                }
-                if (nbDimandToWin == 0) {
-                    return true;
-                }
-                blocList.remove(blocTemp);
-                break;
-            }
-        }
-        return false;
-    }
 
-    /**
-     * retrait d'un monstre du jeu quand il est mort
-     *
-     * @param position (position du monstre à retirer)
-     */
-    public void removeMonstre(Vec2d position) {
-        for (int i = 0; i < monstreList.size(); i++) {
-            Monstre monstreTemp = monstreList.get(i);
-            if (monstreTemp.getPosition().x == position.x && monstreTemp.getPosition().y == position.y) {
-                monstreList.remove(monstreTemp);
-                break;
-            }
-        }
-    }
 
     /**
      * déplace le mineur en fonction de la direction souhaitée seulement si la case est vide
@@ -193,8 +150,6 @@ public class Niveau {
     /**
      * Retourne vrai si le mineur se trouve à côté d'un monstre. Cette fonction est aussi bien utilisée pour chaque
      * déplacement du mineur que pour ceux des monstres
-     *
-     * @return
      */
     private boolean contactMonstre() {
         for (Monstre monstre : monstreList)
@@ -262,7 +217,7 @@ public class Niveau {
     }
 
 
-    public void removeBlocAt(int x, int y) {
+    private void removeBlocAt(int x, int y) {
         for (Bloc bloc : blocList) if(bloc.position.x==x && bloc.position.y==y) {
             StackPane st = (StackPane) bloc.getView().getParent();
             st.getChildren().remove(bloc.getView());

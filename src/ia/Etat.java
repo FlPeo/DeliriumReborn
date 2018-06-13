@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Etat implements Comparable<Etat>{
-    public static final byte OBJET_TOMBE_PAS = 0;
-    public static final byte OBJET_TOMBE = 1;
+    private static final byte OBJET_TOMBE_PAS = 0;
+    private static final byte OBJET_TOMBE = 1;
 
-    public static final byte ENNEMI_VA_EN_HAUT = 0;
-    public static final byte ENNEMI_VA_A_GAUCHE = 1;
-    public static final byte ENNEMI_VA_EN_BAS = 2;
-    public static final byte ENNEMI_VA_A_DROITE = 3;
+    private static final byte ENNEMI_VA_EN_HAUT = 0;
+    private static final byte ENNEMI_VA_A_GAUCHE = 1;
+    //public static final byte ENNEMI_VA_EN_BAS = 2;
+    private static final byte ENNEMI_VA_A_DROITE = 3;
 
     public static final byte VIDE = 0;
     public static final byte MUR = 1;
@@ -23,8 +23,8 @@ public class Etat implements Comparable<Etat>{
     public static final byte MINEUR = 7;
     public static final byte PORTE = 8;
 
-    public static final byte MASQUE_NE_PAS_PARCOURIR = 16;
-    public static final byte MASQUE_PARCOURIR = MASQUE_NE_PAS_PARCOURIR-1;
+    private static final byte MASQUE_NE_PAS_PARCOURIR = 16;
+    private static final byte MASQUE_PARCOURIR = MASQUE_NE_PAS_PARCOURIR-1;
 
 
     private byte[][] currentState;
@@ -37,7 +37,7 @@ public class Etat implements Comparable<Etat>{
     private byte nbDiamantsEncoreAAttraper;
     private Etat etatParent;
 
-    public Etat(int ligneMineur, int colonneMineur, byte[][] currentState, byte[][] currentInfos, byte nbDiamantsEncoreAAttraper){
+    Etat(int ligneMineur, int colonneMineur, byte[][] currentState, byte[][] currentInfos, byte nbDiamantsEncoreAAttraper){
         this.currentState = currentState;
         this.currentInfos = currentInfos;
         this.nbDiamantsEncoreAAttraper = nbDiamantsEncoreAAttraper;
@@ -64,7 +64,7 @@ public class Etat implements Comparable<Etat>{
         this.f_value = this.g_value + Math.sqrt(Math.pow(ligneMineur - coordonneesObjectif[0], 2) + Math.pow(colonneMineur - coordonneesObjectif[1], 2));
     }
 
-    public List<Etat> getSuivants(){
+    List<Etat> getSuivants(){
         List<Etat> etats = new ArrayList<>();
         Etat etat;
 
@@ -354,7 +354,7 @@ public class Etat implements Comparable<Etat>{
         return new int[]{ligne, colonne};
     }
 
-    public boolean objectifEstAtteint(){
+    boolean objectifEstAtteint(){
         return ligneMineur == coordonneesObjectif[0] && colonneMineur == coordonneesObjectif[1];
     }
 
@@ -372,14 +372,14 @@ public class Etat implements Comparable<Etat>{
         return ligneMineur == e.ligneMineur && colonneMineur == e.colonneMineur;
     }
 
-    public Etat getEtatParent() {
+    Etat getEtatParent() {
         return etatParent;
     }
-    public byte[][] getCurrentState() {
+    byte[][] getCurrentState() {
         return currentState;
     }
 
-    public void defineNewObjectif(int[] coordonneesObjectif){
+    void defineNewObjectif(int[] coordonneesObjectif){
         this.etatParent = null;
         this.coordonneesObjectif = coordonneesObjectif;
         this.g_value = 0;
@@ -390,16 +390,16 @@ public class Etat implements Comparable<Etat>{
         return g_value;
     }
 
-    public boolean finCollecteDiamants() {
+    boolean finCollecteDiamants() {
         return nbDiamantsEncoreAAttraper <= 0;
     }
-    public boolean victory(){ return finCollecteDiamants() && currentState[ligneMineur][colonneMineur] == PORTE;}
+    boolean victory(){ return finCollecteDiamants() && currentState[ligneMineur][colonneMineur] == PORTE;}
 
-    public int getLigneMineur() {
+    int getLigneMineur() {
         return ligneMineur;
     }
 
-    public int getColonneMineur() {
+    int getColonneMineur() {
         return colonneMineur;
     }
 }

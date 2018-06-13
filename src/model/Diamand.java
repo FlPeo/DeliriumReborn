@@ -9,7 +9,7 @@ public class Diamand extends Bloc implements Fallable {
     private boolean falling;
     private int fallingCounter;
 
-    public Diamand(int i, int j) {
+    Diamand(int i, int j) {
         position = new Vec2d(i, j);
         falling = false;
         vue = new DiamandView();

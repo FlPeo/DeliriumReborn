@@ -17,28 +17,21 @@ public class ViewHandler extends Application {
     private Stage primaryStage;
     private ViewMenu menu;
     private ViewGame game;
-    private ViewLoadGame loadGame;
-    private MenuGame menuGame;
-    private Partie partie;
-    private ControllerGame controllerGame;
-    private ControllerMenu controller;
     private Group root;
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
         root = new Group();
         Scene scene = new Scene(root);
         scene.setFill(Color.BLACK);
 
-        menuGame = new MenuGame();
+        MenuGame menuGame = new MenuGame();
 
         menu = new ViewMenu(root, menuGame);
-        loadGame = new ViewLoadGame();
-
-        controller = new ControllerMenu(this);
+        new ControllerMenu(this);
 
         primaryStage.setTitle("Délirium");
         primaryStage.setFullScreenExitHint("");
@@ -59,8 +52,8 @@ public class ViewHandler extends Application {
 
     public void demarrerPartie(int niveau)
     {
-        this.partie = new Partie(niveau);
-        controllerGame = new ControllerGame(this, partie);
+        Partie partie = new Partie(niveau);
+        ControllerGame controllerGame = new ControllerGame(this, partie);
         game = new ViewGame(root, partie);
         game.setEvents(controllerGame);
     }

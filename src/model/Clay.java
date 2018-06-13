@@ -7,7 +7,7 @@ import view.ClayView;
 public class Clay extends Bloc {
     public ClayView vue;
 
-    public Clay(int i, int j) {
+    Clay(int i, int j) {
         position = new Vec2d(i, j);
         vue = new ClayView();
     }

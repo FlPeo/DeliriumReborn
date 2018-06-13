@@ -8,12 +8,9 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import tools.Path;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class PierreView extends ImageView {
     private Timeline rotateAnim;
-    private final float speed = 0.8f;
+    private static final float speed = 0.8f;
 
     public PierreView() {
         super(new Image(Path.stone));

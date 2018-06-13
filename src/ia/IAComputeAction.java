@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class IAComputeAction {
+class IAComputeAction {
 
     //Ne pas appeler cette fonction si tous les diamants ont été trouvés
-    public List<Etat> defineActionMineur(Etat etatActuel) {
+    List<Etat> defineActionMineur(Etat etatActuel) {
         int[] coordonneesObjectif;
         List<Etat> closedList=null;
 
@@ -124,13 +124,5 @@ public class IAComputeAction {
             if(Arrays.equals(array, array2)) return true;
         }
         return false;
-    }
-
-    public void defineActionMonstreBleu(){
-
-    }
-
-    public void defineActionMonstreRouge(){
-
     }
 }

@@ -8,17 +8,17 @@ public class Porte extends Bloc {
     public PorteView vue;
     private boolean locked;
 
-    public Porte(int i, int j) {
+    Porte(int i, int j) {
         position = new Vec2d(i, j);
         locked = true;
         vue = new PorteView();
     }
 
-    public boolean isLocked() {
+    boolean isLocked() {
         return locked;
     }
 
-    public void unLock() {
+    void unLock() {
         locked = false;
         vue.ouvrirPorte();
     }
