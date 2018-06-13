@@ -99,6 +99,7 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         } else if( downPressed ) {
             partie.getNiveau().deplacerMineur('b');
         }
+        partie.getNiveau().getMonstreList().forEach(monstre -> partie.getNiveau().deplacerMonstre(monstre));
     }
 
     private void finPartieDefaite() {

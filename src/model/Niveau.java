@@ -193,9 +193,6 @@ public class Niveau {
         }
         mineur.deplacement(positionCible);
         currentLvl[(int) mineur.position.x][(int) mineur.position.y] = VIDE;
-        if (contactMonstre()) {
-            defaite = true;
-        }
     }
 
     /**
@@ -274,6 +271,78 @@ public class Niveau {
         for (Bloc bloc : blocList) if(bloc.position.x==x && bloc.position.y==y) {
             StackPane st = (StackPane) bloc.getView().getParent();
             st.getChildren().remove(bloc.getView());
+        }
+    }
+
+    public void deplacerMonstre(Monstre m) {
+        int[] devant, droite, derriere, gauche;
+
+        switch (m.dir) {
+            case 'h':
+                devant =   new int[]{(int) m.getPosition().x-1,(int) m.getPosition().y};
+                droite =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y+1};
+                derriere = new int[]{(int) m.getPosition().x+1,(int) m.getPosition().y};
+                gauche =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y-1};
+                break;
+            case 'd':
+                devant =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y+1};
+                droite =   new int[]{(int) m.getPosition().x+1,(int) m.getPosition().y};
+                derriere = new int[]{(int) m.getPosition().x,(int) m.getPosition().y-1};
+                gauche =   new int[]{(int) m.getPosition().x-1,(int) m.getPosition().y};
+                break;
+            case 'b':
+                devant =   new int[]{(int) m.getPosition().x+1,(int) m.getPosition().y};
+                droite =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y-1};
+                derriere = new int[]{(int) m.getPosition().x-1,(int) m.getPosition().y};
+                gauche =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y+1};
+                break;
+            default://case 'g':
+                devant =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y-1};
+                droite =   new int[]{(int) m.getPosition().x-1,(int) m.getPosition().y};
+                derriere = new int[]{(int) m.getPosition().x,(int) m.getPosition().y+1};
+                gauche =   new int[]{(int) m.getPosition().x+1,(int) m.getPosition().y};
+        }
+
+
+        if(currentLvl[gauche[0]][gauche[1]]==VIDE) {
+            currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
+            m.position = new Vec2d(gauche[0],gauche[1]);
+            currentLvl[gauche[0]][gauche[1]] = (byte) (m instanceof MonstreBleu?MONSTRE_BLEU:MONSTRE_ROUGE);
+            switch (m.dir) {
+                case 'h': m.dir = 'g'; break;
+                case 'd': m.dir = 'h'; break;
+                case 'b': m.dir = 'd'; break;
+                default:  m.dir = 'b';
+            }
+        } else if(currentLvl[devant[0]][devant[1]]==VIDE) {
+            currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
+            m.position = new Vec2d(devant[0],devant[1]);
+            currentLvl[devant[0]][devant[1]] = (byte) (m instanceof MonstreBleu?MONSTRE_BLEU:MONSTRE_ROUGE);
+        } else if(currentLvl[droite[0]][droite[1]]==VIDE) {
+            currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
+            m.position = new Vec2d(droite[0],droite[1]);
+            currentLvl[droite[0]][droite[1]] = (byte) (m instanceof MonstreBleu?MONSTRE_BLEU:MONSTRE_ROUGE);
+            switch (m.dir) {
+                case 'h': m.dir = 'd'; break;
+                case 'd': m.dir = 'b'; break;
+                case 'b': m.dir = 'g'; break;
+                default:  m.dir = 'h';
+            }
+        } else if(currentLvl[derriere[0]][derriere[1]]==VIDE) {
+            currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
+            m.position = new Vec2d(derriere[0],derriere[1]);
+            currentLvl[derriere[0]][derriere[1]] = (byte) (m instanceof MonstreBleu?MONSTRE_BLEU:MONSTRE_ROUGE);
+            switch (m.dir) {
+                case 'h': m.dir = 'b'; break;
+                case 'd': m.dir = 'g'; break;
+                case 'b': m.dir = 'h'; break;
+                default:  m.dir = 'd';
+            }
+        }
+
+
+        if (contactMonstre()) {
+            defaite = true;
         }
     }
 }
