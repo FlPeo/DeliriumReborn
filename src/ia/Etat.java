@@ -231,21 +231,34 @@ public class Etat implements Comparable<Etat>{
                 }
                 else{
                     if (state[ligne][colonne] == DIAMAND || state[ligne][colonne] == PIERRE) {
-
-                        if (state[ligne + 1][colonne] == VIDE) {
+                        if ((infos[ligne][colonne] == OBJET_TOMBE_PAS) && (state[ligne + 1][colonne] == VIDE)) {
+                            infos[ligne][colonne] = OBJET_TOMBE;     //Possibilité que cela écrase un monstre
+                        }
+                        else if((infos[ligne][colonne] == OBJET_TOMBE_PAS) && (state[ligne + 1][colonne] == DIAMAND || state[ligne + 1][colonne] == PIERRE) &&
+                                ((colonne > 0 && state[ligne + 1][colonne - 1] == VIDE && state[ligne][colonne - 1] == VIDE &&
+                                        (ligneMineur != ligne + 1 || colonneMineur != colonne - 1)) ||
+                                 (colonne < state[0].length - 1 && state[ligne + 1][colonne + 1] == VIDE && state[ligne][colonne + 1] == VIDE &&
+                                         (ligneMineur != ligne + 1 || colonneMineur != colonne + 1)))){
+                            infos[ligne][colonne] = OBJET_TOMBE;
+                        }
+                        else if(infos[ligne][colonne] == OBJET_TOMBE && (state[ligne + 1][colonne] == VIDE || state[ligne + 1][colonne] == MONSTRE_BLEU
+                                || state[ligne + 1][colonne] == MONSTRE_ROUGE)){
                             state[ligne + 1][colonne] = state[ligne][colonne];
                             infos[ligne + 1][colonne] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;
                             state[ligne][colonne] = VIDE;
-                        } else if (state[ligne + 1][colonne] == DIAMAND || state[ligne + 1][colonne] == PIERRE) {
-                            if (colonne > 0 && state[ligne + 1][colonne - 1] == VIDE && state[ligne][colonne - 1] == VIDE &&
+                        }
+                        else if (infos[ligne][colonne] == OBJET_TOMBE && (state[ligne + 1][colonne] == DIAMAND || state[ligne + 1][colonne] == PIERRE)) {
+                            if (colonne > 0 && (state[ligne + 1][colonne - 1] == VIDE || state[ligne + 1][colonne - 1] == MONSTRE_BLEU ||state[ligne + 1][colonne - 1] == MONSTRE_ROUGE ) &&
+                                    (state[ligne][colonne - 1] == VIDE) &&
                                     (ligneMineur != ligne + 1 || colonneMineur != colonne - 1)) {
 
-                                state[ligne + 1][colonne - 1] = state[ligne][colonne];
+                                state[ligne + 1][colonne - 1] = state[ligne][colonne];   //Possibilité d'écraser un monstre
                                 state[ligne][colonne] = VIDE;
                                 infos[ligne + 1][colonne - 1] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;
-                            } else if (colonne < state[0].length - 1 && state[ligne + 1][colonne + 1] == VIDE && state[ligne][colonne + 1] == VIDE &&
+                            } else if (colonne < state[0].length - 1 && (state[ligne + 1][colonne + 1] == VIDE || state[ligne + 1][colonne + 1] == MONSTRE_BLEU|| state[ligne + 1][colonne + 1] == MONSTRE_ROUGE)
+                                    && state[ligne][colonne + 1] == VIDE &&
                                     (ligneMineur != ligne + 1 || colonneMineur != colonne + 1)) {
-                                state[ligne + 1][colonne + 1] = state[ligne][colonne];
+                                state[ligne + 1][colonne + 1] = state[ligne][colonne];   //Possibilité d'écraser un monstre
                                 state[ligne][colonne] = VIDE;
                                 infos[ligne + 1][colonne + 1] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;
                             }
