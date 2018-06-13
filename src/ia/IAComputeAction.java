@@ -24,7 +24,7 @@ public class IAComputeAction {
             openList.remove(0);
             closedList.add(e);
 
-            if(e.objectifEstAtteint(coordonneesObjectif)){
+            if(e.objectifEstAtteint()){
                 objectifTrouve = true;
             }
             else{
