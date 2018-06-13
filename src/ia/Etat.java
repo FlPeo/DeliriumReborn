@@ -394,4 +394,12 @@ public class Etat implements Comparable<Etat>{
         return nbDiamantsEncoreAAttraper <= 0;
     }
     public boolean victory(){ return finCollecteDiamants() && currentState[ligneMineur][colonneMineur] == PORTE;}
+
+    public int getLigneMineur() {
+        return ligneMineur;
+    }
+
+    public int getColonneMineur() {
+        return colonneMineur;
+    }
 }

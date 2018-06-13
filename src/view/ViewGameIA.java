@@ -133,4 +133,12 @@ public class ViewGameIA {
         alert.setContentText("L'IA a gagné !");
         alert.showAndWait();
     }
+
+    public void affichageBlocageIA() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Fin");
+        alert.setHeaderText("Défaite !");
+        alert.setContentText("L'IA n'arrive pas à trouver comment finir le niveau");
+        alert.showAndWait();
+    }
 }

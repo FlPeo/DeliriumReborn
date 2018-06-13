@@ -50,11 +50,15 @@ public class NiveauIA {
         etatsCalcules = new ArrayList<>();
     }
 
-    public void updateEtat(){
-        if(etatsCalcules.isEmpty()) etatsCalcules = iaAction.defineActionMineur(etatActuel);
+    public boolean updateEtat(){
+        if(etatsCalcules.isEmpty()){
+            etatsCalcules = iaAction.defineActionMineur(etatActuel);
+            if(etatsCalcules == null) return false;
+        }
 
         etatActuel = etatsCalcules.get(0);
         etatsCalcules.remove(0);
+        return true;
     }
 
 

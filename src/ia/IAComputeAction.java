@@ -3,6 +3,7 @@ package ia;
 import model.Niveau;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,9 +11,43 @@ public class IAComputeAction {
 
     //Ne pas appeler cette fonction si tous les diamants ont été trouvés
     public List<Etat> defineActionMineur(Etat etatActuel) {
-        int[] coordonneesObjectif = getCoordonnesObjectif(etatActuel);
-        etatActuel.defineNewObjectif(coordonneesObjectif);
+        int[] coordonneesObjectif;
+        List<Etat> closedList=null;
 
+        if(!etatActuel.finCollecteDiamants()) {
+            List<int[]> coordonneesInterdites = new ArrayList<>();
+            boolean rechercheDeDiamantTerminee = false;
+            while(!rechercheDeDiamantTerminee){   //On cherche le diamant accessible le plus proche
+                coordonneesObjectif = getCoordonnesDuDiamantLePlusProche(etatActuel, coordonneesInterdites);
+                if(Arrays.equals(coordonneesObjectif, new int[]{-1,-1})){
+                    return null;  //L'IA n'a aucun objectif qu'elle sait atteindre
+                }
+
+                etatActuel.defineNewObjectif(coordonneesObjectif);
+                closedList = AEtoile(etatActuel);
+
+                if(closedList != null) rechercheDeDiamantTerminee = true;    //Si l'IA a su atteindre le diamant le plus proche
+                else coordonneesInterdites.add(coordonneesObjectif);         //Sinon
+            }
+        }
+        else{
+            coordonneesObjectif = getCoordonnesPorte(etatActuel);
+            etatActuel.defineNewObjectif(coordonneesObjectif);
+            closedList = AEtoile(etatActuel);
+        }
+
+        List<Etat> pathList = new ArrayList<>();
+        pathList.add(closedList.get(closedList.size()-1));
+        Etat parent;
+
+        while((parent = pathList.get(0).getEtatParent()) != null){
+            pathList.add(0, parent);
+        }
+
+        return pathList;
+    }
+
+    private List<Etat> AEtoile(Etat etatActuel){
         List<Etat> openList = new ArrayList<>();
         List<Etat> closedList = new ArrayList<>();
         openList.add(etatActuel);
@@ -35,15 +70,8 @@ public class IAComputeAction {
             }
         }
 
-        List<Etat> pathList = new ArrayList<>();
-        pathList.add(closedList.get(closedList.size()-1));
-        Etat parent;
-
-        while((parent = pathList.get(0).getEtatParent()) != null){
-            pathList.add(0, parent);
-        }
-
-        return pathList;  //le dernier état de la liste contient le currentInfos qui sera utile au prochain appel de defineActionMineur
+        if(!objectifTrouve) return null;
+        return closedList;
     }
 
     private boolean etatPeutAllerDansListeOpen(Etat etat, List<Etat> openList, List<Etat> closedList){
@@ -60,34 +88,42 @@ public class IAComputeAction {
         return true;
     }
 
-    //TODO : améliorer (ne pas viser le premier diamant donné)
-    private int[] getCoordonnesObjectif(Etat etatActuel){
-        int[] coordonnees = new int[]{-1, -1};
+    private int[] getCoordonnesDuDiamantLePlusProche(Etat etatActuel, List<int[]> coordonneesInterdites){
+        byte[][] currentState = etatActuel.getCurrentState();
+        int[] coordonneesDuDiamantLePlusProche = new int[]{-1, -1};
+        double meilleureDistance = -1;
+
+        for (int ligne = 0; ligne < currentState.length; ligne++) {
+            for (int colonne = 0; colonne < currentState[0].length; colonne++) {
+                double distance = Math.sqrt(Math.pow(ligne - etatActuel.getLigneMineur(),2) + Math.pow(colonne-etatActuel.getColonneMineur(), 2));
+                if(currentState[ligne][colonne] == Niveau.DIAMAND && !arrayIsInList(new int[]{ligne, colonne}, coordonneesInterdites) && (meilleureDistance == -1 || distance<meilleureDistance)){
+                    meilleureDistance = distance;
+                    coordonneesDuDiamantLePlusProche[0]= ligne;
+                    coordonneesDuDiamantLePlusProche[1] = colonne;
+                }
+            }
+        }
+        return coordonneesDuDiamantLePlusProche;
+    }
+
+    private int[] getCoordonnesPorte(Etat etatActuel){
         byte[][] currentState = etatActuel.getCurrentState();
 
-        if(!etatActuel.finCollecteDiamants()) {
-            for (int ligne = 0; ligne < currentState.length; ligne++) {
-                for (int colonne = 0; colonne < currentState[0].length; colonne++) {
-                    if (currentState[ligne][colonne] == Niveau.DIAMAND) {
-                        coordonnees[0] = ligne;
-                        coordonnees[1] = colonne;
-                        return coordonnees;
-                    }
+        for (int ligne = 0; ligne < currentState.length; ligne++) {
+            for (int colonne = 0; colonne < currentState[0].length; colonne++) {
+                if (currentState[ligne][colonne] == Niveau.PORTE) {
+                    return new int[]{ligne, colonne};
                 }
             }
         }
-        else{
-            for (int ligne = 0; ligne < currentState.length; ligne++) {
-                for (int colonne = 0; colonne < currentState[0].length; colonne++) {
-                    if (currentState[ligne][colonne] == Niveau.PORTE) {
-                        coordonnees[0] = ligne;
-                        coordonnees[1] = colonne;
-                        return coordonnees;
-                    }
-                }
-            }
+        return null;  //jamais censé arriver
+    }
+
+    private boolean arrayIsInList(int[] array, List<int[]> list){
+        for(int[] array2 : list){
+            if(Arrays.equals(array, array2)) return true;
         }
-        return coordonnees;
+        return false;
     }
 
     public void defineActionMonstreBleu(){
