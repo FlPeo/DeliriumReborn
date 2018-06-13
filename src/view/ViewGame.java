@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewGame {
-    //TODO GERE L'AFFICHAGE DU JEU
+    //GERE L'AFFICHAGE DU JEU
 
     private Group root;
     private Partie partie;

@@ -6,7 +6,6 @@ import view.MineurView;
 public class Mineur extends Personnage {
     public MineurView vue;
     private int nbVie;
-    // TODO gerer perte de vie
 
     public Mineur(int i, int j) {
         position = new Vec2d(i, j);

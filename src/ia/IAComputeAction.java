@@ -8,7 +8,6 @@ import java.util.List;
 
 public class IAComputeAction {
 
-    //TODO : améliorer (prendre en compte le fait que le diamant objectif peut tomber)
     //Ne pas appeler cette fonction si tous les diamants ont été trouvés
     public List<Etat> defineActionMineur(Etat etatActuel) {
         int[] coordonneesObjectif = getCoordonnesObjectif(etatActuel);

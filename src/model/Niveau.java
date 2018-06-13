@@ -37,8 +37,6 @@ public class Niveau {
 
     /**
      * Initialise un niveau
-     * TODO pour l'instant le nombre de vie est à 3 pour tous les niveaux et le nombre de diamand à collecter = à 10
-     * TODO il faudra sans doute niveller celà
      *
      * @param niveau (niveau à initialiser (/!\ on commence à 0)
      */
@@ -111,7 +109,6 @@ public class Niveau {
 
     /**
      * retrait d'un monstre du jeu quand il est mort
-     * TODO il faudra gérer si le monstre est bleu ou rouge mais je sais pas si on le fait ici ou pas pour l'instant
      *
      * @param position (position du monstre à retirer)
      */
@@ -127,8 +124,6 @@ public class Niveau {
 
     /**
      * déplace le mineur en fonction de la direction souhaitée seulement si la case est vide
-     * TODO je ne sais pas si on doit attaquer une case ou non (clay + diamand) S'il suffit de " marcher dessus"
-     * TODO on le fait ici, sinon faut faire une méthode à part
      * /!\ JE PARS DU PRINCIPE QUE LE POINT ORIGINE EST EN HAUT A GAUCHE !
      *
      * @param direction (direction ciblée : b = bas, g = gauche, d = droite, h = haut)
