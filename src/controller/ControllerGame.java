@@ -58,6 +58,19 @@ public class ControllerGame implements EventHandler<KeyEvent> {
             } else if( keyEvent.getCode() == KeyCode.ESCAPE ) {
                 escapePressed = true;
             }
+        } else  if( keyEvent.getEventType().equals(KeyEvent.KEY_RELEASED) ) {
+            if( keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.Z ) {
+                upPressed = false;
+            }
+            if( keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.KP_RIGHT || keyEvent.getCode() == KeyCode.D ) {
+                rightPressed = false;
+            }
+            if( keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.KP_DOWN || keyEvent.getCode() == KeyCode.S ) {
+                downPressed = false;
+            }
+            if( keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.KP_LEFT || keyEvent.getCode() == KeyCode.Q ) {
+                leftPressed = false;
+            }
         }
     }
 
@@ -86,7 +99,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         } else if( downPressed ) {
             partie.getNiveau().deplacerMineur('b');
         }
-        upPressed = downPressed = leftPressed = rightPressed = false;
     }
 
     private void finPartieDefaite() {
