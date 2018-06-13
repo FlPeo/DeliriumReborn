@@ -80,7 +80,8 @@ public class Etat implements Comparable<Etat>{
         //Si on ne peut pas se déplacer en haut
         if(ligneMineur == 0 || currentState[ligneMineur -1][colonneMineur] == MUR || currentState[ligneMineur-1][colonneMineur] == PIERRE ||
                 (currentState[ligneMineur-1][colonneMineur] == DIAMAND && currentInfos[ligneMineur-1][colonneMineur] == OBJET_TOMBE) ||
-                currentState[ligneMineur-1][colonneMineur] == MONSTRE_BLEU || currentState[ligneMineur-1][colonneMineur] == MONSTRE_ROUGE) {
+                currentState[ligneMineur-1][colonneMineur] == MONSTRE_BLEU || currentState[ligneMineur-1][colonneMineur] == MONSTRE_ROUGE ||
+                (!finCollecteDiamants() && currentState[ligneMineur-1][colonneMineur] == PORTE)) {
             return null;
         }
 
@@ -116,7 +117,8 @@ public class Etat implements Comparable<Etat>{
                 (ligneMineur!=0 && currentState[ligneMineur-1][colonneMineur-1] == PIERRE && currentInfos[ligneMineur-1][colonneMineur-1] == OBJET_TOMBE) ||
                 (currentState[ligneMineur][colonneMineur-1] == PIERRE && colonneMineur-1 == 0) ||
                 (currentState[ligneMineur][colonneMineur-1] == PIERRE && currentState[ligneMineur][colonneMineur-2] != VIDE) ||
-                currentState[ligneMineur][colonneMineur-1] == MONSTRE_BLEU || currentState[ligneMineur][colonneMineur-1] == MONSTRE_ROUGE) {
+                currentState[ligneMineur][colonneMineur-1] == MONSTRE_BLEU || currentState[ligneMineur][colonneMineur-1] == MONSTRE_ROUGE ||
+                (!finCollecteDiamants() && currentState[ligneMineur][colonneMineur-1] == PORTE)) {
             return null;
         }
 
@@ -157,7 +159,8 @@ public class Etat implements Comparable<Etat>{
                 (ligneMineur!=0 && currentState[ligneMineur-1][colonneMineur+1] == PIERRE && currentInfos[ligneMineur-1][colonneMineur+1] == OBJET_TOMBE) ||
                 (currentState[ligneMineur][colonneMineur+1] == PIERRE && colonneMineur+1 == currentState[0].length-1) ||
                 (currentState[ligneMineur][colonneMineur+1] == PIERRE && currentState[ligneMineur][colonneMineur+2] != VIDE) ||
-                currentState[ligneMineur][colonneMineur+1] == MONSTRE_BLEU || currentState[ligneMineur][colonneMineur+1] == MONSTRE_ROUGE) {
+                currentState[ligneMineur][colonneMineur+1] == MONSTRE_BLEU || currentState[ligneMineur][colonneMineur+1] == MONSTRE_ROUGE ||
+                (!finCollecteDiamants() && currentState[ligneMineur][colonneMineur+1] == PORTE)) {
             return null;
         }
 
@@ -194,7 +197,8 @@ public class Etat implements Comparable<Etat>{
     private Etat getSuivantBas(){
         //Si on ne peut pas se déplacer en bas
         if(ligneMineur == currentState.length-1 || currentState[ligneMineur +1][colonneMineur] == MUR || currentState[ligneMineur+1][colonneMineur] == PIERRE ||
-                currentState[ligneMineur+1][colonneMineur] == MONSTRE_BLEU || currentState[ligneMineur+1][colonneMineur] == MONSTRE_ROUGE) {
+                currentState[ligneMineur+1][colonneMineur] == MONSTRE_BLEU || currentState[ligneMineur+1][colonneMineur] == MONSTRE_ROUGE ||
+                (!finCollecteDiamants() && currentState[ligneMineur+1][colonneMineur] == PORTE)) {
             return null;
         }
 
