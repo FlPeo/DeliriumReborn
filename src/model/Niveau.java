@@ -2,6 +2,8 @@ package model;
 
 import com.sun.javafx.geom.Vec2d;
 import javafx.scene.layout.StackPane;
+import view.ExplosionView;
+import view.ViewGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -376,6 +378,7 @@ public class Niveau {
                         blocList.add(d);
                         ((StackPane) mineur.vue.getParent()).getChildren().add(d.vue);
                     }
+                    ((StackPane) mineur.vue.getParent()).getChildren().add(new ExplosionView((position.x + row)*ViewGame.TAILLE_IMAGES,(position.y + col)*ViewGame.TAILLE_IMAGES).start());
                 }
     }
 
