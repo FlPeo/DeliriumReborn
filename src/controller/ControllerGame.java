@@ -3,10 +3,13 @@ package controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import model.Monstre;
 import model.Niveau;
 import model.Partie;
 import timeline.JeuTimeline;
 import view.ViewHandler;
+
+import java.util.List;
 
 
 public class ControllerGame implements EventHandler<KeyEvent> {
@@ -98,7 +101,11 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         } else if( downPressed ) {
             partie.getNiveau().deplacerMineur('b');
         }
-        partie.getNiveau().getMonstreList().forEach(monstre -> partie.getNiveau().deplacerMonstre(monstre));
+        // déplacer chaque monstre
+        for (int i = partie.getNiveau().getMonstreList().size()-1; i >= 0; i--) {
+            partie.getNiveau().deplacerMonstre(partie.getNiveau().getMonstreList().get(i));
+        }
+
     }
 
     private void finPartieDefaite() {

@@ -146,20 +146,6 @@ public class Niveau {
         currentLvl[(int) mineur.position.x][(int) mineur.position.y] = VIDE;
     }
 
-    /**
-     * Retourne vrai si le mineur se trouve à côté d'un monstre. Cette fonction est aussi bien utilisée pour chaque
-     * déplacement du mineur que pour ceux des monstres
-     */
-    private boolean contactMonstre() {
-        for (Monstre monstre : monstreList)
-            if (((mineur.getPosition().x == monstre.position.x)
-                    && ((mineur.getPosition().y == monstre.position.y + 1) || mineur.getPosition().y == monstre.position.y - 1))
-                    || ((mineur.getPosition().y == monstre.position.y)
-                    && ((mineur.getPosition().x == monstre.position.x + 1) || mineur.getPosition().x == monstre.position.x - 1)))
-                return true;
-        return false;
-    }
-
     // GETTERS
     public List<Monstre> getMonstreList() {
         return monstreList;
@@ -228,55 +214,73 @@ public class Niveau {
         int[] devant, droite, derriere, gauche;
 
 
+        // 0. Vérifier les objets en contact avec le monstre (Mineur|Fallable)
+        if (((mineur.getPosition().x == m.position.x)
+                && ((mineur.getPosition().y == m.position.y + 1) || mineur.getPosition().y == m.position.y - 1))
+                || ((mineur.getPosition().y == m.position.y)
+                && ((mineur.getPosition().x == m.position.x + 1) || mineur.getPosition().x == m.position.x - 1)))
+            defaite = true;
+        for (Bloc bloc : getBlocList()) {
+            if (bloc instanceof Fallable && ((Fallable) bloc).isFalling() &&
+                    Math.abs((bloc.getPosition().x + 1)-m.getPosition().x) <= 1 &&
+                    Math.abs(bloc.getPosition().y-m.getPosition().y)==0) {
+                exploserMonstre(m.position, m instanceof MonstreBleu);
+                monstreList.remove(m);
+                ((StackPane)m.vue.getParent()).getChildren().remove(m.vue);
+                return;
+            }
+        }
+
+        // 1. Déterminer les coordonnées de la case gauche/droite/devant/derrière du monstre en fonction de sa direction
         switch (m.dir) {
-            case 'h':
+            case 'h': // le monstre va vers le haut
                 devant = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
                 droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
                 derriere = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
                 gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
                 break;
-            case 'd':
+            case 'd': // le monstre va vers la droite
                 devant = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
                 droite = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
                 derriere = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
                 gauche = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
                 break;
-            case 'b':
+            case 'b': // le monstre va vers le bas
                 devant = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
                 droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
                 derriere = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
                 gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
                 break;
-            case 'g':
+            case 'g': // le monstre va vers la gauche
                 devant = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
                 droite = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
                 derriere = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
                 gauche = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
                 break;
-            default: // case 'a' comme "aucune"
-                // on considère la vue du plateau (vers le haut)
+            default: // le monstre n'a pas de direction (model: 'a')
+                // Il s'agit d'un cas spécial où le monstre doit déterminer vers où il
+                // doit aller afin de suivre en mur dans un sens horaire.
+
+                // On considère la vue du plateau (vers le haut)
                 devant = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
                 droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
                 derriere = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
                 gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
-                // si on est près d'un mur on détermine une direction (sens horaire)
-                if(currentLvl[devant[0]][devant[1]] != VIDE) {
+                // Si on est près d'un mur on détermine une direction (sens horaire)
+                if (currentLvl[devant[0]][devant[1]] != VIDE) {
                     m.dir = 'd';
                     deplacerMonstre(m);
-                }
-                else if(currentLvl[droite[0]][droite[1]] != VIDE) {
+                } else if (currentLvl[droite[0]][droite[1]] != VIDE) {
                     m.dir = 'b';
                     deplacerMonstre(m);
-                }
-                else if(currentLvl[derriere[0]][derriere[1]] != VIDE) {
+                } else if (currentLvl[derriere[0]][derriere[1]] != VIDE) {
                     m.dir = 'g';
                     deplacerMonstre(m);
-                }
-                else if(currentLvl[gauche[0]][gauche[1]] != VIDE) {
+                } else if (currentLvl[gauche[0]][gauche[1]] != VIDE) {
                     m.dir = 'h';
                     deplacerMonstre(m);
                 }
-                // sinon on se déplace vers un direction unique (gauche par exemple) jusqu'à trouver un mur,
+                // Sinon on se déplace vers un direction unique (gauche par exemple) jusqu'à trouver un mur,
                 // SANS attribuer de direction au monstre
                 else {
                     currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
@@ -286,11 +290,14 @@ public class Niveau {
                 return;
         }
 
-
+        // 2. Appliquer l'algorithme de déplacement du prof.
+        //      ordre: GAUCHE DEVANT DROITE DERRIERE
         if (currentLvl[gauche[0]][gauche[1]] == VIDE) {
+            // Déplacer monstre
             currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
             m.position = new Vec2d(gauche[0], gauche[1]);
             currentLvl[gauche[0]][gauche[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
+            // Modifier sa direction
             switch (m.dir) {
                 case 'h':
                     m.dir = 'g';
@@ -305,13 +312,16 @@ public class Niveau {
                     m.dir = 'b';
             }
         } else if (currentLvl[devant[0]][devant[1]] == VIDE) {
+            // Déplacer monstre
             currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
             m.position = new Vec2d(devant[0], devant[1]);
             currentLvl[devant[0]][devant[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
         } else if (currentLvl[droite[0]][droite[1]] == VIDE) {
+            // Déplacer monstre
             currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
             m.position = new Vec2d(droite[0], droite[1]);
             currentLvl[droite[0]][droite[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
+            // Modifier sa direction
             switch (m.dir) {
                 case 'h':
                     m.dir = 'd';
@@ -326,9 +336,11 @@ public class Niveau {
                     m.dir = 'h';
             }
         } else if (currentLvl[derriere[0]][derriere[1]] == VIDE) {
+            // Déplacer monstre
             currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
             m.position = new Vec2d(derriere[0], derriere[1]);
             currentLvl[derriere[0]][derriere[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
+            // Modifier sa direction
             switch (m.dir) {
                 case 'h':
                     m.dir = 'b';
@@ -343,11 +355,28 @@ public class Niveau {
                     m.dir = 'd';
             }
         }
+    }
 
+    private void exploserMonstre(Vec2d position, boolean genererDiamands) {
+        int[] aoe = new int[]{-1,0,1};
 
-        if (contactMonstre()) {
-            defaite = true;
+        for(int i = blocList.size()-1; i>=0; i--) {
+            if(Math.abs(blocList.get(i).position.x-position.x)<=1 &&
+                    Math.abs(blocList.get(i).position.y-position.y)<=1){
+                ((StackPane)blocList.get(i).getView().getParent()).getChildren().remove(blocList.get(i).getView());
+                blocList.remove(i);
+            }
         }
+        for (int row : aoe)
+            for (int col : aoe)
+                if (currentLvl[(int) position.x + row][(int) position.y + col] != MUR) {
+                    currentLvl[(int) position.x + row][(int) position.y + col] = (byte) (genererDiamands ? DIAMAND : VIDE);
+                    if (genererDiamands) {
+                        var d = new Diamand((int) position.x + row, (int) position.y + col);
+                        blocList.add(d);
+                        ((StackPane) mineur.vue.getParent()).getChildren().add(d.vue);
+                    }
+                }
     }
 
 }
