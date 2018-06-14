@@ -17,13 +17,13 @@ public class JeuTimeline extends AnimationTimer {
     @Override
     public void handle(long now) {
 
-        if( now - lu85ms >= 170_000_000 ) {
+        if( now - lu85ms >= 150_000_000 ) {
             controllerGame.partie.getNiveau().appliquerGravite();
             controllerGame.launcher.getGame().rafraichirVue();
             lu85ms = now;
         }
 
-        if( now - lu15ms >= 170_000_000 ) {
+        if( now - lu15ms >= 220_000_000 ) {
             controllerGame.computeAction();
             controllerGame.launcher.getGame().rafraichirVue();
             lu15ms = now;
