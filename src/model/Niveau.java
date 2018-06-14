@@ -78,7 +78,6 @@ public class Niveau {
     }
 
 
-
     /**
      * déplace le mineur en fonction de la direction souhaitée seulement si la case est vide
      * /!\ JE PARS DU PRINCIPE QUE LE POINT ORIGINE EST EN HAUT A GAUCHE !
@@ -97,7 +96,7 @@ public class Niveau {
             positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y + 1);
         }
 
-        if(positionCible==null) return;
+        if (positionCible == null) return;
         mineur.vue.changerDirection(direction);
 
         switch (currentLvl[(int) positionCible.x][(int) positionCible.y]) {
@@ -139,7 +138,7 @@ public class Niveau {
                 currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] = PIERRE;
                 break;
             case PORTE:
-                if(porte.isLocked()) return;
+                if (porte.isLocked()) return;
                 victoire = true;
                 break;
         }
@@ -183,110 +182,165 @@ public class Niveau {
     }
 
     public void appliquerGravite() {
-        for (Bloc bloc : blocList) if(bloc instanceof Fallable && bloc.position.y<currentLvl[0].length-1) {
-            int x = (int) bloc.position.x,
-                    y = (int) bloc.position.y;
+        for (Bloc bloc : blocList)
+            if (bloc instanceof Fallable && bloc.position.y < currentLvl[0].length - 1) {
+                int x = (int) bloc.position.x,
+                        y = (int) bloc.position.y;
 
-            if(((Fallable) bloc).isFalling() && mineur.position.x==x+1 && mineur.position.y==y)
-            {
-                defaite = true;
-                return;
-            }
-
-            if(currentLvl[x+1][y] == VIDE && (mineur.position.x!=x+1 || mineur.position.y!=y)) {
-                if(((Fallable) bloc).fallTo(x+1,y)){
-                    currentLvl[x+1][y] = currentLvl[x][y];
-                    currentLvl[x][y] = VIDE;
+                if (((Fallable) bloc).isFalling() && mineur.position.x == x + 1 && mineur.position.y == y) {
+                    defaite = true;
+                    return;
                 }
-            } else if(currentLvl[x+1][y] == DIAMAND || currentLvl[x+1][y] == PIERRE) {
-                if(y>0 && currentLvl[x+1][y-1] == VIDE && currentLvl[x][y-1] == VIDE &&
-                        (mineur.position.x!=x+1 || mineur.position.y!=y-1)) {
-                    if(((Fallable) bloc).fallTo(x+1,y-1)){
-                        currentLvl[x+1][y-1] = currentLvl[x][y];
+
+                if (currentLvl[x + 1][y] == VIDE && (mineur.position.x != x + 1 || mineur.position.y != y)) {
+                    if (((Fallable) bloc).fallTo(x + 1, y)) {
+                        currentLvl[x + 1][y] = currentLvl[x][y];
                         currentLvl[x][y] = VIDE;
                     }
-                } else if(y<currentLvl[0].length-1 && currentLvl[x+1][y+1] == VIDE && currentLvl[x][y+1] == VIDE &&
-                        (mineur.position.x!=x+1 || mineur.position.y!=y+1)) {
-                    if(((Fallable) bloc).fallTo(x+1,y+1)){
-                        currentLvl[x+1][y+1] = currentLvl[x][y];
-                        currentLvl[x][y] = VIDE;
-                    }
+                } else if (currentLvl[x + 1][y] == DIAMAND || currentLvl[x + 1][y] == PIERRE) {
+                    if (y > 0 && currentLvl[x + 1][y - 1] == VIDE && currentLvl[x][y - 1] == VIDE &&
+                            (mineur.position.x != x + 1 || mineur.position.y != y - 1)) {
+                        if (((Fallable) bloc).fallTo(x + 1, y - 1)) {
+                            currentLvl[x + 1][y - 1] = currentLvl[x][y];
+                            currentLvl[x][y] = VIDE;
+                        }
+                    } else if (y < currentLvl[0].length - 1 && currentLvl[x + 1][y + 1] == VIDE && currentLvl[x][y + 1] == VIDE &&
+                            (mineur.position.x != x + 1 || mineur.position.y != y + 1)) {
+                        if (((Fallable) bloc).fallTo(x + 1, y + 1)) {
+                            currentLvl[x + 1][y + 1] = currentLvl[x][y];
+                            currentLvl[x][y] = VIDE;
+                        }
+                    } else ((Fallable) bloc).stopFalling();
                 } else ((Fallable) bloc).stopFalling();
-            } else ((Fallable) bloc).stopFalling();
-        }
+            }
     }
 
 
     private void removeBlocAt(int x, int y) {
-        for (Bloc bloc : blocList) if(bloc.position.x==x && bloc.position.y==y) {
-            StackPane st = (StackPane) bloc.getView().getParent();
-            st.getChildren().remove(bloc.getView());
-        }
+        for (Bloc bloc : blocList)
+            if (bloc.position.x == x && bloc.position.y == y) {
+                StackPane st = (StackPane) bloc.getView().getParent();
+                st.getChildren().remove(bloc.getView());
+            }
     }
 
     public void deplacerMonstre(Monstre m) {
         int[] devant, droite, derriere, gauche;
 
+
         switch (m.dir) {
             case 'h':
-                devant =   new int[]{(int) m.getPosition().x-1,(int) m.getPosition().y};
-                droite =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y+1};
-                derriere = new int[]{(int) m.getPosition().x+1,(int) m.getPosition().y};
-                gauche =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y-1};
+                devant = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
+                droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
+                derriere = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
+                gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
                 break;
             case 'd':
-                devant =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y+1};
-                droite =   new int[]{(int) m.getPosition().x+1,(int) m.getPosition().y};
-                derriere = new int[]{(int) m.getPosition().x,(int) m.getPosition().y-1};
-                gauche =   new int[]{(int) m.getPosition().x-1,(int) m.getPosition().y};
+                devant = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
+                droite = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
+                derriere = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
+                gauche = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
                 break;
             case 'b':
-                devant =   new int[]{(int) m.getPosition().x+1,(int) m.getPosition().y};
-                droite =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y-1};
-                derriere = new int[]{(int) m.getPosition().x-1,(int) m.getPosition().y};
-                gauche =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y+1};
+                devant = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
+                droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
+                derriere = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
+                gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
                 break;
-            default://case 'g':
-                devant =   new int[]{(int) m.getPosition().x,(int) m.getPosition().y-1};
-                droite =   new int[]{(int) m.getPosition().x-1,(int) m.getPosition().y};
-                derriere = new int[]{(int) m.getPosition().x,(int) m.getPosition().y+1};
-                gauche =   new int[]{(int) m.getPosition().x+1,(int) m.getPosition().y};
+            case 'g':
+                devant = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
+                droite = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
+                derriere = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
+                gauche = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
+                break;
+            default: // case 'a' comme "aucune"
+                // on considère la vue du plateau (vers le haut)
+                devant = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
+                droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
+                derriere = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
+                gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
+                // si on est près d'un mur on détermine une direction (sens horaire)
+                if(currentLvl[devant[0]][devant[1]] != VIDE) {
+                    m.dir = 'd';
+                    deplacerMonstre(m);
+                }
+                else if(currentLvl[droite[0]][droite[1]] != VIDE) {
+                    m.dir = 'b';
+                    deplacerMonstre(m);
+                }
+                else if(currentLvl[derriere[0]][derriere[1]] != VIDE) {
+                    m.dir = 'g';
+                    deplacerMonstre(m);
+                }
+                else if(currentLvl[gauche[0]][gauche[1]] != VIDE) {
+                    m.dir = 'h';
+                    deplacerMonstre(m);
+                }
+                // sinon on se déplace vers un direction unique (gauche par exemple) jusqu'à trouver un mur,
+                // SANS attribuer de direction au monstre
+                else {
+                    currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
+                    m.position = new Vec2d(gauche[0], gauche[1]);
+                    currentLvl[gauche[0]][gauche[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
+                }
+                return;
         }
 
 
-        if(currentLvl[gauche[0]][gauche[1]]==VIDE) {
+        if (currentLvl[gauche[0]][gauche[1]] == VIDE) {
             currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-            m.position = new Vec2d(gauche[0],gauche[1]);
-            currentLvl[gauche[0]][gauche[1]] = (byte) (m instanceof MonstreBleu?MONSTRE_BLEU:MONSTRE_ROUGE);
+            m.position = new Vec2d(gauche[0], gauche[1]);
+            currentLvl[gauche[0]][gauche[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
             switch (m.dir) {
-                case 'h': m.dir = 'g'; break;
-                case 'd': m.dir = 'h'; break;
-                case 'b': m.dir = 'd'; break;
-                default:  m.dir = 'b';
+                case 'h':
+                    m.dir = 'g';
+                    break;
+                case 'd':
+                    m.dir = 'h';
+                    break;
+                case 'b':
+                    m.dir = 'd';
+                    break;
+                default:
+                    m.dir = 'b';
             }
-        } else if(currentLvl[devant[0]][devant[1]]==VIDE) {
+        } else if (currentLvl[devant[0]][devant[1]] == VIDE) {
             currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-            m.position = new Vec2d(devant[0],devant[1]);
-            currentLvl[devant[0]][devant[1]] = (byte) (m instanceof MonstreBleu?MONSTRE_BLEU:MONSTRE_ROUGE);
-        } else if(currentLvl[droite[0]][droite[1]]==VIDE) {
+            m.position = new Vec2d(devant[0], devant[1]);
+            currentLvl[devant[0]][devant[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
+        } else if (currentLvl[droite[0]][droite[1]] == VIDE) {
             currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-            m.position = new Vec2d(droite[0],droite[1]);
-            currentLvl[droite[0]][droite[1]] = (byte) (m instanceof MonstreBleu?MONSTRE_BLEU:MONSTRE_ROUGE);
+            m.position = new Vec2d(droite[0], droite[1]);
+            currentLvl[droite[0]][droite[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
             switch (m.dir) {
-                case 'h': m.dir = 'd'; break;
-                case 'd': m.dir = 'b'; break;
-                case 'b': m.dir = 'g'; break;
-                default:  m.dir = 'h';
+                case 'h':
+                    m.dir = 'd';
+                    break;
+                case 'd':
+                    m.dir = 'b';
+                    break;
+                case 'b':
+                    m.dir = 'g';
+                    break;
+                default:
+                    m.dir = 'h';
             }
-        } else if(currentLvl[derriere[0]][derriere[1]]==VIDE) {
+        } else if (currentLvl[derriere[0]][derriere[1]] == VIDE) {
             currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-            m.position = new Vec2d(derriere[0],derriere[1]);
-            currentLvl[derriere[0]][derriere[1]] = (byte) (m instanceof MonstreBleu?MONSTRE_BLEU:MONSTRE_ROUGE);
+            m.position = new Vec2d(derriere[0], derriere[1]);
+            currentLvl[derriere[0]][derriere[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
             switch (m.dir) {
-                case 'h': m.dir = 'b'; break;
-                case 'd': m.dir = 'g'; break;
-                case 'b': m.dir = 'h'; break;
-                default:  m.dir = 'd';
+                case 'h':
+                    m.dir = 'b';
+                    break;
+                case 'd':
+                    m.dir = 'g';
+                    break;
+                case 'b':
+                    m.dir = 'h';
+                    break;
+                default:
+                    m.dir = 'd';
             }
         }
 
@@ -295,4 +349,5 @@ public class Niveau {
             defaite = true;
         }
     }
+
 }

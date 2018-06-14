@@ -7,7 +7,7 @@ class MonstreRouge extends Monstre {
     MonstreRouge(int i, int j) {
         position = new Vec2d(i, j);
         vue = new MonstreView('r');
-        dir = 'g';
+        dir = 'a'; // a comme 'aucune'
     }
     // monstre rouge = explosion quand il meurt (AOE) puis vide (sauf mur indestructible)
 }
