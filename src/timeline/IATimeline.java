@@ -9,8 +9,8 @@ import view.ViewHandler;
 
 public class IATimeline extends AnimationTimer {
 
-    private NiveauIA niveauIA;
-    private ViewGameIA viewGameIA;
+    private NiveauIA niveauIA;       //Modèle (pour récupérer les états à afficher)
+    private ViewGameIA viewGameIA;   //Vue
     private long lastUpdate;
     private ViewHandler launcher;
 
@@ -25,27 +25,27 @@ public class IATimeline extends AnimationTimer {
     public void handle(long now) {
         if( now > lastUpdate ) {
             if( now - lastUpdate >= 500_000_000 ) {   //0.5s
-                if(!niveauIA.updateEtat()){
-                    Platform.runLater(() -> {
-                        viewGameIA.affichageBlocageIA();
-                        launcher.getMenu().vueMenuComplete();
+                if(!niveauIA.updateEtat()){    //On calcule l'état suivant
+                    Platform.runLater(() -> {   //Si l'IA n'a pas réussi à trouver un état suivant pour finir le niveau
+                        viewGameIA.affichageBlocageIA();    //Affichage d'une popup prévenant de la défaite de l'IA
+                        launcher.getMenu().vueMenuComplete();  //Retour au menu
                     });
 
-                    this.stop();
+                    this.stop();   //Fin de la boucle de jeu
                 }
-                else {
-                    viewGameIA.updateView(niveauIA.getCurrentState(), niveauIA.finCollecteDiamants());
+                else {  //Si un état suivant a été trouvé par l'Ia
+                    viewGameIA.updateView(niveauIA.getCurrentState(), niveauIA.finCollecteDiamants());   //On met la vue à jour
 
-                    if (niveauIA.victory()) {
+                    if (niveauIA.victory()) {   //Si l'IA a gagné
                         Platform.runLater(() -> {
-                            viewGameIA.affichageVictoire();
-                            if (niveauIA.numLevel + 1 < Niveau.niveaux.length)
-                                launcher.demarrerPartieIA(niveauIA.numLevel + 1);
+                            viewGameIA.affichageVictoire();  //On affiche une popup prévenant de la victoire
+                            if (niveauIA.numLevel + 1 < Niveau.niveaux.length)   //Si il y a un niveau suivant
+                                launcher.demarrerPartieIA(niveauIA.numLevel + 1);   //On commence le niveau suivant
                             else
-                                launcher.getMenu().vueMenuComplete();
+                                launcher.getMenu().vueMenuComplete();  //Sinon, on revient au menu
                         });
 
-                        this.stop();
+                        this.stop();   //Fin de la boucle de jeu
                     }
                 }
 

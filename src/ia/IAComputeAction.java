@@ -38,6 +38,7 @@ class IAComputeAction {
             coordonneesObjectif = getCoordonnesPorte(etatActuel);  //On récupère les coordonnées de la porte
             etatActuel.defineNewObjectif(coordonneesObjectif);
             closedList = AEtoile(etatActuel);            // On récupère la closedList de A*
+            if(closedList == null) return null;          //Si l'IA n'arrive pas à atteindre la porte
         }
 
         List<Etat> pathList = new ArrayList<>();             //Liste des états à parcourir pour atteindre l'objectif
