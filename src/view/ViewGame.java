@@ -111,7 +111,6 @@ public class ViewGame {
 
     /**
      * active l'écoute du clavier
-     * (TODO) penser à désactiver si on quitte la partie
      * @param kc (Controlleur du clavier)
      */
     void setEvents(ControllerGame kc) {

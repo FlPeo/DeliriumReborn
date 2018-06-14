@@ -3,13 +3,10 @@ package controller;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import model.Monstre;
 import model.Niveau;
 import model.Partie;
 import timeline.JeuTimeline;
 import view.ViewHandler;
-
-import java.util.List;
 
 
 public class ControllerGame implements EventHandler<KeyEvent> {
@@ -17,7 +14,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
     private boolean rightPressed;
     private boolean downPressed;
     private boolean leftPressed;
-    private boolean escapePressed;  //TODO récupérer le échap ?
     public ViewHandler launcher;
     public Partie partie;
     private JeuTimeline jeuTimeLine;
@@ -27,7 +23,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
         rightPressed = false;
         downPressed = false;
         leftPressed = false;
-        escapePressed = false;
         this.launcher = launcher;
         this.partie = partie;
         jeuTimeLine = new JeuTimeline(this);
@@ -57,8 +52,6 @@ public class ControllerGame implements EventHandler<KeyEvent> {
                 upPressed = false;
                 rightPressed = false;
                 downPressed = false;
-            } else if( keyEvent.getCode() == KeyCode.ESCAPE ) {
-                escapePressed = true;
             }
         } else  if( keyEvent.getEventType().equals(KeyEvent.KEY_RELEASED) ) {
             if( keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.KP_UP || keyEvent.getCode() == KeyCode.Z ) {

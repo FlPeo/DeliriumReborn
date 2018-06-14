@@ -372,7 +372,7 @@ public class Niveau {
                 if (currentLvl[(int) position.x + row][(int) position.y + col] != MUR) {
                     currentLvl[(int) position.x + row][(int) position.y + col] = (byte) (genererDiamands ? DIAMAND : VIDE);
                     if (genererDiamands) {
-                        var d = new Diamand((int) position.x + row, (int) position.y + col);
+                        Diamand d = new Diamand((int) position.x + row, (int) position.y + col);
                         blocList.add(d);
                         ((StackPane) mineur.vue.getParent()).getChildren().add(d.vue);
                     }
