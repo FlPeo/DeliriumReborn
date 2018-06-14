@@ -10,7 +10,7 @@ import javafx.scene.image.Image;
 import tools.Path;
 
 public class ViewGameIA {
-    private Canvas canvas;
+    private Canvas canvas;    //Zone où les images sont dessinées
     private Image imageVide;
     private Image imageMur;
     private Image imageTerre;
@@ -21,9 +21,9 @@ public class ViewGameIA {
     private Image imageMineur;
     private Image imagePorteFermee;
     private Image imagePorteOuverte;
-    private static final int tailleImages = 64;
+    private static final int tailleImages = 64;   //64x64
 
-    ViewGameIA(Group root){
+    ViewGameIA(Group root){    //root : conteneur principal de la fenêtre
         root.getChildren().clear();
         imageVide = new Image(Path.background);
         imageMur = new Image(Path.wall);
@@ -39,14 +39,16 @@ public class ViewGameIA {
         root.getChildren().add(canvas);
     }
 
+    //Méthode permettant d'afficher un état actuel du jeu
     public void updateView(byte[][] currentState, boolean finCollecteDiamants){
         int ligneMineur=0;
         int colonneMineur=0;
 
         canvas.setHeight(currentState.length*tailleImages);
         canvas.setWidth(currentState[0].length*tailleImages);
+        GraphicsContext gc = canvas.getGraphicsContext2D();  //Récupération de l'objet permettant de dessiner les images dans le canvas
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        //On affiche sur chaque case l'objet qui s'y trouve
         for(int i = 0 ; i<currentState.length; i++){
             for(int j = 0 ; j < currentState[0].length ; j++){
                 switch (currentState[i][j]){
@@ -94,8 +96,12 @@ public class ViewGameIA {
                 }
             }
         }
+
+        //On centre la caméra sur le mineur
         placerLaCamera(ligneMineur, colonneMineur, currentState[0].length, currentState.length);
     }
+
+    //Méthode permettant de centrer la caméra sur le mineur
     private void placerLaCamera(int ligneMineur, int colonneMineur, int widthPlateau, int heightPlateau) {
         Vec2d windowSize = new Vec2d(canvas.getScene().getWidth(), canvas.getScene().getHeight()),
                 plateauSize = new Vec2d(widthPlateau * tailleImages, heightPlateau * tailleImages);
@@ -124,6 +130,7 @@ public class ViewGameIA {
         canvas.setTranslateY(finalTranslateY);
     }
 
+    //Affichage de la popup de victoire de l'IA
     public void affichageVictoire()
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -133,6 +140,7 @@ public class ViewGameIA {
         alert.showAndWait();
     }
 
+    //Affichage de la popup de défaite de l'IA
     public void affichageBlocageIA() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Fin");
