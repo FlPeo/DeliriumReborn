@@ -308,9 +308,18 @@ public class Etat implements Comparable<Etat>{
                         //Si un objet doit tomber vers le bas
                         else if(infos[ligne][colonne] == OBJET_TOMBE && (state[ligne + 1][colonne] == VIDE || state[ligne + 1][colonne] == MONSTRE_BLEU
                                 || state[ligne + 1][colonne] == MONSTRE_ROUGE || state[ligne + 1][colonne] == MINEUR)){
-                            state[ligne + 1][colonne] = state[ligne][colonne];        //Possibilité d'écraser un monstre ou le mineur
+
+
+                            if(state[ligne + 1][colonne] == MONSTRE_BLEU)  //Possibilité d'écraser un monstre ou le mineur
+                                exploserMonstre(state,ligne+1,colonne,true);
+                            else if(state[ligne + 1][colonne] == MONSTRE_ROUGE)
+                                exploserMonstre(state,ligne+1,colonne,false);
+                            else {
+                                state[ligne + 1][colonne] = state[ligne][colonne];
+                                state[ligne][colonne] = VIDE;
+                            }
                             infos[ligne + 1][colonne] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;  //Pour ne pas parcourir l'objet une deuxième fois dans l'itération
-                            state[ligne][colonne] = VIDE;
+
 
                             if(ligne == newCoordonnesObjectif[0] && colonne == newCoordonnesObjectif[1]){  //Si l'objet qui tombe est le diamant objectif
                                 newCoordonnesObjectif[0] = ligne+1;
@@ -321,9 +330,17 @@ public class Etat implements Comparable<Etat>{
                             if (colonne > 0 && (state[ligne + 1][colonne - 1] == VIDE || state[ligne + 1][colonne - 1] == MONSTRE_BLEU ||state[ligne + 1][colonne - 1] == MONSTRE_ROUGE ||state[ligne + 1][colonne - 1] == MINEUR ) &&
                                     (state[ligne][colonne - 1] == VIDE)) {
 
-                                state[ligne + 1][colonne - 1] = state[ligne][colonne];   //Possibilité d'écraser un monstre ou le mineur
-                                state[ligne][colonne] = VIDE;
-                                infos[ligne + 1][colonne - 1] = OBJET_TOMBE | MASQUE_NE_PAS_PARCOURIR;    //Pour ne pas parcourir l'objet une deuxième fois dans l'itération
+
+                                if(state[ligne + 1][colonne-1] == MONSTRE_BLEU)  //Possibilité d'écraser un monstre ou le mineur
+                                    exploserMonstre(state,ligne+1,colonne-1,true);
+                                else if(state[ligne + 1][colonne-1] == MONSTRE_ROUGE)
+                                    exploserMonstre(state,ligne+1,colonne-1,false);
+                                else {
+                                    state[ligne + 1][colonne-1] = state[ligne][colonne];
+                                    state[ligne][colonne] = VIDE;
+                                }
+                                infos[ligne + 1][colonne-1] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;  //Pour ne pas parcourir l'objet une deuxième fois dans l'itération
+
                                 if (ligne == newCoordonnesObjectif[0] && colonne == newCoordonnesObjectif[1]) {  //Si l'objet qui tombe est le diamant objectif
                                     newCoordonnesObjectif[0] = ligne + 1;
                                     newCoordonnesObjectif[1] = colonne - 1;
@@ -332,9 +349,19 @@ public class Etat implements Comparable<Etat>{
                             //Si l'objet doit tomber vers la droite
                             else if (colonne < state[0].length - 1 && (state[ligne + 1][colonne + 1] == VIDE || state[ligne + 1][colonne + 1] == MONSTRE_BLEU|| state[ligne + 1][colonne + 1] == MONSTRE_ROUGE || state[ligne + 1][colonne + 1] == MINEUR)
                                     && state[ligne][colonne + 1] == VIDE) {
-                                state[ligne + 1][colonne + 1] = state[ligne][colonne];   //Possibilité d'écraser un monstre
-                                state[ligne][colonne] = VIDE;
+
+
+                                if(state[ligne + 1][colonne+1] == MONSTRE_BLEU)  //Possibilité d'écraser un monstre ou le mineur
+                                    exploserMonstre(state,ligne+1,colonne+1,true);
+                                else if(state[ligne + 1][colonne+1] == MONSTRE_ROUGE)
+                                    exploserMonstre(state,ligne+1,colonne+1,false);
+                                else {
+                                    state[ligne + 1][colonne+1] = state[ligne][colonne];
+                                    state[ligne][colonne] = VIDE;
+                                }
                                 infos[ligne + 1][colonne + 1] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;   //Pour ne pas parcourir l'objet une deuxième fois dans l'itération
+
+
                                 if(ligne == newCoordonnesObjectif[0] && colonne == newCoordonnesObjectif[1]){  //Si l'objet qui tombe est le diamant objectif
                                     newCoordonnesObjectif[0] = ligne+1;
                                     newCoordonnesObjectif[1] = colonne+1;
@@ -382,6 +409,16 @@ public class Etat implements Comparable<Etat>{
 
         }
         return newCoordonnesObjectif;
+    }
+
+    //Fonction nettoyant la zone autour d'un monstre qui explose
+    private void exploserMonstre(byte[][] state, int ligne, int colonne, boolean blueMonster) {
+        int[] aoe = new int[]{-1,0,1};
+
+        for(int row : aoe)
+            for(int col : aoe)
+                if(state[ligne+row][colonne+col]!=MUR)
+                    state[ligne+row][colonne+col] = blueMonster?DIAMAND:VIDE;
     }
 
     //Fonction renvoyant la direction à gauche de la direction actuelle
