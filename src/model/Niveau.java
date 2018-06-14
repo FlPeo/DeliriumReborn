@@ -223,7 +223,7 @@ public class Niveau {
         for (Bloc bloc : getBlocList()) {
             if (bloc instanceof Fallable && ((Fallable) bloc).isFalling() &&
                     Math.abs((bloc.getPosition().x + 1)-m.getPosition().x) <= 1 &&
-                    Math.abs(bloc.getPosition().y-m.getPosition().y)==0) {
+                    Math.abs(bloc.getPosition().y-m.getPosition().y)<=1) {
                 exploserMonstre(m.position, m instanceof MonstreBleu);
                 monstreList.remove(m);
                 ((StackPane)m.vue.getParent()).getChildren().remove(m.vue);
