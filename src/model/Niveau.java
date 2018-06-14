@@ -179,6 +179,16 @@ public class Niveau {
                     defaite = true;
                     return;
                 }
+                for (Monstre m : getMonstreList()) {
+                    if (((Fallable) bloc).isFalling() &&
+                            x + 1 == m.getPosition().x &&
+                            y == m.getPosition().y) {
+                        exploserMonstre(m.position, m instanceof MonstreBleu);
+                        monstreList.remove(m);
+                        ((StackPane)m.vue.getParent()).getChildren().remove(m.vue);
+                        return;
+                    }
+                }
 
                 if (currentLvl[x + 1][y] == VIDE && (mineur.position.x != x + 1 || mineur.position.y != y)) {
                     if (((Fallable) bloc).fallTo(x + 1, y)) {
