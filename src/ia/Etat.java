@@ -115,11 +115,12 @@ public class Etat implements Comparable<Etat>{
         int[] newCoordonneesObjectif = gestionDeplacementsNonIA(newState, newInfos, newLigneMineur, colonneMineur, coordonneesObjectif);
         //endregion
 
-        //Si un monstre finit dans une case à coté du mineur, cet état n'est pas bon
+        //Si un monstre finit dans une case à coté du mineur (ou sur la case du mineur), ou qu'une pierre/diamant a chuté sur le mineur
         if((newLigneMineur != 0 && (newState[newLigneMineur-1][colonneMineur] == MONSTRE_ROUGE || newState[newLigneMineur-1][colonneMineur] == MONSTRE_BLEU)) ||
                 (newLigneMineur != newState.length-1 && (newState[newLigneMineur+1][colonneMineur] == MONSTRE_ROUGE || newState[newLigneMineur+1][colonneMineur] == MONSTRE_BLEU)) ||
                 (colonneMineur != 0 && (newState[newLigneMineur][colonneMineur-1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur-1] == MONSTRE_BLEU)) ||
-                (colonneMineur != newState[0].length-1 && (newState[newLigneMineur][colonneMineur+1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur+1] == MONSTRE_BLEU))){
+                (colonneMineur != newState[0].length-1 && (newState[newLigneMineur][colonneMineur+1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur+1] == MONSTRE_BLEU))||
+                (newState[newLigneMineur][colonneMineur] != MINEUR && newState[newLigneMineur][colonneMineur] != PORTE)){
             return null;
         }
 
@@ -170,11 +171,12 @@ public class Etat implements Comparable<Etat>{
         int[] newCoordonneesObjectif = gestionDeplacementsNonIA(newState, newInfos, ligneMineur, newColonneMineur, coordonneesObjectif); //Changements effectués dans newState et newInfos
         //endregion
 
-        //Si un monstre finit dans une case à coté du mineur, cet état n'est pas bon
+        //Si un monstre finit dans une case à coté du mineur (ou sur la case du mineur), ou qu'une pierre/diamant a chuté sur le mineur
         if((ligneMineur != 0 && (newState[ligneMineur-1][newColonneMineur] == MONSTRE_ROUGE || newState[ligneMineur-1][newColonneMineur] == MONSTRE_BLEU)) ||
                 (ligneMineur != newState.length-1 && (newState[ligneMineur+1][newColonneMineur] == MONSTRE_ROUGE || newState[ligneMineur+1][newColonneMineur] == MONSTRE_BLEU)) ||
                 (newColonneMineur != 0 && (newState[ligneMineur][newColonneMineur-1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur-1] == MONSTRE_BLEU)) ||
-                (newColonneMineur != newState[0].length-1 && (newState[ligneMineur][newColonneMineur+1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur+1] == MONSTRE_BLEU))){
+                (newColonneMineur != newState[0].length-1 && (newState[ligneMineur][newColonneMineur+1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur+1] == MONSTRE_BLEU))||
+                (newState[ligneMineur][newColonneMineur] != MINEUR && newState[ligneMineur][newColonneMineur] != PORTE)){
             return null;
         }
 
@@ -225,11 +227,12 @@ public class Etat implements Comparable<Etat>{
         int[] newCoordonneesObjectif = gestionDeplacementsNonIA(newState, newInfos, ligneMineur, newColonneMineur, coordonneesObjectif); //Changements effectués dans newState et newInfos
         //endregion
 
-        //Si un monstre finit dans une case à coté du mineur, ou qu'on ce prend quelque chose sur la tête, cet état n'est pas bon
+        //Si un monstre finit dans une case à coté du mineur (ou sur la case du mineur), ou qu'une pierre/diamant a chuté sur le mineur
         if((ligneMineur != 0 && (newState[ligneMineur-1][newColonneMineur] == MONSTRE_ROUGE || newState[ligneMineur-1][newColonneMineur] == MONSTRE_BLEU)) ||
                 (ligneMineur != newState.length-1 && (newState[ligneMineur+1][newColonneMineur] == MONSTRE_ROUGE || newState[ligneMineur+1][newColonneMineur] == MONSTRE_BLEU)) ||
                 (newColonneMineur != 0 && (newState[ligneMineur][newColonneMineur-1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur-1] == MONSTRE_BLEU)) ||
-                (newColonneMineur != newState[0].length-1 && (newState[ligneMineur][newColonneMineur+1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur+1] == MONSTRE_BLEU))){
+                (newColonneMineur != newState[0].length-1 && (newState[ligneMineur][newColonneMineur+1] == MONSTRE_ROUGE || newState[ligneMineur][newColonneMineur+1] == MONSTRE_BLEU))||
+                (newState[ligneMineur][newColonneMineur] != MINEUR && newState[ligneMineur][newColonneMineur] != PORTE)){
             return null;
         }
 
@@ -268,11 +271,12 @@ public class Etat implements Comparable<Etat>{
         int[] newCoordonneesObjectif = gestionDeplacementsNonIA(newState, newInfos, newLigneMineur, colonneMineur, coordonneesObjectif); //Changements effectués dans newState et newInfos
         //endregion
 
-        //Si un monstre finit dans une case à coté du mineur, ou qu'on ce prend quelque chose sur la tête, cet état n'est pas bon
+        //Si un monstre finit dans une case à coté du mineur (ou sur la case du mineur), ou qu'une pierre/diamant a chuté sur le mineur
         if((newLigneMineur != 0 && (newState[newLigneMineur-1][colonneMineur] == MONSTRE_ROUGE || newState[newLigneMineur-1][colonneMineur] == MONSTRE_BLEU)) ||
                 (newLigneMineur != newState.length-1 && (newState[newLigneMineur+1][colonneMineur] == MONSTRE_ROUGE || newState[newLigneMineur+1][colonneMineur] == MONSTRE_BLEU)) ||
                 (colonneMineur != 0 && (newState[newLigneMineur][colonneMineur-1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur-1] == MONSTRE_BLEU)) ||
-                (colonneMineur != newState[0].length-1 && (newState[newLigneMineur][colonneMineur+1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur+1] == MONSTRE_BLEU))){
+                (colonneMineur != newState[0].length-1 && (newState[newLigneMineur][colonneMineur+1] == MONSTRE_ROUGE || newState[newLigneMineur][colonneMineur+1] == MONSTRE_BLEU))||
+                (newState[newLigneMineur][colonneMineur] != MINEUR && newState[newLigneMineur][colonneMineur] != PORTE)){
             return null;
         }
 
@@ -303,8 +307,8 @@ public class Etat implements Comparable<Etat>{
                         }
                         //Si un objet doit tomber vers le bas
                         else if(infos[ligne][colonne] == OBJET_TOMBE && (state[ligne + 1][colonne] == VIDE || state[ligne + 1][colonne] == MONSTRE_BLEU
-                                || state[ligne + 1][colonne] == MONSTRE_ROUGE)){
-                            state[ligne + 1][colonne] = state[ligne][colonne];        //Possibilité d'écraser un monstre
+                                || state[ligne + 1][colonne] == MONSTRE_ROUGE || state[ligne + 1][colonne] == MINEUR)){
+                            state[ligne + 1][colonne] = state[ligne][colonne];        //Possibilité d'écraser un monstre ou le mineur
                             infos[ligne + 1][colonne] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;  //Pour ne pas parcourir l'objet une deuxième fois dans l'itération
                             state[ligne][colonne] = VIDE;
 
@@ -314,11 +318,10 @@ public class Etat implements Comparable<Etat>{
                         }
                         else if (infos[ligne][colonne] == OBJET_TOMBE && (state[ligne + 1][colonne] == DIAMAND || state[ligne + 1][colonne] == PIERRE)) {
                             //Si l'objet doit tomber vers la gauche
-                            if (colonne > 0 && (state[ligne + 1][colonne - 1] == VIDE || state[ligne + 1][colonne - 1] == MONSTRE_BLEU ||state[ligne + 1][colonne - 1] == MONSTRE_ROUGE ) &&
-                                    (state[ligne][colonne - 1] == VIDE) &&
-                                    (ligneMineur != ligne + 1 || colonneMineur != colonne - 1)) {
+                            if (colonne > 0 && (state[ligne + 1][colonne - 1] == VIDE || state[ligne + 1][colonne - 1] == MONSTRE_BLEU ||state[ligne + 1][colonne - 1] == MONSTRE_ROUGE ||state[ligne + 1][colonne - 1] == MINEUR ) &&
+                                    (state[ligne][colonne - 1] == VIDE)) {
 
-                                state[ligne + 1][colonne - 1] = state[ligne][colonne];   //Possibilité d'écraser un monstre
+                                state[ligne + 1][colonne - 1] = state[ligne][colonne];   //Possibilité d'écraser un monstre ou le mineur
                                 state[ligne][colonne] = VIDE;
                                 infos[ligne + 1][colonne - 1] = OBJET_TOMBE | MASQUE_NE_PAS_PARCOURIR;    //Pour ne pas parcourir l'objet une deuxième fois dans l'itération
                                 if (ligne == newCoordonnesObjectif[0] && colonne == newCoordonnesObjectif[1]) {  //Si l'objet qui tombe est le diamant objectif
@@ -327,9 +330,8 @@ public class Etat implements Comparable<Etat>{
                                 }
                             }
                             //Si l'objet doit tomber vers la droite
-                            else if (colonne < state[0].length - 1 && (state[ligne + 1][colonne + 1] == VIDE || state[ligne + 1][colonne + 1] == MONSTRE_BLEU|| state[ligne + 1][colonne + 1] == MONSTRE_ROUGE)
-                                    && state[ligne][colonne + 1] == VIDE &&
-                                    (ligneMineur != ligne + 1 || colonneMineur != colonne + 1)) {
+                            else if (colonne < state[0].length - 1 && (state[ligne + 1][colonne + 1] == VIDE || state[ligne + 1][colonne + 1] == MONSTRE_BLEU|| state[ligne + 1][colonne + 1] == MONSTRE_ROUGE || state[ligne + 1][colonne + 1] == MINEUR)
+                                    && state[ligne][colonne + 1] == VIDE) {
                                 state[ligne + 1][colonne + 1] = state[ligne][colonne];   //Possibilité d'écraser un monstre
                                 state[ligne][colonne] = VIDE;
                                 infos[ligne + 1][colonne + 1] = OBJET_TOMBE|MASQUE_NE_PAS_PARCOURIR;   //Pour ne pas parcourir l'objet une deuxième fois dans l'itération
@@ -352,23 +354,23 @@ public class Etat implements Comparable<Etat>{
                         int[] deplacementArriere = getDeplacementFromDirection(directionArriere);
                         int[] deplacementDroite = getDeplacementFromDirection(directionDroite);
 
-                        if (state[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] == VIDE) {
-                            state[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] = state[ligne][colonne];
+                        if (state[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] == VIDE || state[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] == MINEUR) {
+                            state[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] = state[ligne][colonne];  //Possibilité de manger le mineur
                             state[ligne][colonne] = VIDE;
                             infos[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] = directionGauche;
                             if(deplacementGauche[0]+deplacementGauche[1]==1) infos[ligne + deplacementGauche[0]][colonne + deplacementGauche[1]] |= MASQUE_NE_PAS_PARCOURIR;  //Si en bas ou à droite
-                        } else if (state[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] == VIDE) {
-                            state[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] = state[ligne][colonne];
+                        } else if (state[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] == VIDE||state[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] == MINEUR) {
+                            state[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] = state[ligne][colonne];   //Possibilité de manger le mineur
                             state[ligne][colonne] = VIDE;
                             infos[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] = directionAvant;
                             if(deplacementAvant[0]+deplacementAvant[1]==1) infos[ligne + deplacementAvant[0]][colonne + deplacementAvant[1]] |= MASQUE_NE_PAS_PARCOURIR;  //Si en bas ou à droite
-                        } else if (state[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] == VIDE) {
-                            state[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] = state[ligne][colonne];
+                        } else if (state[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] == VIDE || state[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] == MINEUR) {
+                            state[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] = state[ligne][colonne];  //Possibilité de manger le mineur
                             state[ligne][colonne] = VIDE;
                             infos[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] = directionDroite;
                             if(deplacementDroite[0]+deplacementDroite[1]==1) infos[ligne + deplacementDroite[0]][colonne + deplacementDroite[1]] |= MASQUE_NE_PAS_PARCOURIR;  //Si en bas ou à droite
-                        } else if (state[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] == VIDE) {
-                            state[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] = state[ligne][colonne];
+                        } else if (state[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] == VIDE || state[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] == MINEUR) {
+                            state[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] = state[ligne][colonne];  //Possibilité de manger le mineur
                             state[ligne][colonne] = VIDE;
                             infos[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] = directionArriere;
                             if(deplacementArriere[0]+deplacementArriere[1]==1) infos[ligne + deplacementArriere[0]][colonne + deplacementArriere[1]] |= MASQUE_NE_PAS_PARCOURIR;  //Si en bas ou à droite
