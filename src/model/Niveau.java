@@ -183,6 +183,9 @@ public class Niveau {
                     if (((Fallable) bloc).isFalling() &&
                             x + 1 == m.getPosition().x &&
                             y == m.getPosition().y) {
+                        currentLvl[x][y] = VIDE;
+                        blocList.remove(bloc);
+                        ((StackPane)bloc.getView().getParent()).getChildren().remove(bloc.getView());
                         exploserMonstre(m.position, m instanceof MonstreBleu);
                         monstreList.remove(m);
                         ((StackPane)m.vue.getParent()).getChildren().remove(m.vue);
@@ -236,6 +239,9 @@ public class Niveau {
             if (bloc instanceof Fallable && ((Fallable) bloc).isFalling() &&
                     Math.abs((bloc.getPosition().x + 1)-m.getPosition().x) <= 1 &&
                     Math.abs(bloc.getPosition().y-m.getPosition().y)<=1) {
+                currentLvl[(int) bloc.position.x][(int) bloc.position.y] = VIDE;
+                blocList.remove(bloc);
+                ((StackPane)bloc.getView().getParent()).getChildren().remove(bloc.getView());
                 exploserMonstre(m.position, m instanceof MonstreBleu);
                 monstreList.remove(m);
                 ((StackPane)m.vue.getParent()).getChildren().remove(m.vue);
