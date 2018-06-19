@@ -374,7 +374,8 @@ public class Niveau {
 
         for(int i = blocList.size()-1; i>=0; i--) {
             if(Math.abs(blocList.get(i).position.x-position.x)<=1 &&
-                    Math.abs(blocList.get(i).position.y-position.y)<=1){
+                    Math.abs(blocList.get(i).position.y-position.y)<=1 &&
+                    !(blocList.get(i) instanceof Mur)){
                 ((StackPane)blocList.get(i).getView().getParent()).getChildren().remove(blocList.get(i).getView());
                 blocList.remove(i);
             }
