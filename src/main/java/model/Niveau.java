@@ -1,6 +1,6 @@
 package model;
 
-import com.sun.javafx.geom.Vec2d;
+import javafx.geometry.Point2D;
 import javafx.scene.layout.StackPane;
 import view.ExplosionView;
 import view.ViewGame;
@@ -87,35 +87,35 @@ public class Niveau {
      * @param direction (direction ciblée : b = bas, g = gauche, d = droite, h = haut)
      */
     public void deplacerMineur(char direction) {
-        Vec2d positionCible = null;
+        Point2D positionCible = null;
         if (direction == 'h') {
-            positionCible = new Vec2d(mineur.getPosition().x - 1, mineur.getPosition().y);
+            positionCible = new Point2D(mineur.getPosition().getX() - 1, mineur.getPosition().getY());
         } else if (direction == 'b') {
-            positionCible = new Vec2d(mineur.getPosition().x + 1, mineur.getPosition().y);
+            positionCible = new Point2D(mineur.getPosition().getX() + 1, mineur.getPosition().getY());
         } else if (direction == 'g') {
-            positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y - 1);
+            positionCible = new Point2D(mineur.getPosition().getX(), mineur.getPosition().getY() - 1);
         } else if (direction == 'd') {
-            positionCible = new Vec2d(mineur.getPosition().x, mineur.getPosition().y + 1);
+            positionCible = new Point2D(mineur.getPosition().getX(), mineur.getPosition().getY() + 1);
         }
 
         if (positionCible == null) return;
         mineur.vue.changerDirection(direction);
 
-        switch (currentLvl[(int) positionCible.x][(int) positionCible.y]) {
+        switch (currentLvl[(int) positionCible.getX()][(int) positionCible.getY()]) {
             case CLAY:
-                removeBlocAt((int) positionCible.x, (int) positionCible.y);
-                currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
+                removeBlocAt((int) positionCible.getX(), (int) positionCible.getY());
+                currentLvl[(int) positionCible.getX()][(int) positionCible.getY()] = VIDE;
                 for (int i = 0; i < blocList.size(); i++) {
-                    if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
+                    if (blocList.get(i).position.getX() == positionCible.getX() && blocList.get(i).position.getY() == positionCible.getY()) {
                         blocList.remove(blocList.get(i));
                     }
                 }
                 break;
             case DIAMAND:
-                removeBlocAt((int) positionCible.x, (int) positionCible.y);
-                currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
+                removeBlocAt((int) positionCible.getX(), (int) positionCible.getY());
+                currentLvl[(int) positionCible.getX()][(int) positionCible.getY()] = VIDE;
                 for (int i = 0; i < blocList.size(); i++) {
-                    if (blocList.get(i).position.x == positionCible.x && blocList.get(i).position.y == positionCible.y) {
+                    if (blocList.get(i).position.getX() == positionCible.getX() && blocList.get(i).position.getY() == positionCible.getY()) {
                         blocList.remove(blocList.get(i));
                     }
                 }
@@ -125,19 +125,18 @@ public class Niveau {
             case MUR:
                 return;
             case PIERRE:
-                Vec2d caseDerrierePierre = new Vec2d(
-                        positionCible.x + (positionCible.x - mineur.getPosition().x),
-                        positionCible.y + (positionCible.y - mineur.getPosition().y));
-                if (currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] != VIDE || direction == 'h')
+                Point2D caseDerrierePierre = new Point2D(
+                        positionCible.getX() + (positionCible.getX() - mineur.getPosition().getX()),
+                        positionCible.getY() + (positionCible.getY() - mineur.getPosition().getY()));
+                if (currentLvl[(int) caseDerrierePierre.getX()][(int) caseDerrierePierre.getY()] != VIDE || direction == 'h')
                     return;
                 for (Bloc pierre : blocList) {
-                    if (pierre.position.x == positionCible.x && pierre.position.y == positionCible.y) {
-                        pierre.position.x = caseDerrierePierre.x;
-                        pierre.position.y = caseDerrierePierre.y;
+                    if (pierre.position.getX() == positionCible.getX() && pierre.position.getY() == positionCible.getY()) {
+                        pierre.setPosition(new Point2D(caseDerrierePierre.getX(), caseDerrierePierre.getY()));
                     }
                 }
-                currentLvl[(int) positionCible.x][(int) positionCible.y] = VIDE;
-                currentLvl[(int) caseDerrierePierre.x][(int) caseDerrierePierre.y] = PIERRE;
+                currentLvl[(int) positionCible.getX()][(int) positionCible.getY()] = VIDE;
+                currentLvl[(int) caseDerrierePierre.getX()][(int) caseDerrierePierre.getY()] = PIERRE;
                 break;
             case PORTE:
                 if (porte.isLocked()) return;
@@ -145,7 +144,7 @@ public class Niveau {
                 break;
         }
         mineur.deplacement(positionCible);
-        currentLvl[(int) mineur.position.x][(int) mineur.position.y] = VIDE;
+        currentLvl[(int) mineur.position.getX()][(int) mineur.position.getY()] = VIDE;
     }
 
     // GETTERS
@@ -171,18 +170,18 @@ public class Niveau {
 
     public void appliquerGravite() {
         for (Bloc bloc : blocList)
-            if (bloc instanceof Fallable && bloc.position.y < currentLvl[0].length - 1) {
-                int x = (int) bloc.position.x,
-                        y = (int) bloc.position.y;
+            if (bloc instanceof Fallable && bloc.position.getY() < currentLvl[0].length - 1) {
+                int x = (int) bloc.position.getX(),
+                        y = (int) bloc.position.getY();
 
-                if (((Fallable) bloc).isFalling() && mineur.position.x == x + 1 && mineur.position.y == y) {
+                if (((Fallable) bloc).isFalling() && mineur.position.getX() == x + 1 && mineur.position.getY() == y) {
                     defaite = true;
                     return;
                 }
                 for (Monstre m : getMonstreList()) {
                     if (((Fallable) bloc).isFalling() &&
-                            x + 1 == m.getPosition().x &&
-                            y == m.getPosition().y) {
+                            x + 1 == m.getPosition().getX() &&
+                            y == m.getPosition().getY()) {
                         currentLvl[x][y] = VIDE;
                         blocList.remove(bloc);
                         ((StackPane)bloc.getView().getParent()).getChildren().remove(bloc.getView());
@@ -193,20 +192,20 @@ public class Niveau {
                     }
                 }
 
-                if (currentLvl[x + 1][y] == VIDE && (mineur.position.x != x + 1 || mineur.position.y != y)) {
+                if (currentLvl[x + 1][y] == VIDE && (mineur.position.getX() != x + 1 || mineur.position.getY() != y)) {
                     if (((Fallable) bloc).fallTo(x + 1, y)) {
                         currentLvl[x + 1][y] = currentLvl[x][y];
                         currentLvl[x][y] = VIDE;
                     }
                 } else if (currentLvl[x + 1][y] == DIAMAND || currentLvl[x + 1][y] == PIERRE) {
                     if (y > 0 && currentLvl[x + 1][y - 1] == VIDE && currentLvl[x][y - 1] == VIDE &&
-                            (mineur.position.x != x + 1 || mineur.position.y != y - 1)) {
+                            (mineur.position.getX() != x + 1 || mineur.position.getY() != y - 1)) {
                         if (((Fallable) bloc).fallTo(x + 1, y - 1)) {
                             currentLvl[x + 1][y - 1] = currentLvl[x][y];
                             currentLvl[x][y] = VIDE;
                         }
                     } else if (y < currentLvl[0].length - 1 && currentLvl[x + 1][y + 1] == VIDE && currentLvl[x][y + 1] == VIDE &&
-                            (mineur.position.x != x + 1 || mineur.position.y != y + 1)) {
+                            (mineur.position.getX() != x + 1 || mineur.position.getY() != y + 1)) {
                         if (((Fallable) bloc).fallTo(x + 1, y + 1)) {
                             currentLvl[x + 1][y + 1] = currentLvl[x][y];
                             currentLvl[x][y] = VIDE;
@@ -219,7 +218,7 @@ public class Niveau {
 
     private void removeBlocAt(int x, int y) {
         for (Bloc bloc : blocList)
-            if (bloc.position.x == x && bloc.position.y == y) {
+            if (bloc.position.getX() == x && bloc.position.getY() == y) {
                 StackPane st = (StackPane) bloc.getView().getParent();
                 st.getChildren().remove(bloc.getView());
             }
@@ -230,16 +229,16 @@ public class Niveau {
 
 
         // 0. Vérifier les objets en contact avec le monstre (Mineur|Fallable)
-        if (((mineur.getPosition().x == m.position.x)
-                && ((mineur.getPosition().y == m.position.y + 1) || mineur.getPosition().y == m.position.y - 1))
-                || ((mineur.getPosition().y == m.position.y)
-                && ((mineur.getPosition().x == m.position.x + 1) || mineur.getPosition().x == m.position.x - 1)))
+        if (((mineur.getPosition().getX() == m.position.getX())
+                && ((mineur.getPosition().getY() == m.position.getY() + 1) || mineur.getPosition().getY() == m.position.getY() - 1))
+                || ((mineur.getPosition().getY() == m.position.getY())
+                && ((mineur.getPosition().getX() == m.position.getX() + 1) || mineur.getPosition().getX() == m.position.getX() - 1)))
             defaite = true;
         for (Bloc bloc : getBlocList()) {
             if (bloc instanceof Fallable && ((Fallable) bloc).isFalling() &&
-                    Math.abs((bloc.getPosition().x + 1)-m.getPosition().x) <= 1 &&
-                    Math.abs(bloc.getPosition().y-m.getPosition().y)<=1) {
-                currentLvl[(int) bloc.position.x][(int) bloc.position.y] = VIDE;
+                    Math.abs((bloc.getPosition().getX() + 1)-m.getPosition().getX()) <= 1 &&
+                    Math.abs(bloc.getPosition().getY()-m.getPosition().getY())<=1) {
+                currentLvl[(int) bloc.position.getX()][(int) bloc.position.getY()] = VIDE;
                 blocList.remove(bloc);
                 ((StackPane)bloc.getView().getParent()).getChildren().remove(bloc.getView());
                 exploserMonstre(m.position, m instanceof MonstreBleu);
@@ -252,38 +251,38 @@ public class Niveau {
         // 1. Déterminer les coordonnées de la case gauche/droite/devant/derrière du monstre en fonction de sa direction
         switch (m.dir) {
             case 'h': // le monstre va vers le haut
-                devant = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
-                droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
-                derriere = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
-                gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
+                devant = new int[]{(int) m.getPosition().getX() - 1, (int) m.getPosition().getY()};
+                droite = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() + 1};
+                derriere = new int[]{(int) m.getPosition().getX() + 1, (int) m.getPosition().getY()};
+                gauche = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() - 1};
                 break;
             case 'd': // le monstre va vers la droite
-                devant = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
-                droite = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
-                derriere = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
-                gauche = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
+                devant = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() + 1};
+                droite = new int[]{(int) m.getPosition().getX() + 1, (int) m.getPosition().getY()};
+                derriere = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() - 1};
+                gauche = new int[]{(int) m.getPosition().getX() - 1, (int) m.getPosition().getY()};
                 break;
             case 'b': // le monstre va vers le bas
-                devant = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
-                droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
-                derriere = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
-                gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
+                devant = new int[]{(int) m.getPosition().getX() + 1, (int) m.getPosition().getY()};
+                droite = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() - 1};
+                derriere = new int[]{(int) m.getPosition().getX() - 1, (int) m.getPosition().getY()};
+                gauche = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() + 1};
                 break;
             case 'g': // le monstre va vers la gauche
-                devant = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
-                droite = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
-                derriere = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
-                gauche = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
+                devant = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() - 1};
+                droite = new int[]{(int) m.getPosition().getX() - 1, (int) m.getPosition().getY()};
+                derriere = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() + 1};
+                gauche = new int[]{(int) m.getPosition().getX() + 1, (int) m.getPosition().getY()};
                 break;
             default: // le monstre n'a pas de direction (model: 'a')
                 // Il s'agit d'un cas spécial où le monstre doit déterminer vers où il
                 // doit aller afin de suivre en mur dans un sens horaire.
 
                 // On considère la vue du plateau (vers le haut)
-                devant = new int[]{(int) m.getPosition().x - 1, (int) m.getPosition().y};
-                droite = new int[]{(int) m.getPosition().x, (int) m.getPosition().y + 1};
-                derriere = new int[]{(int) m.getPosition().x + 1, (int) m.getPosition().y};
-                gauche = new int[]{(int) m.getPosition().x, (int) m.getPosition().y - 1};
+                devant = new int[]{(int) m.getPosition().getX() - 1, (int) m.getPosition().getY()};
+                droite = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() + 1};
+                derriere = new int[]{(int) m.getPosition().getX() + 1, (int) m.getPosition().getY()};
+                gauche = new int[]{(int) m.getPosition().getX(), (int) m.getPosition().getY() - 1};
                 // Si on est près d'un mur on détermine une direction (sens horaire)
                 if (currentLvl[devant[0]][devant[1]] != VIDE) {
                     m.dir = 'd';
@@ -301,8 +300,8 @@ public class Niveau {
                 // Sinon on se déplace vers un direction unique (gauche par exemple) jusqu'à trouver un mur,
                 // SANS attribuer de direction au monstre
                 else {
-                    currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-                    m.position = new Vec2d(gauche[0], gauche[1]);
+                    currentLvl[(int) m.position.getX()][(int) m.position.getY()] = VIDE;
+                    m.position = new Point2D(gauche[0], gauche[1]);
                     currentLvl[gauche[0]][gauche[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
                 }
                 return;
@@ -312,8 +311,8 @@ public class Niveau {
         //      ordre: GAUCHE DEVANT DROITE DERRIERE
         if (currentLvl[gauche[0]][gauche[1]] == VIDE) {
             // Déplacer monstre
-            currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-            m.position = new Vec2d(gauche[0], gauche[1]);
+            currentLvl[(int) m.position.getX()][(int) m.position.getY()] = VIDE;
+            m.position = new Point2D(gauche[0], gauche[1]);
             currentLvl[gauche[0]][gauche[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
             // Modifier sa direction
             switch (m.dir) {
@@ -331,13 +330,13 @@ public class Niveau {
             }
         } else if (currentLvl[devant[0]][devant[1]] == VIDE) {
             // Déplacer monstre
-            currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-            m.position = new Vec2d(devant[0], devant[1]);
+            currentLvl[(int) m.position.getX()][(int) m.position.getY()] = VIDE;
+            m.position = new Point2D(devant[0], devant[1]);
             currentLvl[devant[0]][devant[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
         } else if (currentLvl[droite[0]][droite[1]] == VIDE) {
             // Déplacer monstre
-            currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-            m.position = new Vec2d(droite[0], droite[1]);
+            currentLvl[(int) m.position.getX()][(int) m.position.getY()] = VIDE;
+            m.position = new Point2D(droite[0], droite[1]);
             currentLvl[droite[0]][droite[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
             // Modifier sa direction
             switch (m.dir) {
@@ -355,8 +354,8 @@ public class Niveau {
             }
         } else if (currentLvl[derriere[0]][derriere[1]] == VIDE) {
             // Déplacer monstre
-            currentLvl[(int) m.position.x][(int) m.position.y] = VIDE;
-            m.position = new Vec2d(derriere[0], derriere[1]);
+            currentLvl[(int) m.position.getX()][(int) m.position.getY()] = VIDE;
+            m.position = new Point2D(derriere[0], derriere[1]);
             currentLvl[derriere[0]][derriere[1]] = (byte) (m instanceof MonstreBleu ? MONSTRE_BLEU : MONSTRE_ROUGE);
             // Modifier sa direction
             switch (m.dir) {
@@ -375,12 +374,12 @@ public class Niveau {
         }
     }
 
-    private void exploserMonstre(Vec2d position, boolean genererDiamands) {
+    private void exploserMonstre(Point2D position, boolean genererDiamands) {
         int[] aoe = new int[]{-1,0,1};
 
         for(int i = blocList.size()-1; i>=0; i--) {
-            if(Math.abs(blocList.get(i).position.x-position.x)<=1 &&
-                    Math.abs(blocList.get(i).position.y-position.y)<=1 &&
+            if(Math.abs(blocList.get(i).position.getX()-position.getX())<=1 &&
+                    Math.abs(blocList.get(i).position.getY()-position.getY())<=1 &&
                     !(blocList.get(i) instanceof Mur)){
                 ((StackPane)blocList.get(i).getView().getParent()).getChildren().remove(blocList.get(i).getView());
                 blocList.remove(i);
@@ -388,14 +387,14 @@ public class Niveau {
         }
         for (int row : aoe)
             for (int col : aoe)
-                if (currentLvl[(int) position.x + row][(int) position.y + col] != MUR) {
-                    currentLvl[(int) position.x + row][(int) position.y + col] = (byte) (genererDiamands ? DIAMAND : VIDE);
+                if (currentLvl[(int) position.getX() + row][(int) position.getY() + col] != MUR) {
+                    currentLvl[(int) position.getX() + row][(int) position.getY() + col] = (byte) (genererDiamands ? DIAMAND : VIDE);
                     if (genererDiamands) {
-                        Diamand d = new Diamand((int) position.x + row, (int) position.y + col);
+                        Diamand d = new Diamand((int) position.getX() + row, (int) position.getY() + col);
                         blocList.add(d);
                         ((StackPane) mineur.vue.getParent()).getChildren().add(d.vue);
                     }
-                    ((StackPane) mineur.vue.getParent()).getChildren().add(new ExplosionView((position.x + row)*ViewGame.TAILLE_IMAGES,(position.y + col)*ViewGame.TAILLE_IMAGES).start());
+                    ((StackPane) mineur.vue.getParent()).getChildren().add(new ExplosionView((position.getX() + row)*ViewGame.TAILLE_IMAGES,(position.getY() + col)*ViewGame.TAILLE_IMAGES).start());
                 }
     }
 

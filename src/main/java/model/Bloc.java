@@ -1,16 +1,16 @@
 package model;
 
-import com.sun.javafx.geom.Vec2d;
+import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 
 public abstract class Bloc {
-    Vec2d position;
+    Point2D position;
 
-    public Vec2d getPosition() {
+    public Point2D getPosition() {
         return position;
     }
 
-    public void setPosition(Vec2d position) {
+    public void setPosition(Point2D position) {
         this.position = position;
     }
 

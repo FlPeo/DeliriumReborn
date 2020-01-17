@@ -1,7 +1,7 @@
 package view;
 
-import com.sun.javafx.geom.Vec2d;
 import ia.Etat;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -103,26 +103,26 @@ public class ViewGameIA {
 
     //Méthode permettant de centrer la caméra sur le mineur
     private void placerLaCamera(int ligneMineur, int colonneMineur, int widthPlateau, int heightPlateau) {
-        Vec2d windowSize = new Vec2d(canvas.getScene().getWidth(), canvas.getScene().getHeight()),
-                plateauSize = new Vec2d(widthPlateau * tailleImages, heightPlateau * tailleImages);
+        Point2D windowSize = new Point2D(canvas.getScene().getWidth(), canvas.getScene().getHeight()),
+                plateauSize = new Point2D(widthPlateau * tailleImages, heightPlateau * tailleImages);
 
         double finalTranslateX,
                 finalTranslateY;
 
-        if(windowSize.x < plateauSize.x) {
-            finalTranslateX =  -colonneMineur * tailleImages + windowSize.x/2;
+        if(windowSize.getX() < plateauSize.getX()) {
+            finalTranslateX =  -colonneMineur * tailleImages + windowSize.getX()/2;
             if(finalTranslateX>0) finalTranslateX = 0;
-            if(finalTranslateX<windowSize.x-plateauSize.x) finalTranslateX = windowSize.x-plateauSize.x;
+            if(finalTranslateX<windowSize.getX()-plateauSize.getX()) finalTranslateX = windowSize.getX()-plateauSize.getX();
         } else {
-            finalTranslateX = (windowSize.x-plateauSize.x)/2;
+            finalTranslateX = (windowSize.getX()-plateauSize.getX())/2;
         }
 
-        if(windowSize.y < plateauSize.y) {
-            finalTranslateY = -ligneMineur * tailleImages + windowSize.y/2;
+        if(windowSize.getY() < plateauSize.getY()) {
+            finalTranslateY = -ligneMineur * tailleImages + windowSize.getY()/2;
             if(finalTranslateY>0) finalTranslateY = 0;
-            if(finalTranslateY<windowSize.y-plateauSize.y) finalTranslateY = windowSize.y-plateauSize.y;
+            if(finalTranslateY<windowSize.getY()-plateauSize.getY()) finalTranslateY = windowSize.getY()-plateauSize.getY();
         } else {
-            finalTranslateY = (windowSize.y-plateauSize.y)/2;
+            finalTranslateY = (windowSize.getY()-plateauSize.getY())/2;
         }
 
 

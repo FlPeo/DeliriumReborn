@@ -51,6 +51,7 @@ public class ViewMenu {
      */
     private void initBackground() {
         imgBg = new ImageView(Path.backgroundMenu);
+        System.out.println(imgBg);
         Rectangle2D primaryScreenBounds = Screen.getPrimary().getBounds(); // Récupération de la taille de l'écran
         imgBg.setFitHeight((int) primaryScreenBounds.getHeight());
         imgBg.setFitWidth((int) primaryScreenBounds.getWidth());

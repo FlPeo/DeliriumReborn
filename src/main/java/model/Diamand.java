@@ -1,6 +1,6 @@
 package model;
 
-import com.sun.javafx.geom.Vec2d;
+import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import view.DiamandView;
 
@@ -10,7 +10,7 @@ public class Diamand extends Bloc implements Fallable {
     private int fallingCounter;
 
     Diamand(int i, int j) {
-        position = new Vec2d(i, j);
+        position = new Point2D(i, j);
         falling = false;
         vue = new DiamandView();
         fallingCounter = DELAY;
@@ -31,7 +31,7 @@ public class Diamand extends Bloc implements Fallable {
     public boolean fallTo(int x, int y) {
         fallingCounter--;
         if (fallingCounter>0) return false;
-        position = new Vec2d(x,y);
+        position = new Point2D(x,y);
         falling = true;
         return true;
     }

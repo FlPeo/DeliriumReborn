@@ -1,7 +1,7 @@
 package view;
 
-import com.sun.javafx.geom.Vec2d;
 import controller.ControllerGame;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.image.ImageView;
@@ -69,40 +69,40 @@ public class ViewGame {
         // Modfification des coordonnées de l'image en fonction des coordonnées de l'objet
         // On multiplie par la taille des images pour ne pas qu'elles se chevauches
         for (Bloc bloc : partie.getNiveau().getBlocList()) {
-            bloc.getView().setTranslateY(bloc.getPosition().x * TAILLE_IMAGES);
-            bloc.getView().setTranslateX(bloc.getPosition().y * TAILLE_IMAGES);
+            bloc.getView().setTranslateY(bloc.getPosition().getX() * TAILLE_IMAGES);
+            bloc.getView().setTranslateX(bloc.getPosition().getY() * TAILLE_IMAGES);
         }
         for (Monstre monstre : partie.getNiveau().getMonstreList()) {
-            monstre.vue.setTranslateY(monstre.getPosition().x * TAILLE_IMAGES);
-            monstre.vue.setTranslateX(monstre.getPosition().y * TAILLE_IMAGES);
+            monstre.vue.setTranslateY(monstre.getPosition().getX() * TAILLE_IMAGES);
+            monstre.vue.setTranslateX(monstre.getPosition().getY() * TAILLE_IMAGES);
         }
-        partie.getNiveau().getMineur().vue.setTranslateY(partie.getNiveau().getMineur().getPosition().x * TAILLE_IMAGES);
-        partie.getNiveau().getMineur().vue.setTranslateX(partie.getNiveau().getMineur().getPosition().y * TAILLE_IMAGES);
+        partie.getNiveau().getMineur().vue.setTranslateY(partie.getNiveau().getMineur().getPosition().getX() * TAILLE_IMAGES);
+        partie.getNiveau().getMineur().vue.setTranslateX(partie.getNiveau().getMineur().getPosition().getY() * TAILLE_IMAGES);
 
         placerLaCamera();
     }
 
     private void placerLaCamera() {
-        Vec2d windowSize = new Vec2d(root.getScene().getWidth(), root.getScene().getHeight()),
-        plateauSize = new Vec2d(Niveau.currentLvl[0].length * TAILLE_IMAGES, Niveau.currentLvl.length * TAILLE_IMAGES);
+        Point2D windowSize = new Point2D(root.getScene().getWidth(), root.getScene().getHeight()),
+        plateauSize = new Point2D(Niveau.currentLvl[0].length * TAILLE_IMAGES, Niveau.currentLvl.length * TAILLE_IMAGES);
 
         double finalTranslateX,finalTranslateY;
 
 
-        if(windowSize.x < plateauSize.x) {
-            finalTranslateX = -partie.getNiveau().getMineur().getPosition().y * TAILLE_IMAGES + windowSize.x/2;
+        if(windowSize.getX() < plateauSize.getX()) {
+            finalTranslateX = -partie.getNiveau().getMineur().getPosition().getY() * TAILLE_IMAGES + windowSize.getX()/2;
             if(finalTranslateX>0) finalTranslateX = 0;
-            if(finalTranslateX<windowSize.x-plateauSize.x) finalTranslateX = windowSize.x-plateauSize.x;
+            if(finalTranslateX<windowSize.getX()-plateauSize.getX()) finalTranslateX = windowSize.getX()-plateauSize.getX();
         } else {
-            finalTranslateX = (windowSize.x-plateauSize.x)/2;
+            finalTranslateX = (windowSize.getX()-plateauSize.getX())/2;
         }
 
-        if(windowSize.y < plateauSize.y) {
-            finalTranslateY = -partie.getNiveau().getMineur().getPosition().x * TAILLE_IMAGES + windowSize.y/2;
+        if(windowSize.getY() < plateauSize.getY()) {
+            finalTranslateY = -partie.getNiveau().getMineur().getPosition().getX() * TAILLE_IMAGES + windowSize.getY()/2;
             if(finalTranslateY>0) finalTranslateY = 0;
-            if(finalTranslateY<windowSize.y-plateauSize.y) finalTranslateY = windowSize.y-plateauSize.y;
+            if(finalTranslateY<windowSize.getY()-plateauSize.getY()) finalTranslateY = windowSize.getY()-plateauSize.getY();
         } else {
-            finalTranslateY = (windowSize.y-plateauSize.y)/2;
+            finalTranslateY = (windowSize.getY()-plateauSize.getY())/2;
         }
 
         plateau.setTranslateX(finalTranslateX);

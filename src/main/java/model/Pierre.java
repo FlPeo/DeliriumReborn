@@ -1,6 +1,6 @@
 package model;
 
-import com.sun.javafx.geom.Vec2d;
+import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import view.PierreView;
 
@@ -10,7 +10,7 @@ public class Pierre extends Bloc implements Fallable{
     private int fallingCounter;
 
     Pierre(int i, int j) {
-        position = new Vec2d(i, j);
+        position = new Point2D(i, j);
         falling = false;
         vue = new PierreView();
         fallingCounter = DELAY;
@@ -32,7 +32,7 @@ public class Pierre extends Bloc implements Fallable{
     public boolean fallTo(int x, int y) {
         fallingCounter--;
         if (fallingCounter>0) return false;
-        position = new Vec2d(x,y);
+        position = new Point2D(x,y);
         falling = true;
         vue.setRotating(true);
         return true;
