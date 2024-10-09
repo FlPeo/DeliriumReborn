@@ -1,0 +1,33 @@
+name: createRelease
+
+on: [create]
+
+jobs:
+  deploy:
+    name: Build
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}=
+   
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: 'Set up OpenJDK'
+        uses: oracle-actions/setup-java@v1
+        with:
+          website: jdk.java.net
+          release: 23
+      - name: Create exe
+        run: |
+          ./gradlew jlink
+      - name: Zip
+        run: |
+          zip -r  nativeBuild.zip build/image 
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          files: nativeBuild.zip
+
+  
