@@ -17,6 +17,11 @@ repositories {
     mavenCentral()
 }
 
+application {
+    mainModule = 'DeliriumReborn.main'
+    mainClass = 'Launcher.Delirium'
+}
+
 java {
     sourceCompatibility = 1.13
 }
@@ -26,5 +31,3 @@ jlink {
         name = 'DeliriumReborn'
     }
 }
-
-mainClassName = 'DeliriumReborn.main/Launcher.Delirium'
