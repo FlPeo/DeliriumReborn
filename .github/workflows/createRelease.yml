@@ -55,5 +55,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
-          files: /windowsBuild.zip
+          files: windowsBuild.zip
   
