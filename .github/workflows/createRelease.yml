@@ -3,8 +3,8 @@ name: createRelease
 on: [create]
 
 jobs:
-  deploy:
-    name: Build
+  deployForLinux:
+    name: Build for Linux
     runs-on: ubuntu-latest
     if: ${{ startsWith(github.ref, 'refs/tags/') }}=
    
@@ -18,16 +18,42 @@ jobs:
         with:
           website: jdk.java.net
           release: 23
-      - name: Create exe
+      - name: Create Linux exe
         run: |
           ./gradlew jlink
       - name: Zip
         run: |
-          zip -r  nativeBuild.zip build/image 
+          zip -r  linuxBuild.zip build/image 
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
-          files: nativeBuild.zip
+          files: linuxBuild.zip
 
+  deployForWindows:
+    name: Build for Windows
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    runs-on: windows-2022
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+      - name: 'Set up OpenJDK'
+        uses: oracle-actions/setup-java@v1
+        with:
+          website: jdk.java.net
+          release: 23
+      - name: Create Windows exe
+        run: |
+          ./gradlew jlink
+      - name: Zip
+        run: |
+          Compress-Archive -Path build\image -DestinationPath windowsBuild.zip
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ github.ref_name }}
+          files: /windowsBuild.zip
   
